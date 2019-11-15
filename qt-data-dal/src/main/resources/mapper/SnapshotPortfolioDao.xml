@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kuainiu.qt.data.dal.dao.SnapshotPortfolioDao">
+  <resultMap id="BaseResultMap" type="com.kuainiu.qt.data.dal.entity.SnapshotPortfolio">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="snapshot_code" jdbcType="VARCHAR" property="snapshotCode" />
+    <result column="portfolio_code" jdbcType="VARCHAR" property="portfolioCode" />
+    <result column="cash" jdbcType="DECIMAL" property="cash" />
+    <result column="frz_cash" jdbcType="DECIMAL" property="frzCash" />
+    <result column="total_returns" jdbcType="DECIMAL" property="totalReturns" />
+    <result column="realtime_returns" jdbcType="DECIMAL" property="realtimeReturns" />
+    <result column="annualized_returns" jdbcType="DECIMAL" property="annualizedReturns" />
+    <result column="daily_pnl" jdbcType="DECIMAL" property="dailyPnl" />
+    <result column="pnl" jdbcType="DECIMAL" property="pnl" />
+    <result column="market_value" jdbcType="DECIMAL" property="marketValue" />
+    <result column="total_value" jdbcType="DECIMAL" property="totalValue" />
+    <result column="units" jdbcType="DECIMAL" property="units" />
+    <result column="trans_cost" jdbcType="DECIMAL" property="transCost" />
+    <result column="total_realtime_returns" jdbcType="DECIMAL" property="totalRealtimeReturns" />
+    <result column="base_returns" jdbcType="DECIMAL" property="baseReturns" />
+    <result column="base_realtime_returns" jdbcType="DECIMAL" property="baseRealtimeReturns" />
+    <result column="balance_returns" jdbcType="DECIMAL" property="balanceReturns" />
+    <result column="information_ratio" jdbcType="DECIMAL" property="informationRatio" />
+    <result column="error_flag" jdbcType="VARCHAR" property="errorFlag" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="belong_time" jdbcType="TIMESTAMP" property="belongTime" />
+    <result column="belong_date" jdbcType="DATE" property="belongDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="std" jdbcType="DECIMAL" property="std" />
+  </resultMap>
+
+  <resultMap id="BaseResultMapWithAccount" type="com.kuainiu.qt.data.dal.entity.SnapshotPortfolio" extends="BaseResultMap">
+    <collection property="futuresAccountList" ofType="com.kuainiu.qt.data.dal.entity.SnapshotFuturesAccount" column="snapshot_code"
+                select="com.kuainiu.qt.data.dal.dao.SnapshotFuturesAccountDao.findListBySnapshotCode" />
+    <collection property="stkAccountList" ofType="com.kuainiu.qt.data.dal.entity.SnapshotStkAccount" column="snapshot_code"
+                select="com.kuainiu.qt.data.dal.dao.SnapshotStkAccountDao.findListBySnapshotCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, snapshot_code, portfolio_code, cash, frz_cash, total_returns, realtime_returns, 
+    annualized_returns, daily_pnl, pnl, market_value, total_value, units, trans_cost,
+    total_realtime_returns,base_returns,base_realtime_returns,balance_returns,information_ratio,error_flag,
+    start_date, belong_time,belong_date, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_snapshot_portfolio
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_snapshot_portfolio
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotPortfolio">
+    insert into t_snapshot_portfolio (id, snapshot_code, portfolio_code, 
+      cash, frz_cash, total_returns, 
+      realtime_returns, annualized_returns, daily_pnl, 
+      pnl, market_value, total_value, units, trans_cost,
+      total_realtime_returns,base_returns,base_realtime_returns,balance_returns,
+      information_ratio,error_flag, start_date,
+      belong_time,belong_date
+      )
+    values (#{id,jdbcType=BIGINT}, #{snapshotCode,jdbcType=VARCHAR}, #{portfolioCode,jdbcType=VARCHAR}, 
+      #{cash,jdbcType=DECIMAL}, #{frzCash,jdbcType=DECIMAL}, #{totalReturns,jdbcType=DECIMAL},
+      #{realtimeReturns,jdbcType=DECIMAL}, #{annualizedReturns,jdbcType=DECIMAL}, #{dailyPnl,jdbcType=DECIMAL},
+      #{pnl,jdbcType=DECIMAL}, #{marketValue,jdbcType=DECIMAL}, #{totalValue,jdbcType=DECIMAL}, #{units,jdbcType=DECIMAL},
+      #{transCost,jdbcType=DECIMAL}, #{totalRealtimeReturns,jdbcType=DECIMAL},#{baseReturns,jdbcType=DECIMAL},#{baseRealtimeReturns,jdbcType=DECIMAL},
+      #{balanceReturns,jdbcType=DECIMAL},#{informationRatio,jdbcType=DECIMAL},#{errorFlag,jdbcType=VARCHAR},#{startDate,jdbcType=TIMESTAMP},
+      #{belongTime,jdbcType=TIMESTAMP},#{belongDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotPortfolio">
+    insert into t_snapshot_portfolio
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="snapshotCode != null">
+        snapshot_code,
+      </if>
+      <if test="portfolioCode != null">
+        portfolio_code,
+      </if>
+      <if test="cash != null">
+        cash,
+      </if>
+      <if test="frzCash != null">
+        frz_cash,
+      </if>
+      <if test="totalReturns != null">
+        total_returns,
+      </if>
+      <if test="realtimeReturns != null">
+        realtime_returns,
+      </if>
+      <if test="annualizedReturns != null">
+        annualized_returns,
+      </if>
+      <if test="dailyPnl != null">
+        daily_pnl,
+      </if>
+      <if test="pnl != null">
+        pnl,
+      </if>
+      <if test="marketValue != null">
+        market_value,
+      </if>
+      <if test="totalValue != null">
+        total_value,
+      </if>
+      <if test="units != null">
+        units,
+      </if>
+      <if test="transCost != null">
+        trans_cost,
+      </if>
+      <if test="totalRealtimeReturns != null">
+        total_realtime_returns,
+      </if>
+      <if test="baseReturns != null">
+        base_returns,
+      </if>
+      <if test="baseRealtimeReturns != null">
+        base_realtime_returns,
+      </if>
+      <if test="balanceReturns != null">
+        balance_returns,
+      </if>
+      <if test="informationRatio != null">
+        information_ratio,
+      </if>
+      <if test="errorFlag != null">
+        error_flag,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="belongTime != null">
+        belong_time,
+      </if>
+      <if test="belongDate != null">
+        belong_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="snapshotCode != null">
+        #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="portfolioCode != null">
+        #{portfolioCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cash != null">
+        #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="frzCash != null">
+        #{frzCash,jdbcType=DECIMAL},
+      </if>
+      <if test="totalReturns != null">
+        #{totalReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="realtimeReturns != null">
+        #{realtimeReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="annualizedReturns != null">
+        #{annualizedReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="dailyPnl != null">
+        #{dailyPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="pnl != null">
+        #{pnl,jdbcType=DECIMAL},
+      </if>
+      <if test="marketValue != null">
+        #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="totalValue != null">
+        #{totalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="units != null">
+        #{units,jdbcType=DECIMAL},
+      </if>
+      <if test="transCost != null">
+        #{transCost,jdbcType=DECIMAL},
+      </if>
+      <if test="totalRealtimeReturns != null">
+        #{totalRealtimeReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="baseReturns != null">
+        #{baseReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="baseRealtimeReturns != null">
+        #{baseRealtimeReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceReturns != null">
+        #{balanceReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="informationRatio != null">
+        #{informationRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="errorFlag != null">
+        #{errorFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="belongTime != null">
+        #{belongTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="belongDate != null">
+        #{belongDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotPortfolio">
+    update t_snapshot_portfolio
+    <set>
+      <if test="snapshotCode != null">
+        snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="portfolioCode != null">
+        portfolio_code = #{portfolioCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cash != null">
+        cash = #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="frzCash != null">
+        frz_cash = #{frzCash,jdbcType=DECIMAL},
+      </if>
+      <if test="totalReturns != null">
+        total_returns = #{totalReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="realtimeReturns != null">
+        realtime_returns = #{realtimeReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="annualizedReturns != null">
+        annualized_returns = #{annualizedReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="dailyPnl != null">
+        daily_pnl = #{dailyPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="pnl != null">
+        pnl = #{pnl,jdbcType=DECIMAL},
+      </if>
+      <if test="marketValue != null">
+        market_value = #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="totalValue != null">
+        total_value = #{totalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="units != null">
+        units = #{units,jdbcType=DECIMAL},
+      </if>
+      <if test="transCost != null">
+        trans_cost = #{transCost,jdbcType=DECIMAL},
+      </if>
+      <if test="totalRealtimeReturns != null">
+        total_realtime_returns = #{totalRealtimeReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="baseReturns != null">
+        base_returns = #{baseReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="baseRealtimeReturns != null">
+        base_realtime_returns = #{baseRealtimeReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceReturns != null">
+        balance_returns = #{balanceReturns,jdbcType=DECIMAL},
+      </if>
+      <if test="informationRatio != null">
+        information_ratio = #{informationRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="errorFlag != null">
+        error_flag = #{errorFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="belongTime != null">
+        belong_time = #{belongTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="belongDate != null">
+        belong_date = #{belongDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotPortfolio">
+    update t_snapshot_portfolio
+    set snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      portfolio_code = #{portfolioCode,jdbcType=VARCHAR},
+      cash = #{cash,jdbcType=DECIMAL},
+      frz_cash = #{frzCash,jdbcType=DECIMAL},
+      total_returns = #{totalReturns,jdbcType=DECIMAL},
+      realtime_returns = #{realtimeReturns,jdbcType=DECIMAL},
+      annualized_returns = #{annualizedReturns,jdbcType=DECIMAL},
+      daily_pnl = #{dailyPnl,jdbcType=DECIMAL},
+      pnl = #{pnl,jdbcType=DECIMAL},
+      market_value = #{marketValue,jdbcType=DECIMAL},
+      total_value = #{totalValue,jdbcType=DECIMAL},
+      units = #{units,jdbcType=DECIMAL},
+      trans_cost = #{transCost,jdbcType=DECIMAL},
+      total_realtime_returns = #{totalRealtimeReturns,jdbcType=DECIMAL},
+      base_returns = #{baseReturns,jdbcType=DECIMAL},
+      base_realtime_returns = #{baseRealtimeReturns,jdbcType=DECIMAL},
+      balance_returns = #{balanceReturns,jdbcType=DECIMAL},
+      information_ratio = #{informationRatio,jdbcType=DECIMAL},
+      error_flag = #{errorFlag,jdbcType=VARCHAR},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      belong_time = #{belongTime,jdbcType=TIMESTAMP}
+      belong_date = #{belongDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findSnapshotPortfolioList" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotPortfolio" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_snapshot_portfolio
+    where portfolio_code = #{portfolioCode,jdbcType=VARCHAR}
+    <if test="startBelongTime != null">
+      and belong_time &gt;= #{startBelongTime,jdbcType=TIMESTAMP}
+    </if>
+
+    <if test="endBelongTime != null">
+      and belong_time &lt;= #{endBelongTime,jdbcType=TIMESTAMP}
+    </if>
+    order by belong_time desc
+    <if test="limit != -1">
+      limit #{offset,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getLastPortfolioByPortfolioCodeAndBelongTime" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotPortfolio" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_snapshot_portfolio
+    where portfolio_code = #{portfolioCode,jdbcType=VARCHAR}
+
+    <if test="belongTime != null">
+      and belong_time = #{belongTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="startBelongTime != null">
+      and belong_time &gt;= #{startBelongTime,jdbcType=TIMESTAMP}
+    </if>
+
+    <if test="endBelongTime != null">
+      and belong_time &lt;= #{endBelongTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="errorFlag != null">
+      and error_flag = #{errorFlag,jdbcType=VARCHAR}
+    </if>
+    <if test="order != null">
+      order by belong_time ${order}
+    </if>
+    <if test="limit != null">
+      limit #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+
+</mapper>

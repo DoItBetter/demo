@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.kuainiu.qt.data</groupId>
+    <artifactId>qt-data-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>qt-data-web</module>
+        <module>qt-data-service</module>
+        <module>qt-data-dal</module>
+        <module>qt-data-facade</module>
+        <module>qt-data-common</module>
+        <module>qt-data-biz</module>
+    </modules>
+    <parent>
+        <groupId>com.kuainiu.qt.framework</groupId>
+        <artifactId>qt-framework-parent</artifactId>
+        <version>1.0.2-SNAPSHOT</version>
+        <relativePath/> 
+    </parent>
+
+    <properties>
+        <java.version>1.8</java.version>
+
+        <qt.data.web.version>0.0.1-SNAPSHOT</qt.data.web.version>
+        <qt.data.service.version>0.0.1-SNAPSHOT</qt.data.service.version>
+        <qt.data.dal.version>0.0.1-SNAPSHOT</qt.data.dal.version>
+        <qt.data.facade.version>0.0.1-SNAPSHOT</qt.data.facade.version>
+        <qt.data.common.version>0.0.1-SNAPSHOT</qt.data.common.version>
+        <qt.data.biz.version>0.0.1-SNAPSHOT</qt.data.biz.version>
+        <framework.version>1.0.1-SNAPSHOT</framework.version>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+            </dependency>
+
+            <!-- 子模块 begin -->
+            <dependency>
+                <groupId>com.kuainiu.qt.data</groupId>
+                <artifactId>qt-data-web</artifactId>
+                <version>${qt.data.web.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kuainiu.qt.data</groupId>
+                <artifactId>qt-data-service</artifactId>
+                <version>${qt.data.service.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kuainiu.qt.data</groupId>
+                <artifactId>qt-data-dal</artifactId>
+                <version>${qt.data.dal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kuainiu.qt.data</groupId>
+                <artifactId>qt-data-facade</artifactId>
+                <version>${qt.data.facade.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kuainiu.qt.data</groupId>
+                <artifactId>qt-data-common</artifactId>
+                <version>${qt.data.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kuainiu.qt.data</groupId>
+                <artifactId>qt-data-biz</artifactId>
+                <version>${qt.data.biz.version}</version>
+            </dependency>
+
+
+            <!-- ==================== other ==================== -->
+            <dependency>
+                <groupId>com.kuainiu.qt.framework</groupId>
+                <artifactId>qt-framework-json</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kuainiu.qt.framework</groupId>
+                <artifactId>qt-framework-http</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kuainiu.qt.framework</groupId>
+                <artifactId>qt-framework-dal</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kuainiu.qt.framework</groupId>
+                <artifactId>qt-framework-common</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>27.0-jre</version>
+            </dependency>
+
+            <!--  swagger2 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>2.7.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>2.7.0</version>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>ali-repo</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>kuainiu-release</id>
+            <url>http://jcenter-out.kuainiujinke.com/artifactory/libs-release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>kuainiu-snapshots</id>
+            <url>http://jcenter-out.kuainiujinke.com/artifactory/libs-snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <skipTests>true</skipTests>    <!--默认关掉单元测试 -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kuainiu.qt.data.dal.dao.SnapshotFuturesPositionDao">
+  <resultMap id="BaseResultMap" type="com.kuainiu.qt.data.dal.entity.SnapshotFuturesPosition">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="snapshot_code" jdbcType="VARCHAR" property="snapshotCode" />
+    <result column="portfolio_code" jdbcType="VARCHAR" property="portfolioCode" />
+    <result column="strategy_code" jdbcType="VARCHAR" property="strategyCode" />
+    <result column="account_code" jdbcType="VARCHAR" property="accountCode" />
+    <result column="asset_no" jdbcType="VARCHAR" property="assetNo" />
+    <result column="pnl" jdbcType="DECIMAL" property="pnl" />
+    <result column="daily_pnl" jdbcType="DECIMAL" property="dailyPnl" />
+    <result column="holding_pnl" jdbcType="DECIMAL" property="holdingPnl" />
+    <result column="realized_pnl" jdbcType="DECIMAL" property="realizedPnl" />
+    <result column="trans_cost" jdbcType="DECIMAL" property="transCost" />
+    <result column="margin" jdbcType="DECIMAL" property="margin" />
+    <result column="frz_margin" jdbcType="DECIMAL" property="frzMargin" />
+    <result column="market_value" jdbcType="DECIMAL" property="marketValue" />
+    <result column="closable_buy_qty" jdbcType="INTEGER" property="closableBuyQty" />
+    <result column="buy_today_qty" jdbcType="INTEGER" property="buyTodayQty" />
+    <result column="buy_account_today_qty" jdbcType="INTEGER" property="buyAccountTodayQty" />
+    <result column="buy_avg_open_price" jdbcType="DECIMAL" property="buyAvgOpenPrice" />
+    <result column="buy_avg_holding_price" jdbcType="DECIMAL" property="buyAvgHoldingPrice" />
+    <result column="closable_sell_qty" jdbcType="INTEGER" property="closableSellQty" />
+    <result column="sell_today_qty" jdbcType="INTEGER" property="sellTodayQty" />
+    <result column="sell_account_today_qty" jdbcType="INTEGER" property="sellAccountTodayQty" />
+    <result column="sell_avg_open_price" jdbcType="DECIMAL" property="sellAvgOpenPrice" />
+    <result column="sell_avg_holding_price" jdbcType="DECIMAL" property="sellAvgHoldingPrice" />
+    <result column="belong_time" jdbcType="TIMESTAMP" property="belongTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, snapshot_code, portfolio_code, strategy_code, account_code, asset_no, pnl, daily_pnl, 
+    holding_pnl, realized_pnl, trans_cost, margin, frz_margin, market_value, closable_buy_qty, 
+    buy_today_qty, buy_account_today_qty, buy_avg_open_price, buy_avg_holding_price, 
+    closable_sell_qty, sell_today_qty, sell_account_today_qty, sell_avg_open_price, sell_avg_holding_price, 
+    belong_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_snapshot_futures_position
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_snapshot_futures_position
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotFuturesPosition">
+    insert into t_snapshot_futures_position (id, snapshot_code, portfolio_code, 
+      strategy_code, account_code, asset_no, 
+      pnl, daily_pnl, holding_pnl, 
+      realized_pnl, trans_cost, margin, 
+      frz_margin, market_value, closable_buy_qty, 
+      buy_today_qty, buy_account_today_qty, buy_avg_open_price, 
+      buy_avg_holding_price, closable_sell_qty, sell_today_qty, 
+      sell_account_today_qty, sell_avg_open_price, 
+      sell_avg_holding_price, belong_time, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{snapshotCode,jdbcType=VARCHAR}, #{portfolioCode,jdbcType=VARCHAR}, 
+      #{strategyCode,jdbcType=VARCHAR}, #{accountCode,jdbcType=VARCHAR}, #{assetNo,jdbcType=VARCHAR}, 
+      #{pnl,jdbcType=DECIMAL}, #{dailyPnl,jdbcType=DECIMAL}, #{holdingPnl,jdbcType=DECIMAL}, 
+      #{realizedPnl,jdbcType=DECIMAL}, #{transCost,jdbcType=DECIMAL}, #{margin,jdbcType=DECIMAL}, 
+      #{frzMargin,jdbcType=DECIMAL}, #{marketValue,jdbcType=DECIMAL}, #{closableBuyQty,jdbcType=INTEGER}, 
+      #{buyTodayQty,jdbcType=INTEGER}, #{buyAccountTodayQty,jdbcType=INTEGER}, #{buyAvgOpenPrice,jdbcType=DECIMAL}, 
+      #{buyAvgHoldingPrice,jdbcType=DECIMAL}, #{closableSellQty,jdbcType=INTEGER}, #{sellTodayQty,jdbcType=INTEGER}, 
+      #{sellAccountTodayQty,jdbcType=INTEGER}, #{sellAvgOpenPrice,jdbcType=DECIMAL}, 
+      #{sellAvgHoldingPrice,jdbcType=DECIMAL}, #{belongTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotFuturesPosition">
+    insert into t_snapshot_futures_position
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="snapshotCode != null">
+        snapshot_code,
+      </if>
+      <if test="portfolioCode != null">
+        portfolio_code,
+      </if>
+      <if test="strategyCode != null">
+        strategy_code,
+      </if>
+      <if test="accountCode != null">
+        account_code,
+      </if>
+      <if test="assetNo != null">
+        asset_no,
+      </if>
+      <if test="pnl != null">
+        pnl,
+      </if>
+      <if test="dailyPnl != null">
+        daily_pnl,
+      </if>
+      <if test="holdingPnl != null">
+        holding_pnl,
+      </if>
+      <if test="realizedPnl != null">
+        realized_pnl,
+      </if>
+      <if test="transCost != null">
+        trans_cost,
+      </if>
+      <if test="margin != null">
+        margin,
+      </if>
+      <if test="frzMargin != null">
+        frz_margin,
+      </if>
+      <if test="marketValue != null">
+        market_value,
+      </if>
+      <if test="closableBuyQty != null">
+        closable_buy_qty,
+      </if>
+      <if test="buyTodayQty != null">
+        buy_today_qty,
+      </if>
+      <if test="buyAccountTodayQty != null">
+        buy_account_today_qty,
+      </if>
+      <if test="buyAvgOpenPrice != null">
+        buy_avg_open_price,
+      </if>
+      <if test="buyAvgHoldingPrice != null">
+        buy_avg_holding_price,
+      </if>
+      <if test="closableSellQty != null">
+        closable_sell_qty,
+      </if>
+      <if test="sellTodayQty != null">
+        sell_today_qty,
+      </if>
+      <if test="sellAccountTodayQty != null">
+        sell_account_today_qty,
+      </if>
+      <if test="sellAvgOpenPrice != null">
+        sell_avg_open_price,
+      </if>
+      <if test="sellAvgHoldingPrice != null">
+        sell_avg_holding_price,
+      </if>
+      <if test="belongTime != null">
+        belong_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="snapshotCode != null">
+        #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="portfolioCode != null">
+        #{portfolioCode,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyCode != null">
+        #{strategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCode != null">
+        #{accountCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assetNo != null">
+        #{assetNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pnl != null">
+        #{pnl,jdbcType=DECIMAL},
+      </if>
+      <if test="dailyPnl != null">
+        #{dailyPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="holdingPnl != null">
+        #{holdingPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="realizedPnl != null">
+        #{realizedPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="transCost != null">
+        #{transCost,jdbcType=DECIMAL},
+      </if>
+      <if test="margin != null">
+        #{margin,jdbcType=DECIMAL},
+      </if>
+      <if test="frzMargin != null">
+        #{frzMargin,jdbcType=DECIMAL},
+      </if>
+      <if test="marketValue != null">
+        #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="closableBuyQty != null">
+        #{closableBuyQty,jdbcType=INTEGER},
+      </if>
+      <if test="buyTodayQty != null">
+        #{buyTodayQty,jdbcType=INTEGER},
+      </if>
+      <if test="buyAccountTodayQty != null">
+        #{buyAccountTodayQty,jdbcType=INTEGER},
+      </if>
+      <if test="buyAvgOpenPrice != null">
+        #{buyAvgOpenPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="buyAvgHoldingPrice != null">
+        #{buyAvgHoldingPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="closableSellQty != null">
+        #{closableSellQty,jdbcType=INTEGER},
+      </if>
+      <if test="sellTodayQty != null">
+        #{sellTodayQty,jdbcType=INTEGER},
+      </if>
+      <if test="sellAccountTodayQty != null">
+        #{sellAccountTodayQty,jdbcType=INTEGER},
+      </if>
+      <if test="sellAvgOpenPrice != null">
+        #{sellAvgOpenPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="sellAvgHoldingPrice != null">
+        #{sellAvgHoldingPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="belongTime != null">
+        #{belongTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotFuturesPosition">
+    update t_snapshot_futures_position
+    <set>
+      <if test="snapshotCode != null">
+        snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="portfolioCode != null">
+        portfolio_code = #{portfolioCode,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyCode != null">
+        strategy_code = #{strategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCode != null">
+        account_code = #{accountCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assetNo != null">
+        asset_no = #{assetNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pnl != null">
+        pnl = #{pnl,jdbcType=DECIMAL},
+      </if>
+      <if test="dailyPnl != null">
+        daily_pnl = #{dailyPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="holdingPnl != null">
+        holding_pnl = #{holdingPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="realizedPnl != null">
+        realized_pnl = #{realizedPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="transCost != null">
+        trans_cost = #{transCost,jdbcType=DECIMAL},
+      </if>
+      <if test="margin != null">
+        margin = #{margin,jdbcType=DECIMAL},
+      </if>
+      <if test="frzMargin != null">
+        frz_margin = #{frzMargin,jdbcType=DECIMAL},
+      </if>
+      <if test="marketValue != null">
+        market_value = #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="closableBuyQty != null">
+        closable_buy_qty = #{closableBuyQty,jdbcType=INTEGER},
+      </if>
+      <if test="buyTodayQty != null">
+        buy_today_qty = #{buyTodayQty,jdbcType=INTEGER},
+      </if>
+      <if test="buyAccountTodayQty != null">
+        buy_account_today_qty = #{buyAccountTodayQty,jdbcType=INTEGER},
+      </if>
+      <if test="buyAvgOpenPrice != null">
+        buy_avg_open_price = #{buyAvgOpenPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="buyAvgHoldingPrice != null">
+        buy_avg_holding_price = #{buyAvgHoldingPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="closableSellQty != null">
+        closable_sell_qty = #{closableSellQty,jdbcType=INTEGER},
+      </if>
+      <if test="sellTodayQty != null">
+        sell_today_qty = #{sellTodayQty,jdbcType=INTEGER},
+      </if>
+      <if test="sellAccountTodayQty != null">
+        sell_account_today_qty = #{sellAccountTodayQty,jdbcType=INTEGER},
+      </if>
+      <if test="sellAvgOpenPrice != null">
+        sell_avg_open_price = #{sellAvgOpenPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="sellAvgHoldingPrice != null">
+        sell_avg_holding_price = #{sellAvgHoldingPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="belongTime != null">
+        belong_time = #{belongTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kuainiu.qt.data.dal.entity.SnapshotFuturesPosition">
+    update t_snapshot_futures_position
+    set snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      portfolio_code = #{portfolioCode,jdbcType=VARCHAR},
+      strategy_code = #{strategyCode,jdbcType=VARCHAR},
+      account_code = #{accountCode,jdbcType=VARCHAR},
+      asset_no = #{assetNo,jdbcType=VARCHAR},
+      pnl = #{pnl,jdbcType=DECIMAL},
+      daily_pnl = #{dailyPnl,jdbcType=DECIMAL},
+      holding_pnl = #{holdingPnl,jdbcType=DECIMAL},
+      realized_pnl = #{realizedPnl,jdbcType=DECIMAL},
+      trans_cost = #{transCost,jdbcType=DECIMAL},
+      margin = #{margin,jdbcType=DECIMAL},
+      frz_margin = #{frzMargin,jdbcType=DECIMAL},
+      market_value = #{marketValue,jdbcType=DECIMAL},
+      closable_buy_qty = #{closableBuyQty,jdbcType=INTEGER},
+      buy_today_qty = #{buyTodayQty,jdbcType=INTEGER},
+      buy_account_today_qty = #{buyAccountTodayQty,jdbcType=INTEGER},
+      buy_avg_open_price = #{buyAvgOpenPrice,jdbcType=DECIMAL},
+      buy_avg_holding_price = #{buyAvgHoldingPrice,jdbcType=DECIMAL},
+      closable_sell_qty = #{closableSellQty,jdbcType=INTEGER},
+      sell_today_qty = #{sellTodayQty,jdbcType=INTEGER},
+      sell_account_today_qty = #{sellAccountTodayQty,jdbcType=INTEGER},
+      sell_avg_open_price = #{sellAvgOpenPrice,jdbcType=DECIMAL},
+      sell_avg_holding_price = #{sellAvgHoldingPrice,jdbcType=DECIMAL},
+      belong_time = #{belongTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="false">
+    insert into t_snapshot_futures_position (snapshot_code, portfolio_code,
+    strategy_code, account_code, asset_no,
+    pnl, daily_pnl, holding_pnl,
+    realized_pnl, trans_cost, margin,
+    frz_margin, market_value, closable_buy_qty,
+    buy_today_qty, buy_account_today_qty, buy_avg_open_price,
+    buy_avg_holding_price, closable_sell_qty, sell_today_qty,
+    sell_account_today_qty, sell_avg_open_price,
+    sell_avg_holding_price, belong_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      #{item.snapshotCode},
+      #{item.portfolioCode},
+      #{item.strategyCode},
+      #{item.accountCode},
+      #{item.assetNo},
+      #{item.pnl},
+      #{item.dailyPnl},
+      #{item.holdingPnl},
+      #{item.realizedPnl},
+      #{item.transCost},
+      #{item.margin},
+      #{item.frzMargin},
+      #{item.marketValue},
+      #{item.closableBuyQty},
+      #{item.buyTodayQty},
+      #{item.buyAccountTodayQty},
+      #{item.buyAvgOpenPrice},
+      #{item.buyAvgHoldingPrice},
+      #{item.closableSellQty},
+      #{item.sellTodayQty},
+      #{item.sellAccountTodayQty},
+      #{item.sellAvgOpenPrice},
+      #{item.sellAvgHoldingPrice},
+      #{item.belongTime}
+      )
+    </foreach>
+  </insert>
+</mapper>
