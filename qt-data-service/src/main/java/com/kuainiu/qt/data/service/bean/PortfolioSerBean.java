@@ -12,7 +12,6 @@ import java.util.*;
  */
 @Data
 public class PortfolioSerBean {
-    private Long id;
 
     private String portfolioCode;
 
@@ -24,15 +23,5 @@ public class PortfolioSerBean {
 
     private String status;
 
-    private Date createTime;
-
-    private Date updateTime;
-
-    private String channelCode;
-
     private List<StrategySerBean> strategyList = new ArrayList<>();
-
-    private AccountSerBean account;
-
-    private Map<String, StrategySerBean> strategyMap = new HashMap<>();
 }

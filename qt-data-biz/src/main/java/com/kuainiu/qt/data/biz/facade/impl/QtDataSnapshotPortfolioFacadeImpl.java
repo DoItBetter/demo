@@ -16,8 +16,8 @@ import com.kuainiu.qt.data.util.BizResponseUtils;
 import com.kuainiu.qt.data.util.PortfolioBizUtils;
 import com.kuainiu.qt.data.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -41,10 +41,10 @@ public class QtDataSnapshotPortfolioFacadeImpl implements QtDataSnapshotPortfoli
             response = PortfolioBizUtils.buildPortfolioQryResponse(outBean);
             ResponseUtils.success(response);
         } catch (Exception e) {
-            log.error("[qrtPortfolioAll fail]", e);
+            log.error("[qrtPortfolio fail]", e);
             ResponseUtils.sysError(response, e);
         }
-        log.info("[qrtPortfolioAll response]", JSON.toJSONString(response));
+        log.info("[qrtPortfolio response]", JSON.toJSONString(response));
         return response;
     }
 

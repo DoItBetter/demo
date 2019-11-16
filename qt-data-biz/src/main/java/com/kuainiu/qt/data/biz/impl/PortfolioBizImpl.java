@@ -38,9 +38,6 @@ public class PortfolioBizImpl implements PortfolioBiz {
     @Autowired
     PortfolioQryBiz portfolioQryBiz;
 
-//    @Autowired
-//    SysSeqNoManager sysSeqNoManager;
-
     private Date belongTime;
 
     @Override

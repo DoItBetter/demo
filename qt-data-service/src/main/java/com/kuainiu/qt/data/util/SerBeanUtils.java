@@ -1,11 +1,14 @@
 package com.kuainiu.qt.data.util;
 
+import com.alibaba.fastjson.JSON;
 import com.kuainiu.qt.data.dal.entity.SnapshotPortfolio;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.bean.*;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
+import com.kuainiu.qt.trans.facade.request.PortfolioFindAllRequest;
 import com.kuainiu.qt.trans.facade.request.PortfolioQryRequest;
+import com.kuainiu.qt.trans.facade.response.PortfolioFindAllResponse;
 import com.kuainiu.qt.trans.facade.response.PortfolioQryResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -64,5 +67,22 @@ public class SerBeanUtils {
         PortfolioSerBean serBean = new PortfolioSerBean();
         BeanMapUtils.map(response, serBean);
         return serBean;
+    }
+
+    public static PortfolioFindAllRequest buildFindAllRequest(PortfolioSerBean serBean) {
+        PortfolioFindAllRequest request = new PortfolioFindAllRequest();
+        BeanMapUtils.map(serBean, request);
+        return request;
+    }
+
+    public static List<PortfolioSerBean> buildPortfolioSerBeanList(PortfolioFindAllResponse response) throws ServiceException {
+        List<PortfolioSerBean> serBeanList = new ArrayList<>();
+        try {
+            serBeanList = BeanMapUtils.mapAsList(response.getData(), PortfolioSerBean.class);
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("[copy list fail] {}", JSON.toJSONString(serBeanList));
+            throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
+        }
+        return serBeanList;
     }
 }

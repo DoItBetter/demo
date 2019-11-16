@@ -41,9 +41,6 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     @Autowired
     SnapshotPortfolioCashflowService snapshotPortfolioCashflowService;
 
-//    @Autowired
-//    SysSeqNoManager sysSeqNoManager;
-
     @Autowired
     SnapshotPortfolioService snapshotPortfolioService;
 
