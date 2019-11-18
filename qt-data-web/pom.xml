@@ -42,12 +42,6 @@
             <artifactId>qt-data-biz</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.dubbo.springboot</groupId>
-            <artifactId>spring-boot-starter-dubbo</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
         <!--  swagger2 -->
         <dependency>
             <groupId>io.springfox</groupId>
