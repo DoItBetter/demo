@@ -32,7 +32,7 @@
         <qt.data.facade.version>0.0.1-SNAPSHOT</qt.data.facade.version>
         <qt.data.common.version>0.0.1-SNAPSHOT</qt.data.common.version>
         <qt.data.biz.version>0.0.1-SNAPSHOT</qt.data.biz.version>
-        <framework.version>1.0.1-SNAPSHOT</framework.version>
+        <framework.version>1.0.2-SNAPSHOT</framework.version>
 
     </properties>
 
@@ -99,9 +99,20 @@
                 <version>${framework.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.kuainiu.qt.framework</groupId>
+                <artifactId>qt-framework-rpc</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>27.0-jre</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.dubbo.springboot</groupId>
+                <artifactId>spring-boot-starter-dubbo</artifactId>
+                <version>1.0.0</version>
             </dependency>
 
             <!--  swagger2 -->
