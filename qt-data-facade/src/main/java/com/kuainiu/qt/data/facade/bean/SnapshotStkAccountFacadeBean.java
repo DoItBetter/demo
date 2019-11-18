@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class SnapshotStkAccountFacadeBean {
+public class SnapshotStkAccountFacadeBean extends BaseFacadeBean{
 
     private Integer id;
 

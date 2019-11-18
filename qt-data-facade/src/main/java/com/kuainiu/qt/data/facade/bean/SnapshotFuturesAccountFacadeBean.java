@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class SnapshotFuturesAccountFacadeBean {
+public class SnapshotFuturesAccountFacadeBean extends BaseFacadeBean {
 
     private Integer id;
 

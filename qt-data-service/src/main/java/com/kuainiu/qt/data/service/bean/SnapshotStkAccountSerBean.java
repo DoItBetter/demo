@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class SnapshotStkAccountSerBean {
+public class SnapshotStkAccountSerBean extends BaseSerBean{
     private Integer id;
 
     private String snapshotCode;

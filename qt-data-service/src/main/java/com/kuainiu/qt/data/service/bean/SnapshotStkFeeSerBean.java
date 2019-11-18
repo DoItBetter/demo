@@ -3,7 +3,7 @@ package com.kuainiu.qt.data.service.bean;
 import lombok.Data;
 
 @Data
-public class SnapshotStkFeeSerBean {
+public class SnapshotStkFeeSerBean extends BaseSerBean {
     private Long id;
 
     private Long snapshotStkAccountId;
