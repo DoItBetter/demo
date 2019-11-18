@@ -37,6 +37,8 @@
         <dubbo.version>2.7.0</dubbo.version>
         <edas.dubbo.extension.version>2.0.3</edas.dubbo.extension.version>
         <swagger.version>2.7.0</swagger.version>
+        <config.client.version>2.0.4-open-sock5</config.client.version>
+        <alibaba.schedulerX.client>2.1.5</alibaba.schedulerX.client>
 
     </properties>
 
@@ -50,7 +52,6 @@
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>1.1.1</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis</groupId>
@@ -71,6 +72,11 @@
                 <groupId>com.alibaba.edas</groupId>
                 <artifactId>edas-dubbo-extension</artifactId>
                 <version>${edas.dubbo.extension.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.edas</groupId>
+                <artifactId>schedulerX-client</artifactId>
+                <version>${alibaba.schedulerX.client}</version>
             </dependency>
 
             <!-- 子模块 begin -->
@@ -129,11 +135,6 @@
                 <artifactId>qt-framework-common</artifactId>
                 <version>${framework.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.kuainiu.qt.framework</groupId>
-                <artifactId>qt-framework-rpc</artifactId>
-                <version>${framework.version}</version>
-            </dependency>
             <!-- framework end -->
 
             <dependency>
@@ -158,6 +159,12 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-redis</artifactId>
                 <version>2.1.6.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.taobao.configserver</groupId>
+                <artifactId>config-client</artifactId>
+                <version>${config.client.version}</version>
             </dependency>
 
             <!--  swagger2 -->

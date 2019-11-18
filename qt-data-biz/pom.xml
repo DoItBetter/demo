@@ -29,10 +29,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.aliyun.schedulerx</groupId>
-            <artifactId>schedulerx2-worker</artifactId>
-        </dependency>
+
 
         <!--spring session 与redis应用基本环境配置,需要开启redis后才可以使用，不然启动Spring boot会报错 -->
         <dependency>
@@ -50,6 +47,11 @@
         <dependency>
             <groupId>com.alibaba.edas</groupId>
             <artifactId>edas-dubbo-extension</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun.schedulerx</groupId>
+            <artifactId>schedulerx2-worker</artifactId>
+            <version>1.0.8</version>
         </dependency>
     </dependencies>
 
