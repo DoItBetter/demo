@@ -4,8 +4,6 @@ import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.facade.request.PortfolioQryRequest;
 import com.kuainiu.qt.data.facade.request.StdRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**

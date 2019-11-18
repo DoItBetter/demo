@@ -5,13 +5,11 @@ import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.exception.ServiceRuntimeException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.facade.response.BaseDataResponse;
-import com.kuainiu.qt.framework.common.util.LoggerUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.remoting.TimeoutException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class ResponseUtils {
-    private static Logger logger = LoggerFactory.getLogger(ResponseUtils.class);
 
     private ResponseUtils(){
     }
@@ -50,8 +48,8 @@ public class ResponseUtils {
             resp.setCode(QtDataRspCode.SYS_ERROR.getCode());
             resp.setMsg(QtDataRspCode.SYS_ERROR.getMessage());
         }
-        LoggerUtils.error(logger, e, "facade调用返回异常！code：{},msg:{}", resp.getCode(),
-                resp.getMsg());
+//        log.error(e, "facade调用返回异常！code：{},msg:{}", resp.getCode(),
+//                resp.getMsg());
     }
 
     public static void success(BaseDataResponse resp){
