@@ -3,12 +3,14 @@ package com.kuainiu.qt.data.service.impl;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.PortfolioService;
+import com.kuainiu.qt.data.service.bean.PortfolioQrySerBean;
 import com.kuainiu.qt.data.service.bean.PortfolioReqSerBean;
 import com.kuainiu.qt.data.service.bean.PortfolioSerBean;
 import com.kuainiu.qt.data.util.SerBeanUtils;
 import com.kuainiu.qt.trans.facade.request.PortfolioFindAllRequest;
 import com.kuainiu.qt.trans.facade.request.PortfolioQryRequest;
 import com.kuainiu.qt.trans.facade.response.PortfolioFindAllResponse;
+import com.kuainiu.qt.trans.facade.response.PortfolioQryDistinctPFCodeResponse;
 import com.kuainiu.qt.trans.facade.response.PortfolioQryResponse;
 import com.kuainiu.qt.trans.facade.trans.QtTransPortfolioQryFacade;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ckhero
- * Date: 2019/5/21
- * Time: 6:47 PM
- */
 @Service
 @Slf4j
 public class PortfolioServiceImpl implements PortfolioService {
@@ -41,7 +37,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             response = qtTransPortfolioQryFacade.qryAll(request);
             log.info("qry all response : " + response);
         } catch (RpcException e){
-            log.error("trans qry portfolio info fail rpc", e);
+            log.error("trans qry portfolio all fail rpc", e);
             throw new ServiceException(QtDataRspCode.SYS_TIMEOUT);
         } catch (Exception e){
             log.error("trans fail", e);
@@ -51,7 +47,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public PortfolioSerBean qryPortfolio(PortfolioReqSerBean reqSerBean) throws ServiceException {
+    public PortfolioQrySerBean qryPortfolio(PortfolioReqSerBean reqSerBean) throws ServiceException {
         PortfolioQryRequest request = SerBeanUtils.buildPortfolioQryRequest(reqSerBean);
         log.info("qry portfolio info request : " + request);
         PortfolioQryResponse response = new PortfolioQryResponse();
@@ -65,5 +61,20 @@ public class PortfolioServiceImpl implements PortfolioService {
             log.error("trans fail", e);
         }
         return SerBeanUtils.buildPortfolioSerBean(response);
+    }
+
+    @Override
+    public List<PortfolioSerBean> findDistinctPortfolioCode() throws ServiceException {
+        PortfolioQryDistinctPFCodeResponse response = new PortfolioQryDistinctPFCodeResponse();
+        try {
+            response = qtTransPortfolioQryFacade.qryDistinctPFCode();
+            log.info("qry portfolio info response : " + response);
+        } catch (RpcException e){
+            log.error("trans qry portfolio info fail rpc", e);
+            throw new ServiceException(QtDataRspCode.SYS_TIMEOUT);
+        } catch (Exception e){
+            log.error("trans fail", e);
+        }
+        return SerBeanUtils.buildPortfolioSerBeanList(response);
     }
 }

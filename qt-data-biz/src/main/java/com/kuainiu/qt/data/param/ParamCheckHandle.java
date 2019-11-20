@@ -13,13 +13,13 @@ public class ParamCheckHandle {
 
   public static void checkPortfolioQryRequest(PortfolioQryRequest request) throws BizException {
     if (null == request.getPortfolioCode()) {
-      throw new BizException(QtDataRspCode.ERR_PARAM_PORTIFILE_CODE);
+      throw new BizException(QtDataRspCode.ERR_PARAM_PORTFOLIO_CODE);
     }
   }
 
   public static void checkPortfolioStdQryRequest(StdRequest request) throws BizException {
     if (null == request.getPortfolioCode()) {
-      throw new BizException(QtDataRspCode.ERR_PARAM_PORTIFILE_CODE);
+      throw new BizException(QtDataRspCode.ERR_PARAM_PORTFOLIO_CODE);
     }
   }
 }

@@ -9,6 +9,7 @@ import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import com.kuainiu.qt.trans.facade.request.PortfolioFindAllRequest;
 import com.kuainiu.qt.trans.facade.request.PortfolioQryRequest;
 import com.kuainiu.qt.trans.facade.response.PortfolioFindAllResponse;
+import com.kuainiu.qt.trans.facade.response.PortfolioQryDistinctPFCodeResponse;
 import com.kuainiu.qt.trans.facade.response.PortfolioQryResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -63,9 +64,23 @@ public class SerBeanUtils {
         return request;
     }
 
-    public static PortfolioSerBean buildPortfolioSerBean(PortfolioQryResponse response) {
-        PortfolioSerBean serBean = new PortfolioSerBean();
+    public static PortfolioQrySerBean buildPortfolioSerBean(PortfolioQryResponse response) throws ServiceException {
+        PortfolioQrySerBean serBean = new PortfolioQrySerBean();
         BeanMapUtils.map(response, serBean);
+        List<StkPositionSerBean> stkPositions = new ArrayList<>();
+        List<FuturesPositionSerBean> futuresPositions = new ArrayList<>();
+        List<CashflowSerBean> cashflowList = new ArrayList<>();
+        try {
+            stkPositions = BeanMapUtils.mapAsList(response.getStkPositions(), StkPositionSerBean.class);
+            serBean.setStkPositionList(stkPositions);
+            futuresPositions = BeanMapUtils.mapAsList(response.getFuturesPositions(), FuturesPositionSerBean.class);
+            serBean.setFuturesPositionList(futuresPositions);
+            cashflowList = BeanMapUtils.mapAsList(response.getCashflowList(), CashflowSerBean.class);
+            serBean.setCashflowList(cashflowList);
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("[copy list fail] {}", JSON.toJSONString(stkPositions));
+            throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
+        }
         return serBean;
     }
 
@@ -84,5 +99,16 @@ public class SerBeanUtils {
             throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
         }
         return serBeanList;
+    }
+
+    public static List<PortfolioSerBean> buildPortfolioSerBeanList(PortfolioQryDistinctPFCodeResponse response) throws ServiceException {
+        List<PortfolioSerBean> portfolioSerBeanList = new ArrayList<>();
+        try {
+            portfolioSerBeanList = BeanMapUtils.mapAsList(response.getData(), PortfolioSerBean.class);
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("[copy list fail] {}", JSON.toJSONString(portfolioSerBeanList));
+            throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
+        }
+        return portfolioSerBeanList;
     }
 }

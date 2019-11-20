@@ -49,7 +49,10 @@ public enum QtDataRspCode {
     ERR_PARAM_SYS_ID("系统号不存在", "00200014002"),
     ERR_PARAM_REQUEST("请求入参为空", "00200014022"),
     ERR_PARAM_RESPONSE("响应为空", "00200014041"),
-    ERR_PARAM_PORTIFILE_CODE("投资组合不能为空", "00200014003"),
+
+    ERR_PARAM_PORTFOLIO_CODE("投资组合不能为空", "00200014003"),
+    ERR_AIDC_FUTURES_SNAPSHOT_QRY("从AIDC查询期货最新价失败", "00200014004"),
+    ERR_DC_STK_SNAPSHOT_QRY("从数仓查询股票快照失败", "00200014005"),
 
 
     /**

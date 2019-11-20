@@ -7,6 +7,7 @@ import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface SnapshotPortfolioService {
     SnapshotPortfolioSerBean getStdByPFCode(String portfolioCode) throws ServiceException;
@@ -26,4 +27,8 @@ public interface SnapshotPortfolioService {
     void addOne(SnapshotPortfolioSerBean serBean) throws ServiceException;
 
     SnapshotPortfolioSerBean findLastBeforeOpenMarket(String portfolioCode) throws ServiceException;
+
+    void dataCheckAndRepair(Map<String, Object> params, String portfolioCode, Date belongTime, int checkMinutes);
+
+    void computePortfolioInformationRatio(Map<String, Object> params, String portfolioCode, Date belongTime, String error_flag) throws ServiceException;
 }

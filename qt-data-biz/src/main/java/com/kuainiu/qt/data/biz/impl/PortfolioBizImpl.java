@@ -6,6 +6,8 @@ import com.kuainiu.qt.data.biz.PortfolioQryBiz;
 import com.kuainiu.qt.data.biz.bean.*;
 import com.kuainiu.qt.data.biz.bean.processor.PortfolioProcessorInBean;
 import com.kuainiu.qt.data.common.util.QtDateUtils;
+import com.kuainiu.qt.data.common.util.seq.SysSeqNoManager;
+import com.kuainiu.qt.data.common.util.seq.SysSeqRuleEnum;
 import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.PortfolioStatusCode;
@@ -39,6 +41,9 @@ public class PortfolioBizImpl implements PortfolioBiz {
     PortfolioQryBiz portfolioQryBiz;
 
     private Date belongTime;
+
+    @Autowired
+    SysSeqNoManager sysSeqNoManager;
 
     @Override
     public void recordSnapshot(PortfolioProcessorInBean portfolioProcessorInBean) throws BizException {
@@ -76,7 +81,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
             Date belongDate = getBelongDate(portfolioCode);
             ssPortfolio.setBelongTime(belongTime);
             ssPortfolio.setBelongDate(belongDate);
-            String snapshotCode = "";
+            String snapshotCode = sysSeqNoManager.getSeqNo(SysSeqRuleEnum.UNIQUE_CODE_SEQ);
             ssPortfolio.setSnapshotCode(snapshotCode);
             ssGroupBean.setPortfolioSerBean(ssPortfolio);
 
@@ -85,11 +90,11 @@ public class PortfolioBizImpl implements PortfolioBiz {
             ssGroupBean.setPortfolioCashflowSerBeanList(ssCashflowList);
 
             //股票仓位
-            List<SnapshotStkPositionSerBean> stkPositionList = calcSSStkPositionList(portfolio.getStkPositions(), snapshotCode);
+            List<SnapshotStkPositionSerBean> stkPositionList = calcSSStkPositionList(portfolio.getStkPositionList(), snapshotCode);
             ssGroupBean.setStkPositionSerBeanList(stkPositionList);
 
             //期货仓位
-            List<SnapshotFuturesPositionsSerBean> futuresPositionList = calcSSFuturesPositionList(portfolio.getFuturesPositions(), snapshotCode);
+            List<SnapshotFuturesPositionsSerBean> futuresPositionList = calcSSFuturesPositionList(portfolio.getFuturesPositionList(), snapshotCode);
             ssGroupBean.setFuturesPositionsSerBeanList(futuresPositionList);
 
             //期货账户信息
@@ -149,9 +154,9 @@ public class PortfolioBizImpl implements PortfolioBiz {
         return ssPositionList;
     }
 
-    private List<SnapshotFuturesPositionsSerBean> calcSSFuturesPositionList(List<FuturesPositionSerBean> positionList, String snapshotCode) {
+    private List<SnapshotFuturesPositionsSerBean> calcSSFuturesPositionList(List<FuturesPositionOutBean> positionList, String snapshotCode) {
         List<SnapshotFuturesPositionsSerBean> ssPositionList = new ArrayList<>();
-        for (FuturesPositionSerBean position : positionList) {
+        for (FuturesPositionOutBean position : positionList) {
             SnapshotFuturesPositionsSerBean ssPosition = new SnapshotFuturesPositionsSerBean();
             BeanMapUtils.map(position, ssPosition);
             ssPosition.setSnapshotCode(snapshotCode);

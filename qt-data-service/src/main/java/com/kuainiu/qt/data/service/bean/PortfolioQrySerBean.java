@@ -1,5 +1,6 @@
-package com.kuainiu.qt.data.biz.bean;
+package com.kuainiu.qt.data.service.bean;
 
+import com.kuainiu.qt.framework.common.bean.servicebean.BaseSerBean;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -7,16 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ckhero
- * Date: 2019/6/18
- * Time: 4:45 PM
- */
 @Data
-public class PortfolioOutBean extends BaseOutBean {
-
-    private String portfolioCode;
+public class PortfolioQrySerBean extends BaseSerBean {
 
     private BigDecimal cash = BigDecimal.ZERO;
 
@@ -44,15 +37,9 @@ public class PortfolioOutBean extends BaseOutBean {
 
     private BigDecimal annualizedReturns = BigDecimal.ZERO;
 
-    private List<StkPositionOutBean> stkPositionList = new ArrayList<>();
+    private List<StkPositionSerBean> stkPositionList = new ArrayList<>();
 
-    private List<FuturesPositionOutBean> futuresPositionList = new ArrayList<>();
+    private List<FuturesPositionSerBean> futuresPositionList = new ArrayList<>();
 
-    private BigDecimal std = BigDecimal.ZERO;
-
-    List<StkAccountOutBean> stkAccountList = new ArrayList<>();
-
-    List<FuturesAccountOutBean> futuresAccountList = new ArrayList<>();
-
-    private List<CashflowOutBean> cashflowList = new ArrayList<>();
+    private List<CashflowSerBean> cashflowList = new ArrayList<>();
 }

@@ -10,8 +10,8 @@ import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.PortfolioService;
 import com.kuainiu.qt.data.service.SnapshotPortfolioService;
+import com.kuainiu.qt.data.service.bean.PortfolioQrySerBean;
 import com.kuainiu.qt.data.service.bean.PortfolioReqSerBean;
-import com.kuainiu.qt.data.service.bean.PortfolioSerBean;
 import com.kuainiu.qt.data.service.bean.SnapshotPortfolioReqSerBean;
 import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
 import com.kuainiu.qt.data.util.BizBeanUtils;
@@ -90,7 +90,7 @@ public class PortfolioQryBizImpl implements PortfolioQryBiz {
         PortfolioOutBean outBean;
         try {
             PortfolioReqSerBean reqSerBean = BizBeanUtils.buildPortfolioReqSerBean(inBean);
-            PortfolioSerBean serBean = portfolioService.qryPortfolio(reqSerBean);
+            PortfolioQrySerBean serBean = portfolioService.qryPortfolio(reqSerBean);
             outBean = BizBeanUtils.buildPortfolioOutBean(serBean);
         } catch (ServiceException e) {
             throw new BizException(QtDataRspCode.ERR_PORTFOLIOSNAPSHOT_INFO_QRY_FAIL, e.getMsg());

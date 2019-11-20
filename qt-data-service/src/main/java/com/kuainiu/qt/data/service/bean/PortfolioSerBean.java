@@ -1,5 +1,6 @@
 package com.kuainiu.qt.data.service.bean;
 
+import com.kuainiu.qt.framework.common.bean.servicebean.BaseSerBean;
 import lombok.Data;
 
 import java.util.*;
@@ -11,7 +12,7 @@ import java.util.*;
  * Time: 8:30 PM
  */
 @Data
-public class PortfolioSerBean {
+public class PortfolioSerBean extends BaseSerBean {
 
     private String portfolioCode;
 
