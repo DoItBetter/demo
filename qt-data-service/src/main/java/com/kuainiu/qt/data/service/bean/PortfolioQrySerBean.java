@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class PortfolioQrySerBean extends BaseSerBean {
 
+    private String portfolioCode;
+
     private BigDecimal cash = BigDecimal.ZERO;
 
     private BigDecimal frzCash= BigDecimal.ZERO;

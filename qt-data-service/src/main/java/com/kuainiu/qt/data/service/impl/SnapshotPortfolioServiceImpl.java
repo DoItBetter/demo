@@ -11,8 +11,10 @@ import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.*;
 import com.kuainiu.qt.data.service.bean.*;
 import com.kuainiu.qt.data.service.code.SnapshotPortfolioCode;
-import com.kuainiu.qt.data.service.http.impl.AidcCDHttpImpl;
+import com.kuainiu.qt.data.service.http.AidcCDHttp;
+import com.kuainiu.qt.data.service.http.AidcSHHttp;
 import com.kuainiu.qt.data.service.http.request.StockEarningRate300Request;
+import com.kuainiu.qt.data.service.http.request.aidc.AidcTradeDateRequest;
 import com.kuainiu.qt.data.service.http.response.StockEarningRate300Response;
 import com.kuainiu.qt.data.util.BeanUtils;
 import com.kuainiu.qt.data.util.SerBeanUtils;
@@ -61,7 +63,10 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     SnapshotStkFeeService snapshotStkFeeService;
 
     @Autowired
-    AidcCDHttpImpl portfolioHttp;
+    AidcCDHttp portfolioHttp;
+
+    @Autowired
+    AidcSHHttp aidcSHHttp;
 
     private final BigDecimal TRANS_DAYS_A_YEAR = new BigDecimal(252);
 
@@ -141,6 +146,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void setSnapshotPortfolioTx(SnapshotGroupSerBean serBean) throws ServiceException {
+        log.info("入库前参数组" + serBean);
         //投资组合快照 添加
         SnapshotPortfolioSerBean portfolioSerBean = serBean.getPortfolioSerBean();
         addOne(portfolioSerBean);
@@ -173,7 +179,6 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
             }
             snapshotStkFeeService.batchInsert(stkFeeList);
         }
-        log.info("入库", stkAccountSerBeanList);
     }
 
     @Override
@@ -203,6 +208,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
         SnapshotPortfolio snapshotPortfolio = new SnapshotPortfolio();
         try {
             snapshotPortfolio = SerBeanUtils.buildSnapshotPortfolio(serBean);
+            snapshotPortfolio.setErrorFlag(SnapshotPortfolioCode.UNFINISHED.getCode());
             int rowId = snapshotPortfolioDao.insertSelective(snapshotPortfolio);
             if (rowId <= CommonConstant.ZERO) {
                 throw new ServiceException(QtDataRspCode.ERR_DB_ADD);
@@ -239,7 +245,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     @Override
     public void dataCheckAndRepair(Map<String, Object> params, String portfolioCode, Date endBelongTime, int checkMinutes) {
         Date startBelongTime = QtDateUtils.modifyMinutes(endBelongTime, -checkMinutes);
-        SnapshotPortfolio tmpParam = getPortfolioCodeAndBelongTime(portfolioCode, startBelongTime, endBelongTime, SnapshotPortfolioCode.ERROR.getCode(), CommonConstant.DB_ORDER_ASC, -1);
+        SnapshotPortfolio tmpParam = getPortfolio(portfolioCode, startBelongTime, endBelongTime, SnapshotPortfolioCode.ERROR.getCode(), CommonConstant.DB_ORDER_ASC, -1);
         List<SnapshotPortfolio> snapshotPortfolioList = snapshotPortfolioDao.getLastPortfolioByPortfolioCodeAndBelongTime(tmpParam);
         for (SnapshotPortfolio snapshotPortfolio : snapshotPortfolioList) {
             Date tmpBelongTime = snapshotPortfolio.getBelongTime();
@@ -248,7 +254,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
         }
     }
 
-    private SnapshotPortfolio getPortfolioCodeAndBelongTime(String portfolioCode, Date startBelongTime, Date endBelongTime, String errorFlag, String order, int limit) {
+    private SnapshotPortfolio getPortfolio(String portfolioCode, Date startBelongTime, Date endBelongTime, String errorFlag, String order, int limit) {
         SnapshotPortfolio param = new SnapshotPortfolio();
         param.setPortfolioCode(portfolioCode);
         if (startBelongTime != null) {
@@ -322,12 +328,97 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
         }
     }
 
+    @Override
+    public SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime) {
+        SnapshotPortfolio snapshotPortfolio = new SnapshotPortfolio();
+        try {
+            snapshotPortfolio = snapshotPortfolioDao.getPortfolioByPortfolioCodeAndBelongTime(getPortfolio(portfolioCode, belongTime));
+        } catch (Exception e) {
+            log.error("get snapshotPortfolio fail " + snapshotPortfolio, e);
+        }
+        return SerBeanUtils.buildSnapshotPortfolioSerBean(snapshotPortfolio);
+    }
+
+    @Override
+    public void calcPortfolio(String portfolioCode, Date belongTime) {
+        SnapshotPortfolio snapshotPortfolio = new SnapshotPortfolio();
+        try {
+            snapshotPortfolio = snapshotPortfolioDao.getPortfolioByPortfolioCodeAndBelongTime(getPortfolio(portfolioCode, belongTime));
+            if (snapshotPortfolio == null) {
+                log.warn("portfolio snapshot data do not exists!" + portfolioCode + ",time:" + belongTime);
+                throw new ServiceException(QtDataRspCode.ERR_PARAM_PORTFOLIO_CODE);
+            }
+            BigDecimal tr = CalculateUtils.sumBigDecimal(snapshotPortfolio.getTotalReturns(), snapshotPortfolio.getRealtimeReturns());
+            BigDecimal T = qryRundays(snapshotPortfolio);
+            BigDecimal rm = qryRm(snapshotPortfolio);
+            BigDecimal baseReturns = calcBaseReturns(snapshotPortfolio, rm);
+            BigDecimal balanceReturns = calcBalanceReturns(tr, baseReturns);
+            BigDecimal infoRatio = calcInfoRatio(portfolioCode, belongTime, balanceReturns, T);
+            snapshotPortfolio.setBaseReturns(baseReturns);
+            snapshotPortfolio.setBaseRealtimeReturns(rm);
+            snapshotPortfolio.setBalanceReturns(balanceReturns);
+            snapshotPortfolio.setInformationRatio(infoRatio);
+            snapshotPortfolio.setErrorFlag(SnapshotPortfolioCode.SUCCESS.getCode());
+            snapshotPortfolioDao.updateByPrimaryKeySelective(snapshotPortfolio);
+        } catch (Exception e) {
+            log.error("get snapshotPortfolio fail " + snapshotPortfolio);
+        }
+    }
+
+    public BigDecimal qryRundays(SnapshotPortfolio snapshotPortfolio) {
+        int rundays = 0;
+        AidcTradeDateRequest request = new AidcTradeDateRequest();
+        request.setBegin_date(snapshotPortfolio.getStartDate().toString());
+        request.setEnd_date(QtDateUtils.getCurrDate().toString());
+        request.setType(1);
+        try {
+            rundays = aidcSHHttp.qryTradeDate(request).size();
+        } catch (ServiceException e) {
+            log.error("qryPortfolioRunDays fail");
+        }
+        return new BigDecimal(rundays);
+    }
+
+    private BigDecimal calcBaseReturns(SnapshotPortfolio snapshotPortfolio, BigDecimal rm) {
+        //昨天的+现在
+        return CalculateUtils.sumBigDecimal(rm, qryHistoryBaseReturns(snapshotPortfolio));
+    }
+
+    private BigDecimal calcBalanceReturns(BigDecimal tr, BigDecimal baseReturns) {
+        return CalculateUtils.sumBigDecimal(tr, baseReturns);
+    }
+
+    private BigDecimal calcInfoRatio(String portfolioCode, Date belongTime, BigDecimal balanceReturns, BigDecimal T) {
+        SnapshotPortfolio queryStdSP = new SnapshotPortfolio();
+        queryStdSP.setPortfolioCode(portfolioCode);
+        queryStdSP.setEndBelongTime(belongTime);
+        BigDecimal std = snapshotPortfolioDao.getBalanceReturnStdByPortfolioCode(queryStdSP).getStd();
+        double result = balanceReturns.doubleValue() / (std.doubleValue() / Math.sqrt(T.doubleValue()) * Math.sqrt(TRANS_DAYS_A_YEAR.doubleValue()));
+        return new BigDecimal(result);
+    }
+
+    private BigDecimal qryRm(SnapshotPortfolio snapshotPortfolio) throws ServiceException {
+        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstant.DATEFORMAT_YMDHMS);
+        String timeStr = sdf.format(snapshotPortfolio.getBelongTime());
+        StockEarningRate300Request stockEarningRate300Request = new StockEarningRate300Request();
+        stockEarningRate300Request.setDatetime(timeStr);
+        StockEarningRate300Response earningResponse = portfolioHttp.queryEarningRate300(stockEarningRate300Request);
+        return earningResponse.getData().getData();
+    }
+
+    private BigDecimal qryHistoryBaseReturns(SnapshotPortfolio snapshotPortfolio) {
+        snapshotPortfolio.setErrorFlag("");
+        snapshotPortfolio.setEndBelongTime(QtDateUtils.getOpenMarket());
+        SnapshotPortfolio item = snapshotPortfolioDao.getLastBeforeOpenMarket(snapshotPortfolio);
+        return item.getBaseReturns();
+    }
+
     public void saveLastPortfolioInformationRatio(Map<String, Object> params, String portfolioCode, Date belongTime) {
         try {
-            SnapshotPortfolio param = getPortfolioCodeAndBelongTime(portfolioCode, belongTime);
+            SnapshotPortfolio param = getPortfolio(portfolioCode, belongTime);
             SnapshotPortfolio snapshotPortfolio = snapshotPortfolioDao.getPortfolioByPortfolioCodeAndBelongTime(param);
             belongTime = QtDateUtils.subtractOneMinute(belongTime);
-            SnapshotPortfolio tmpParam = getPortfolioCodeAndBelongTime(portfolioCode, null, belongTime, null, CommonConstant.DB_ORDER_DESC, 1);
+            SnapshotPortfolio tmpParam = getPortfolio(portfolioCode, null, belongTime, null, CommonConstant.DB_ORDER_DESC, 1);
             List<SnapshotPortfolio> snapshotPortfolioList = snapshotPortfolioDao.getLastPortfolioByPortfolioCodeAndBelongTime(param);
             SnapshotPortfolio lastSnapshotPortfolio = snapshotPortfolioList.get(0);
             long id = snapshotPortfolio.getId();
@@ -345,7 +436,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
         }
     }
 
-    private SnapshotPortfolio getPortfolioCodeAndBelongTime(String portfolioCode, Date belongTime) {
+    private SnapshotPortfolio getPortfolio(String portfolioCode, Date belongTime) {
         SnapshotPortfolio param = new SnapshotPortfolio();
         param.setPortfolioCode(portfolioCode);
         param.setBelongTime(belongTime);

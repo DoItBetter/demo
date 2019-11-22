@@ -10,18 +10,14 @@ import com.kuainiu.qt.data.service.PortfolioService;
 import com.kuainiu.qt.data.service.SnapshotPortfolioService;
 import com.kuainiu.qt.data.service.bean.PortfolioSerBean;
 import com.kuainiu.qt.data.service.http.impl.AidcCDHttpImpl;
-import com.kuainiu.qt.framework.common.util.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,9 +40,6 @@ public class PortfolioInformationRatioProcessor extends BaseProcessor {
     @Autowired
     SnapshotPortfolioService snapshotPortfolioService;
 
-    private static Map<String, Object> params = new HashMap<>();
-
-
     @Override
     public ProcessResult process(JobContext jobContext) {
         PortfolioInformationRatioProcessorInBean jobParam = JSON.parseObject(jobContext.getJobParameters(), PortfolioInformationRatioProcessorInBean.class);
@@ -64,10 +57,9 @@ public class PortfolioInformationRatioProcessor extends BaseProcessor {
             log.info("[Biz][Portfolio]snapshot={}", portfolioSerBeanList);
             for (PortfolioSerBean portfolioSerBean : portfolioSerBeanList) {
                 String portfolioCode = portfolioSerBean.getPortfolioCode();
-                Map param = (Map) params.get(new SimpleDateFormat(CommonConstant.DATE_FORMAT).format(new Date()));
                 if (snapshotPortfolioService.needRun() || jobParam.isForce()) {
-                    snapshotPortfolioService.dataCheckAndRepair(param, portfolioCode, QtDateUtils.subtractOneMinute(belongTime), 0);
-                    snapshotPortfolioService.computePortfolioInformationRatio(param, portfolioCode, belongTime, null);
+                    snapshotPortfolioService.getPortfolioByBelongTime(portfolioCode, QtDateUtils.getNowZeroSecond());
+                    snapshotPortfolioService.calcPortfolio(portfolioCode, belongTime);
                 }
             }
         } catch (ServiceException e) {

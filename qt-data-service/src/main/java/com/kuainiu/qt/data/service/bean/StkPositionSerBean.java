@@ -1,19 +1,22 @@
 package com.kuainiu.qt.data.service.bean;
 
+import com.kuainiu.qt.data.service.bean.trans.StkAssetDetailFeeSerBean;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
 public class StkPositionSerBean extends BaseSerBean {
+    private String portfolioCode;
+
+    private String strategyCode;
     /**
      * 股票代码
      */
     private String assetNo;
 
-    /**
-     * 交易板块
-     */
+    private String accountCode;
+
     private String transBoard;
 
     /**
@@ -25,6 +28,21 @@ public class StkPositionSerBean extends BaseSerBean {
      * 累积持仓盈亏，单位(元)
      */
     private BigDecimal pnl;
+
+    /**
+     * 当然盈亏
+     */
+    private BigDecimal dailyPnl;
+
+    /**
+     * 持仓盈亏
+     */
+    private BigDecimal holdingPnl;
+
+    /**
+     * 平仓盈亏
+     */
+    private BigDecimal realizedPnl;
 
     /**
      * 可交易股数，单位(股)
@@ -46,8 +64,11 @@ public class StkPositionSerBean extends BaseSerBean {
      */
     private BigDecimal avgPrice;
 
-    /**
-     * 合约名称
-     */
+    private BigDecimal transCost;
+
+    private Integer total;
+
+    private StkAssetDetailFeeSerBean stkFee;
+
     private String assetName;
 }

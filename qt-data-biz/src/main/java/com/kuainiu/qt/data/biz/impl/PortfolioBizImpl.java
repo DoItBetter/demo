@@ -63,6 +63,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
             for (PortfolioSerBean serBean : portfolioList) {
                 PortfolioInBean inBean = BizBeanUtils.buildPortfolioInBean(serBean);
                 PortfolioOutBean portfolio = portfolioQryBiz.qryPortfolioFromLocal(inBean);
+                log.info("qryPortfolioFromLocal serBean" + serBean);
                 SnapshotGroupSerBean groupSerBean = calcSsGroupBean(portfolio);
                 snapshotPortfolioService.setSnapshotPortfolioTx(groupSerBean);
             }

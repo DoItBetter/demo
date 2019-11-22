@@ -298,4 +298,12 @@ public class QtDateUtils {
     public static boolean isToday(Date date) {
         return LocalDate.now().equals(convertToLocalDateViaInstant(date));
     }
+
+    //获取这一分钟的0秒
+    public static Date getNowZeroSecond() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
 }
