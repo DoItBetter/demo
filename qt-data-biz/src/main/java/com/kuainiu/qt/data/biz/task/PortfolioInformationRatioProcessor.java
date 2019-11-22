@@ -42,16 +42,20 @@ public class PortfolioInformationRatioProcessor extends BaseProcessor {
 
     @Override
     public ProcessResult process(JobContext jobContext) {
-        PortfolioInformationRatioProcessorInBean jobParam = JSON.parseObject(jobContext.getJobParameters(), PortfolioInformationRatioProcessorInBean.class);
+        try {
+            PortfolioInformationRatioProcessorInBean jobParam = JSON.parseObject(jobContext.getJobParameters(), PortfolioInformationRatioProcessorInBean.class);
 
-        log.info("[Processor] jobParam={},isForce={}", jobParam, jobParam.isForce());
-        recordPortfolio(jobParam);
+            log.info("[Processor] jobParam={},isForce={}", jobParam, jobParam.isForce());
+            recordPortfolio(jobParam);
+        } catch (Exception e) {
+            log.error("[Biz][Portfolio] InformationRatioProcessor error , " + e);
+        }
         return new ProcessResult(true);
     }
 
     public void recordPortfolio(PortfolioInformationRatioProcessorInBean jobParam) {
         Date belongTime = QtDateUtils.getMinuteTimestamp();
-        log.info("[Biz][Portfolio]PortfolioInformationRatioProcessor start,belongTime={}", belongTime);
+        log.info("[Biz][Portfolio] InformationRatioProcessor start,belongTime={}", belongTime);
         try {
             List<PortfolioSerBean> portfolioSerBeanList = portfolioService.findDistinctPortfolioCode();
             log.info("[Biz][Portfolio]snapshot={}", portfolioSerBeanList);
@@ -63,9 +67,8 @@ public class PortfolioInformationRatioProcessor extends BaseProcessor {
                 }
             }
         } catch (ServiceException e) {
-            log.info("[Biz][Portfolio]calc ratio fail", e);
-            e.printStackTrace();
+            log.info("[Biz][Portfolio] InformationRatioProcessor fail", e);
         }
-        log.info("[Biz][Portfolio]calc ratio end");
+        log.info("[Biz][Portfolio] InformationRatioProcessor end");
     }
 }
