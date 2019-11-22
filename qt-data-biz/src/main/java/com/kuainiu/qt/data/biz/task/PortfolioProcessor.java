@@ -28,7 +28,7 @@ public class PortfolioProcessor extends BaseProcessor {
 
     @Override
     public ProcessResult process(JobContext context) {
-        log.info("[Processor] PortfolioProcessor start ..., context : " + context);
+        log.info("[Processor] PortfolioProcessor start ..., context= {}, JobParameters = {}" , context.toString(), context.getJobParameters());
         try {
             PortfolioProcessorInBean jobParam = JSON.parseObject(context.getJobParameters(), PortfolioProcessorInBean.class);
             log.info("[Processor] jobParam={},isForce={}", jobParam, jobParam.isForce());
