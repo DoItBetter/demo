@@ -43,12 +43,14 @@ public class PortfolioInformationRatioProcessor extends BaseProcessor {
     @Override
     public ProcessResult process(JobContext jobContext) {
         try {
+            log.info("[Biz][Portfolio] InformationRatioProcessor start...");
             PortfolioInformationRatioProcessorInBean jobParam = JSON.parseObject(jobContext.getJobParameters(), PortfolioInformationRatioProcessorInBean.class);
 
             log.info("[Processor] jobParam={},isForce={}", jobParam, jobParam.isForce());
             recordPortfolio(jobParam);
         } catch (Exception e) {
             log.error("[Biz][Portfolio] InformationRatioProcessor error , " + e);
+            log.error("[Biz][Portfolio] InformationRatioProcessor error , " , e);
         }
         return new ProcessResult(true);
     }
