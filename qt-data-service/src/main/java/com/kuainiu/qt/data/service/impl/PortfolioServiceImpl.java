@@ -58,7 +58,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             log.error("trans qry portfolio info fail rpc", e);
             throw new ServiceException(QtDataRspCode.SYS_TIMEOUT);
         } catch (Exception e){
-            log.error("trans fail", e);
+            log.error("trans fail ，reqSerBean ：" + reqSerBean, e);
         }
         return SerBeanUtils.buildPortfolioSerBean(response);
     }
