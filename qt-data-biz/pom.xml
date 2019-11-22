@@ -48,10 +48,15 @@
             <groupId>com.alibaba.edas</groupId>
             <artifactId>edas-dubbo-extension</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.edas</groupId>
+            <artifactId>schedulerX-client</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.aliyun.schedulerx</groupId>
-            <artifactId>schedulerx2-worker</artifactId>
-            <version>1.0.8</version>
+            <artifactId>schedulerx2-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 
