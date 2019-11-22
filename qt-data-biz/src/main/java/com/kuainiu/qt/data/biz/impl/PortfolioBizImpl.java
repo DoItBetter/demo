@@ -48,6 +48,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
     @Override
     public void recordSnapshot(PortfolioProcessorInBean portfolioProcessorInBean) throws BizException {
         // 校验是否是交易日  + 判断是否开市时间段 入参portfolioProcessorInBean里面  isForce 是否是true
+        log.info("开始运行快照落库脚本");
         try {
             if (!snapshotPortfolioService.needRun() && !portfolioProcessorInBean.isForce()) {
                 log.warn("today is not trans day or curr time is not in open market!");
@@ -71,6 +72,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
             log.error("[recordPortfolio fail] msg:[{}]", e.getMsg());
             throw new BizException(QtDataRspCode.ERR_PORTFOLIO_SS_RECORD);
         }
+        log.info("运行落快照脚本结束");
     }
     private SnapshotGroupSerBean calcSsGroupBean(PortfolioOutBean portfolio) throws ServiceException {
         SnapshotGroupSerBean ssGroupBean = new SnapshotGroupSerBean();

@@ -51,7 +51,7 @@ public class PortfolioInformationRatioProcessor extends BaseProcessor {
 
     public void recordPortfolio(PortfolioInformationRatioProcessorInBean jobParam) {
         Date belongTime = QtDateUtils.getMinuteTimestamp();
-        log.info("[Biz][Portfolio]calc ratio start,belongTime={}", belongTime);
+        log.info("[Biz][Portfolio]PortfolioInformationRatioProcessor start,belongTime={}", belongTime);
         try {
             List<PortfolioSerBean> portfolioSerBeanList = portfolioService.findDistinctPortfolioCode();
             log.info("[Biz][Portfolio]snapshot={}", portfolioSerBeanList);
