@@ -29,7 +29,7 @@ import java.util.List;
 @Configurable
 @EnableScheduling
 @Slf4j
-public class PortfolioInformationRatioProcessor extends BaseProcessor {
+public class InformationRatioProcessor extends BaseProcessor {
 
     @Autowired
     AidcCDHttpImpl portfolioHttp;
@@ -43,7 +43,7 @@ public class PortfolioInformationRatioProcessor extends BaseProcessor {
     @Override
     public ProcessResult process(JobContext jobContext) {
         try {
-            log.info("[Biz][Portfolio] InformationRatioProcessor start...");
+            log.info("[Biz][Portfolio] InformationRatioProcessor start... context= {}, JobParameters = {}" , jobContext.toString(), jobContext.getJobParameters());
             PortfolioInformationRatioProcessorInBean jobParam = JSON.parseObject(jobContext.getJobParameters(), PortfolioInformationRatioProcessorInBean.class);
 
             log.info("[Processor] jobParam={},isForce={}", jobParam, jobParam.isForce());
