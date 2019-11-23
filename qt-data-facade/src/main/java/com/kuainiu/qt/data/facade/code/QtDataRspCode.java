@@ -70,6 +70,7 @@ public enum QtDataRspCode {
     ERR_FUTURES_ACCOUNT_LIST_QRY("期货账户列表查询失败", "00200015009"),
     ERR_SNAPSHOT_FUTURES_ACCOUNT_SER_BEAN("期货账户快照serBean不能为空", "00200015010"),
     ERR_SNAPSHOT_FUTURES_ACCOUNT_CODE("期货账户编号为空", "00200015011"),
+    ERR_QRY_TRANS_PORTFOLIO_FAIL("投资组合查询trans失败！", "00200015012"),
 
 
     /**

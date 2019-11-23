@@ -18,6 +18,10 @@
             <artifactId>swagger-annotations</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.kuainiu.qt.data</groupId>
+            <artifactId>qt-data-common</artifactId>
+        </dependency>
     </dependencies>
 
 

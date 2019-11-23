@@ -56,7 +56,8 @@ public class InformationRatioProcessor extends BaseProcessor {
     }
 
     public void recordPortfolio(PortfolioInformationRatioProcessorInBean jobParam) {
-        Date belongTime = QtDateUtils.getMinuteTimestamp();
+        Date belongTime = QtDateUtils.getZeroSecondTime(QtDateUtils.getCurrDate());
+//        Date belongTime = QtDateUtils.getZeroSecondTime(QtDateUtils.getTestTime());
         log.info("[Biz][Portfolio] InformationRatioProcessor start,belongTime={}", belongTime);
         try {
             List<PortfolioSerBean> portfolioSerBeanList = portfolioService.findDistinctPortfolioCode();
@@ -64,7 +65,7 @@ public class InformationRatioProcessor extends BaseProcessor {
             for (PortfolioSerBean portfolioSerBean : portfolioSerBeanList) {
                 String portfolioCode = portfolioSerBean.getPortfolioCode();
                 if (snapshotPortfolioService.needRun() || jobParam.isForce()) {
-                    snapshotPortfolioService.getPortfolioByBelongTime(portfolioCode, QtDateUtils.getNowZeroSecond());
+                    snapshotPortfolioService.getPortfolioByBelongTime(portfolioCode, belongTime);
                     snapshotPortfolioService.calcPortfolio(portfolioCode, belongTime);
                 }
             }

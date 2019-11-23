@@ -41,7 +41,9 @@ public class SerBeanUtils {
 
     public static SnapshotPortfolio buildSnapshotPortfolio(SnapshotPortfolioSerBean serBean) {
         SnapshotPortfolio snapshotPortfolio = new SnapshotPortfolio();
-        BeanMapUtils.map(serBean, snapshotPortfolio);
+        if (serBean != null) {
+            BeanMapUtils.map(serBean, snapshotPortfolio);
+        }
         return snapshotPortfolio;
     }
 
