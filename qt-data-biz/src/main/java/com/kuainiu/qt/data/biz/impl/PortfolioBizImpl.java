@@ -55,7 +55,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
                 return;
             }
             //所属时间
-            belongTime = QtDateUtils.getMinuteTimestamp();
+            belongTime = QtDateUtils.getZeroSecondTime(QtDateUtils.getCurrDate());
 
             PortfolioSerBean portfolioSerBean = new PortfolioSerBean();
             portfolioSerBean.setStatus(PortfolioStatusCode.VALID.getCode());
