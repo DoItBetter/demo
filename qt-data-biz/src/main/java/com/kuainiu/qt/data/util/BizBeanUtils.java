@@ -93,6 +93,8 @@ public class BizBeanUtils {
         List<StkPositionOutBean> stkPositionList = new ArrayList<>();
         List<FuturesPositionOutBean> futuresPositionList = new ArrayList<>();
         List<CashflowOutBean> cashflowList = new ArrayList<>();
+        List<StkAccountOutBean> stkAccountList = new ArrayList<>();
+        List<FuturesAccountOutBean> futuresAccountList = new ArrayList<>();
         try {
             stkPositionList = BeanMapUtils.mapAsList(serBean.getStkPositionList(), StkPositionOutBean.class);
             outBean.setStkPositionList(stkPositionList);
@@ -100,8 +102,19 @@ public class BizBeanUtils {
             outBean.setFuturesPositionList(futuresPositionList);
             cashflowList = BeanMapUtils.mapAsList(serBean.getCashflowList(), CashflowOutBean.class);
             outBean.setCashflowList(cashflowList);
+            for (StkAccountSerBean stkAccount : serBean.getStkAccountList()) {
+                StkAccountOutBean stkAccountOutBean = new StkAccountOutBean();
+                BeanMapUtils.map(stkAccount, stkAccountOutBean);
+                StkFeeOutBean stkFeeOutBean = new StkFeeOutBean();
+                BeanMapUtils.map(stkAccount.getTransactionCost(), stkFeeOutBean);
+                stkAccountOutBean.setTransactionCost(stkFeeOutBean);
+                stkAccountList.add(stkAccountOutBean);
+            }
+            outBean.setStkAccountList(stkAccountList);
+            futuresAccountList = BeanMapUtils.mapAsList(serBean.getFuturesAccountList(), FuturesAccountOutBean.class);
+            outBean.setFuturesAccountList(futuresAccountList);
         } catch (InstantiationException | IllegalAccessException e) {
-            log.error("[copy list fail] {}", JSON.toJSONString(stkPositionList));
+            log.error("[copy list fail] {}", JSON.toJSONString(serBean));
             throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
         }
         return outBean;

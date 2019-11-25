@@ -38,7 +38,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             log.info("qry all response : " + response);
         } catch (RpcException e){
             log.error("trans qry portfolio all fail rpc", e);
-            throw new ServiceException(QtDataRspCode.SYS_TIMEOUT);
+            throw new ServiceException(QtDataRspCode.ERR_SYS_RPC);
         } catch (Exception e){
             log.error("trans fail", e);
         }
@@ -56,7 +56,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             log.info("qry portfolio info response : " + response);
         } catch (RpcException e){
             log.error("trans qry portfolio info fail rpc", e);
-            throw new ServiceException(QtDataRspCode.SYS_TIMEOUT);
+            throw new ServiceException(QtDataRspCode.ERR_SYS_RPC);
         } catch (Exception e){
             log.error("trans fail ，reqSerBean ：" + reqSerBean, e);
             throw new ServiceException(QtDataRspCode.ERR_QRY_TRANS_PORTFOLIO_FAIL, e.getMessage());
@@ -72,7 +72,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             log.info("qry portfolio info response : " + response);
         } catch (RpcException e){
             log.error("trans qry portfolio info fail rpc", e);
-            throw new ServiceException(QtDataRspCode.SYS_TIMEOUT);
+            throw new ServiceException(QtDataRspCode.ERR_SYS_RPC);
         } catch (Exception e){
             log.error("trans fail", e);
         }

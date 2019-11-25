@@ -34,6 +34,7 @@ public enum QtDataRspCode {
     ERR_CHANNEL_RULE_FAIL("渠道路由没命中", "00200013005"),
     ERR_COPY_LIST("Copy list fail", "00200013006"),
     ERR_RESPONSE_REBUILD("出参构建错误", "00200033001"),
+    ERR_SYS_RPC("系统间调用RPC异常", "00200013007"),
 
     /**
      * 系统间问题 ,4xxx
@@ -71,6 +72,8 @@ public enum QtDataRspCode {
     ERR_SNAPSHOT_FUTURES_ACCOUNT_SER_BEAN("期货账户快照serBean不能为空", "00200015010"),
     ERR_SNAPSHOT_FUTURES_ACCOUNT_CODE("期货账户编号为空", "00200015011"),
     ERR_QRY_TRANS_PORTFOLIO_FAIL("投资组合查询trans失败！", "00200015012"),
+    ERR_AIDC_ASSET_NAME("从AIDC获取的合约名称为空", "002000150013"),
+    ERR_PORTFOLIO_QRY_FAIL("投资组合查询失败", "002000150014"),
 
 
     /**

@@ -11,4 +11,6 @@ import com.kuainiu.qt.data.exception.ServiceException;
 public interface AidcQryService {
 
     boolean isTransToday() throws ServiceException;
+
+    String getAssetName(String transboard, String assetNo) throws ServiceException;
 }

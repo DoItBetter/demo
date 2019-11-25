@@ -441,4 +441,24 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
         param.setBelongTime(belongTime);
         return param;
     }
+
+    @Override
+    public SnapshotPortfolioSerBean findOneOneMinuteAgo(String portfolioCode) throws ServiceException {
+        SnapshotPortfolioSerBean serBean = new SnapshotPortfolioSerBean();
+        try {
+            //为了统一列表
+            SnapshotPortfolio snapshotPortfolio = new SnapshotPortfolio();
+            snapshotPortfolio.setPortfolioCode(portfolioCode);
+            snapshotPortfolio.setEndBelongTime(QtDateUtils.getMinutesAgo(1));
+            log.info("find portfolio one minute ago,snapshotPortfolio={}",JSON.toJSONString(snapshotPortfolio));
+            snapshotPortfolio = snapshotPortfolioDao.findOneByPortfolioCode(snapshotPortfolio);
+            if (null != snapshotPortfolio) {
+                BeanMapUtils.map(snapshotPortfolio, serBean);
+            }
+        } catch (Exception e) {
+            log.error("[snapshotPortfolio findOneByPortfolioCode fail]", e);
+            throw new ServiceException(QtDataRspCode.ERR_DBERR, e);
+        }
+        return serBean;
+    }
 }

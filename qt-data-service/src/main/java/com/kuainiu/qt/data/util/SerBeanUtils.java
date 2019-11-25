@@ -6,6 +6,8 @@ import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.bean.*;
 import com.kuainiu.qt.data.service.bean.trans.StkAssetDetailFeeSerBean;
+import com.kuainiu.qt.data.service.http.AidcCDHttp;
+import com.kuainiu.qt.data.service.http.impl.AidcCDHttpImpl;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import com.kuainiu.qt.trans.facade.bean.StkAccountFacadeBean;
 import com.kuainiu.qt.trans.facade.bean.StkPositionFacadeBean;
@@ -112,6 +114,12 @@ public class SerBeanUtils {
             throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
         }
         return serBean;
+    }
+
+    public static String qryInstrument(String transBoard, String assetNo) throws ServiceException {
+        AidcCDHttp aidcCDHttp = new AidcCDHttpImpl();
+        String newAssetNo = transBoard + assetNo;
+        return aidcCDHttp.qryInstrument(newAssetNo).getData().getInstrument();
     }
 
     public static PortfolioFindAllRequest buildFindAllRequest(PortfolioSerBean serBean) {

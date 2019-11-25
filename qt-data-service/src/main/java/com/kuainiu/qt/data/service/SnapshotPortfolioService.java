@@ -35,4 +35,6 @@ public interface SnapshotPortfolioService {
     SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime);
 
     void calcPortfolio(String portfolioCode, Date belongTime);
+
+    SnapshotPortfolioSerBean findOneOneMinuteAgo(String portfolioCode) throws ServiceException;
 }
