@@ -1,17 +1,12 @@
-package com.kuainiu.qt.data.biz.bean;
+package com.kuainiu.qt.data.service.bean;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ckhero
- * Date: 2019/6/7
- * Time: 10:59 AM
- */
 @Data
-public class FuturesAccountOutBean extends BaseOutBean {
+public class FuturesAccountSerBean extends BaseSerBean {
+
     private String portfolioCode;
 
     private String strategyCode;

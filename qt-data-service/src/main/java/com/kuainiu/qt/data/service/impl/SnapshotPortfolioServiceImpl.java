@@ -179,6 +179,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
             }
             snapshotStkFeeService.batchInsert(stkFeeList);
         }
+        log.info("入库的stkAccountSerBeanList = {} " , stkAccountSerBeanList);
     }
 
     @Override
@@ -189,7 +190,6 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
 
             portfolio.setPortfolioCode(portfolioCode);
             portfolio.setEndBelongTime(belongTime);
-            log.info("[Service][Snapshot]qry last day record, qryData={}");
             portfolio = snapshotPortfolioDao.getLastBeforeOpenMarket(portfolio);
             log.info("[Service][Snapshot]qry last day record, data={}", JSON.toJSONString(portfolio));
             if (null == portfolio || null == portfolio.getId()) {
@@ -228,7 +228,6 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
             Date endBelongTime = QtDateUtils.isBeforeOpenMarket() ? QtDateUtils.getOpenMarketYesterday() : QtDateUtils.getOpenMarket();
             portfolio.setPortfolioCode(portfolioCode);
             portfolio.setEndBelongTime(endBelongTime);
-            log.info("[Service][Snapshot]qry last day record, qryData={}");
             portfolio = snapshotPortfolioDao.getLastBeforeOpenMarket(portfolio);
             log.info("[Service][Snapshot]qry last day record, data={}", JSON.toJSONString(portfolio));
             if (null == portfolio || null == portfolio.getId()) {

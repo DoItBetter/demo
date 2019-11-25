@@ -44,4 +44,8 @@ public class PortfolioQrySerBean extends BaseSerBean {
     private List<FuturesPositionSerBean> futuresPositionList = new ArrayList<>();
 
     private List<CashflowSerBean> cashflowList = new ArrayList<>();
+
+    private List<StkAccountSerBean> stkAccountList = new ArrayList<>();
+
+    private List<FuturesAccountSerBean> futuresAccountList = new ArrayList<>();
 }

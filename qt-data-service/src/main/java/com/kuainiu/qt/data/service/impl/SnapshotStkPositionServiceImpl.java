@@ -38,8 +38,8 @@ public class SnapshotStkPositionServiceImpl implements SnapshotStkPositionServic
         }
         try {
             List<SnapshotStkPosition> stkPositionList = BeanMapUtils.mapAsList(serBeanList, SnapshotStkPosition.class);
-            log.info("批量入库的stkPositionList : " + stkPositionList);
             snapshotStkPositionDao.batchInsert(stkPositionList);
+            log.info("批量入库的stkPositionList ={} ", stkPositionList);
         } catch (Exception e) {
             log.error("[batch insert SnapshotStkPosition fail]", e);
 //            throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_STK_POSITION_BATCH_ADD);
