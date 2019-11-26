@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * Time: 11:05 AM
  */
 @Data
-public class FuturesPositionOutBean extends BaseOutBean {
+public class FuturesPositionOutBean extends BaseDataOutBean {
     private String portfolioCode;
 
     private String strategyCode;

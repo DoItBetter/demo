@@ -41,7 +41,7 @@ public class PortfolioQryBizImpl implements PortfolioQryBiz {
     SnapshotStkAccountService snapshotStkAccountService;
 
     @Autowired
-    SnapshotStkPositionService snapshotStkPositionService;
+    StkPositionService stkPositionService;
 
     @Autowired
     AidcQryService aidcQryService;
@@ -163,7 +163,7 @@ public class PortfolioQryBizImpl implements PortfolioQryBiz {
             outBean.setTotalFund(totalFund);
             //计算总权益 end
             //股票仓位
-            List<SnapshotStkPositionSerBean> snapshotStkPositionSerBeanList = snapshotStkPositionService.getListBySnapshotCode(portfolioSerBean.getSnapshotCode());
+            List<SnapshotStkPositionSerBean> snapshotStkPositionSerBeanList = stkPositionService.getListBySnapshotCode(portfolioSerBean.getSnapshotCode());
             List<StkPositionOutBean> stkPositionOutBeanList = new ArrayList<>();
             for (SnapshotStkPositionSerBean snapshotStkPositionSerBean : snapshotStkPositionSerBeanList) {
                 StkPositionOutBean stkPositionOutBean = new StkPositionOutBean();

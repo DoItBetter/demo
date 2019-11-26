@@ -1,6 +1,5 @@
 package com.kuainiu.qt.data.biz.bean;
 
-import com.kuainiu.qt.data.service.bean.BaseSerBean;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,7 +12,7 @@ import java.util.Date;
  * Time: 4:22 PM
  */
 @Data
-public class CashflowOutBean extends BaseSerBean {
+public class CashflowOutBean extends BaseDataOutBean {
     private BigDecimal totalValue;
 
     private BigDecimal cashflowValue;

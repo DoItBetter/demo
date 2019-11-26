@@ -12,7 +12,7 @@ import java.util.Date;
  * Time: 2:15 PM
  */
 @Data
-public class AccountExtendSerBean extends BaseSerBean{
+public class AccountExtendSerBean extends BaseDataSerBean {
     private Integer marginId;
 
     private BigDecimal margin = BigDecimal.ZERO;

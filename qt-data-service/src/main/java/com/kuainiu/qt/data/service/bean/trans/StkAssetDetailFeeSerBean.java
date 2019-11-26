@@ -1,12 +1,12 @@
 package com.kuainiu.qt.data.service.bean.trans;
 
-import com.kuainiu.qt.data.service.bean.BaseSerBean;
+import com.kuainiu.qt.data.service.bean.BaseDataSerBean;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class StkAssetDetailFeeSerBean extends BaseSerBean {
+public class StkAssetDetailFeeSerBean extends BaseDataSerBean {
 
     private String assetCode;
 

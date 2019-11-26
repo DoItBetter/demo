@@ -14,22 +14,22 @@ import java.util.List;
  * Time: 5:52 PM
  */
 @Data
-public class SnapshotPortfolioSerBean extends BaseSerBean {
+public class SnapshotPortfolioSerBean extends BaseDataSerBean {
     private Long id;
 
-    private String portfolioCode;
-
     private String snapshotCode;
+
+    private String portfolioCode;
 
     private BigDecimal cash;
 
     private BigDecimal frzCash;
 
-    private BigDecimal totalReturns = BigDecimal.ZERO;
+    private BigDecimal totalReturns;
 
-    private BigDecimal realtimeReturns = BigDecimal.ZERO;
+    private BigDecimal realtimeReturns;
 
-    private BigDecimal annualizedReturns = BigDecimal.ZERO;
+    private BigDecimal annualizedReturns;
 
     private BigDecimal dailyPnl;
 
@@ -43,6 +43,18 @@ public class SnapshotPortfolioSerBean extends BaseSerBean {
 
     private BigDecimal transCost;
 
+    private BigDecimal totalRealtimeReturns;
+
+    private BigDecimal baseReturns;
+
+    private BigDecimal baseRealtimeReturns;
+
+    private BigDecimal balanceReturns;
+
+    private BigDecimal informationRatio;
+
+    private String errorFlag;
+
     private Date startDate;
 
     private Date belongTime;
@@ -53,11 +65,17 @@ public class SnapshotPortfolioSerBean extends BaseSerBean {
 
     private Date updateTime;
 
+    private Date startBelongTime;
+
+    private Date endBelongTime;
+
+    private Integer offset;
+
+    private Integer limit;
+
+    private String order;
+
     private BigDecimal std;
-
-    private BigDecimal informationRatio = BigDecimal.ZERO;
-
-    private BigDecimal baseRealtimeReturns = BigDecimal.ZERO;
 
     private List<SnapshotFuturesAccountSerBean> futuresAccountList = new ArrayList<>();
 

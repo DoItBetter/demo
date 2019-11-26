@@ -12,7 +12,7 @@ import java.util.Date;
  * Time: 9:16 AM
  */
 @Data
-public class SnapshotFuturesAccountOutBean {
+public class SnapshotFuturesAccountOutBean extends BaseDataOutBean {
     private Integer id;
 
     private String snapshotCode;

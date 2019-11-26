@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class StkFeeSerBean extends BaseSerBean {
+public class StkFeeSerBean extends BaseDataSerBean {
 
     private BigDecimal feeTrade;
 

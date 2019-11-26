@@ -11,7 +11,7 @@ import java.util.List;
  * Date: 2019/7/13
  * Time: 3:26 PM
  */
-public interface SnapshotStkPositionService {
+public interface StkPositionService {
     void batchInsert(List<SnapshotStkPositionSerBean> serBeanList) throws ServiceException;
 
     List<SnapshotStkPositionSerBean> getListBySnapshotCode(String snapshotCode) throws ServiceException;

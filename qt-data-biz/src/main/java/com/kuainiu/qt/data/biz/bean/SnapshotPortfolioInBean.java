@@ -1,12 +1,11 @@
 package com.kuainiu.qt.data.biz.bean;
 
-import com.kuainiu.qt.framework.common.bean.bizbean.BaseInBean;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class SnapshotPortfolioInBean extends BaseInBean {
+public class SnapshotPortfolioInBean extends BaseDataInBean {
 
     private String portfolioCode;
 

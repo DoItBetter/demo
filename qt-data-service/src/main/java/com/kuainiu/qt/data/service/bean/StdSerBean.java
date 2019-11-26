@@ -5,6 +5,6 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class StdSerBean extends BaseSerBean{
+public class StdSerBean extends BaseDataSerBean {
     private BigDecimal std;
 }

@@ -13,7 +13,7 @@ import java.util.Map;
  * Time: 9:23 PM
  */
 @Data
-public class StrategySerBean extends BaseSerBean {
+public class StrategySerBean extends BaseDataSerBean {
     private Integer id;
 
     private String strategyCode;

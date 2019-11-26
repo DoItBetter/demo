@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 4:05 PM
  */
 @Data
-public class BalanceLogSerBean extends BaseSerBean {
+public class BalanceLogSerBean extends BaseDataSerBean {
     private Long id;
 
     private String accountCode;
