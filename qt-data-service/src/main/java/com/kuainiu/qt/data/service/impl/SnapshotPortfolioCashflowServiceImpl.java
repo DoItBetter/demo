@@ -36,6 +36,7 @@ public class SnapshotPortfolioCashflowServiceImpl implements SnapshotPortfolioCa
         try {
             List<SnapshotPortfolioCashflow> cashflowList = BeanMapUtils.mapAsList(serBeanList, SnapshotPortfolioCashflow.class);
             snapshotPortfolioCashflowDao.batchInsert(cashflowList);
+            log.info("批量入库的cashflowList = {} " , cashflowList);
         } catch (Exception e) {
             log.error("[batch insert SnapshotPortfolioCashflow fail]", e);
             throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_PORTFOLIO_CASHFLOW_BATCH_ADD);

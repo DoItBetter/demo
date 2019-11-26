@@ -44,8 +44,9 @@ public class SnapshotFuturesPositionsServiceImpl implements SnapshotFuturesPosit
             return;
         }
         try {
-            List<SnapshotFuturesPosition> cashflowList = BeanMapUtils.mapAsList(serBeanList, SnapshotFuturesPosition.class);
-            snapshotFuturesPositionDao.batchInsert(cashflowList);
+            List<SnapshotFuturesPosition> futurePositionList = BeanMapUtils.mapAsList(serBeanList, SnapshotFuturesPosition.class);
+            snapshotFuturesPositionDao.batchInsert(futurePositionList);
+            log.info("批量入库的futurePositionList = {} " , futurePositionList);
         } catch (Exception e) {
             log.error("[batch insert SnapshotFuturesPosition fail]", e);
             throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_FUTURES_POSITION_BATCH_ADD);

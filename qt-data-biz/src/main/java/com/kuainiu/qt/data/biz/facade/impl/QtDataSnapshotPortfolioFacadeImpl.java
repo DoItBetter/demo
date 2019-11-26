@@ -37,7 +37,7 @@ public class QtDataSnapshotPortfolioFacadeImpl implements QtDataSnapshotPortfoli
         try {
             ParamCheckHandle.checkPortfolioQryRequest(request);
             PortfolioInBean inBean = PortfolioBizUtils.buildPortfolioInBean(request);
-            PortfolioOutBean outBean = portfolioQryBiz.qryPortfolioFromLocal(inBean);
+            PortfolioOutBean outBean = portfolioQryBiz.qryPortfolio(inBean);
             response = PortfolioBizUtils.buildPortfolioQryResponse(outBean);
             ResponseUtils.success(response);
         } catch (Exception e) {

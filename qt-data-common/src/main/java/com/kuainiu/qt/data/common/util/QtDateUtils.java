@@ -37,6 +37,16 @@ public class QtDateUtils {
 
     public static final int CLOSE_MARKET_MINUTE = 0;
 
+    //用于测试
+    public static Date getTestTime() {
+        Calendar cal = new GregorianCalendar();
+        cal.set(Calendar.HOUR_OF_DAY, 15);
+        cal.set(Calendar.MINUTE, 26);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
     //获取当天的开始时间
     public static Date getDayBegin() {
         Calendar cal = new GregorianCalendar();
@@ -55,21 +65,6 @@ public class QtDateUtils {
         cal.set(Calendar.SECOND, 59);
         cal.set(Calendar.MILLISECOND, 999);
         return cal.getTime();
-    }
-
-    public static Date getMinuteTimestamp() {
-        Date result = null;
-        try {
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat(CommonConstant.DATEFORMAT_YMDHMS);
-            String timeStr = sdf.format(date);
-            String[] fields = timeStr.split(CommonConstant.COLON);
-            String resultStr = fields[0] + CommonConstant.COLON + fields[1] + CommonConstant.COLON + CommonConstant.DOUBLE_ZERO;
-            result = sdf.parse(resultStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
     }
 
     public static String dateFormat(Date date) {
@@ -297,5 +292,13 @@ public class QtDateUtils {
 
     public static boolean isToday(Date date) {
         return LocalDate.now().equals(convertToLocalDateViaInstant(date));
+    }
+
+    //获取某一分钟的0秒
+    public static Date getZeroSecondTime(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
     }
 }

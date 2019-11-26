@@ -3,7 +3,6 @@ package com.kuainiu.qt.data.biz.bean;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,8 +31,6 @@ public class FuturesAccountOutBean extends BaseOutBean {
     private BigDecimal totalValue;
 
     private BigDecimal transCost;
-
-    private List<FuturesPositionOutBean> positions;
 
     private BigDecimal frzMargin;
 

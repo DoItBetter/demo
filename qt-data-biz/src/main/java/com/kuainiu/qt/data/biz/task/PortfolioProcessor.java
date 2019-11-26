@@ -28,9 +28,10 @@ public class PortfolioProcessor extends BaseProcessor {
 
     @Override
     public ProcessResult process(JobContext context) {
-        PortfolioProcessorInBean jobParam = JSON.parseObject(context.getJobParameters(), PortfolioProcessorInBean.class);
-        log.info("[Processor] jobParam={},isForce={}", jobParam, jobParam.isForce());
+        log.info("[Processor] PortfolioProcessor start ..., context= {}, JobParameters = {}" , context.toString(), context.getJobParameters());
         try {
+            PortfolioProcessorInBean jobParam = JSON.parseObject(context.getJobParameters(), PortfolioProcessorInBean.class);
+            log.info("[Processor] jobParam={},isForce={}", jobParam, jobParam.isForce());
             portfolioBiz.recordSnapshot(jobParam);
         } catch (BizException e) {
             log.info("[Processor] record portfolio fail, e= {}", e.getMsg());

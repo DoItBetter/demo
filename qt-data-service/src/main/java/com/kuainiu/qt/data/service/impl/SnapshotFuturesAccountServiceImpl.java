@@ -57,6 +57,7 @@ public class SnapshotFuturesAccountServiceImpl implements SnapshotFuturesAccount
         try {
             List<SnapshotFuturesAccount> futuresAccountList = BeanMapUtils.mapAsList(serBeanList, SnapshotFuturesAccount.class);
             futuresAccountDao.batchInsert(futuresAccountList);
+            log.info("批量入库的futuresAccountList = {} " , futuresAccountList);
         } catch (Exception e) {
             log.error("[Service][Snapshot]batch insert SnapshotFuturesAccount fail", e);
             log.error("[Service][Snapshot]batch insert SnapshotFuturesAccount fail,data={}", JSON.toJSONString(serBeanList));

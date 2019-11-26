@@ -5,10 +5,16 @@ import com.kuainiu.qt.data.dal.entity.SnapshotPortfolio;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.bean.*;
+import com.kuainiu.qt.data.service.bean.trans.StkAssetDetailFeeSerBean;
+import com.kuainiu.qt.data.service.http.AidcCDHttp;
+import com.kuainiu.qt.data.service.http.impl.AidcCDHttpImpl;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
+import com.kuainiu.qt.trans.facade.bean.StkAccountFacadeBean;
+import com.kuainiu.qt.trans.facade.bean.StkPositionFacadeBean;
 import com.kuainiu.qt.trans.facade.request.PortfolioFindAllRequest;
 import com.kuainiu.qt.trans.facade.request.PortfolioQryRequest;
 import com.kuainiu.qt.trans.facade.response.PortfolioFindAllResponse;
+import com.kuainiu.qt.trans.facade.response.PortfolioQryDistinctPFCodeResponse;
 import com.kuainiu.qt.trans.facade.response.PortfolioQryResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -38,7 +44,9 @@ public class SerBeanUtils {
 
     public static SnapshotPortfolio buildSnapshotPortfolio(SnapshotPortfolioSerBean serBean) {
         SnapshotPortfolio snapshotPortfolio = new SnapshotPortfolio();
-        BeanMapUtils.map(serBean, snapshotPortfolio);
+        if (serBean != null) {
+            BeanMapUtils.map(serBean, snapshotPortfolio);
+        }
         return snapshotPortfolio;
     }
 
@@ -63,10 +71,55 @@ public class SerBeanUtils {
         return request;
     }
 
-    public static PortfolioSerBean buildPortfolioSerBean(PortfolioQryResponse response) {
-        PortfolioSerBean serBean = new PortfolioSerBean();
+    public static PortfolioQrySerBean buildPortfolioSerBean(PortfolioQryResponse response) throws ServiceException {
+        PortfolioQrySerBean serBean = new PortfolioQrySerBean();
         BeanMapUtils.map(response, serBean);
+        //todo foreach优化
+        List<StkPositionSerBean> stkPositions = new ArrayList<>();
+        List<FuturesPositionSerBean> futuresPositions = new ArrayList<>();
+        List<CashflowSerBean> cashflowList = new ArrayList<>();
+        List<StkAccountSerBean> stkAccountList = new ArrayList<>();
+        List<FuturesAccountSerBean> futuresAccountList = new ArrayList<>();
+        try {
+            for (StkPositionFacadeBean facadeBean : response.getStkPositions()) {
+                StkPositionSerBean stkPosition = new StkPositionSerBean();
+                BeanMapUtils.map(facadeBean, stkPosition);
+                if (facadeBean.getStkFee() != null) {
+                    StkAssetDetailFeeSerBean stkAssetDetailFeeSerBean = new StkAssetDetailFeeSerBean();
+                    BeanMapUtils.map(facadeBean.getStkFee(), stkAssetDetailFeeSerBean);
+                    stkPosition.setStkFee(stkAssetDetailFeeSerBean);
+                }
+                stkPositions.add(stkPosition);
+            }
+            serBean.setStkPositionList(stkPositions);
+            futuresPositions = BeanMapUtils.mapAsList(response.getFuturesPositions(), FuturesPositionSerBean.class);
+            serBean.setFuturesPositionList(futuresPositions);
+            cashflowList = BeanMapUtils.mapAsList(response.getCashflowList(), CashflowSerBean.class);
+            serBean.setCashflowList(cashflowList);
+            for (StkAccountFacadeBean facadeBean : response.getStkAccountList()) {
+                StkAccountSerBean bean = new StkAccountSerBean();
+                BeanMapUtils.map(facadeBean, bean);
+                if (facadeBean.getTransactionCost() != null) {
+                    StkFeeSerBean feeSerBean = new StkFeeSerBean();
+                    BeanMapUtils.map(facadeBean.getTransactionCost(), feeSerBean);
+                    bean.setTransactionCost(feeSerBean);
+                }
+                stkAccountList.add(bean);
+            }
+            serBean.setStkAccountList(stkAccountList);
+            futuresAccountList = BeanMapUtils.mapAsList(response.getFuturesAccountList(), FuturesAccountSerBean.class);
+            serBean.setFuturesAccountList(futuresAccountList);
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("[copy list fail] {}", JSON.toJSONString(stkPositions));
+            throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
+        }
         return serBean;
+    }
+
+    public static String qryInstrument(String transBoard, String assetNo) throws ServiceException {
+        AidcCDHttp aidcCDHttp = new AidcCDHttpImpl();
+        String newAssetNo = transBoard + assetNo;
+        return aidcCDHttp.qryInstrument(newAssetNo).getData().getInstrument();
     }
 
     public static PortfolioFindAllRequest buildFindAllRequest(PortfolioSerBean serBean) {
@@ -84,5 +137,16 @@ public class SerBeanUtils {
             throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
         }
         return serBeanList;
+    }
+
+    public static List<PortfolioSerBean> buildPortfolioSerBeanList(PortfolioQryDistinctPFCodeResponse response) throws ServiceException {
+        List<PortfolioSerBean> portfolioSerBeanList = new ArrayList<>();
+        try {
+            portfolioSerBeanList = BeanMapUtils.mapAsList(response.getData(), PortfolioSerBean.class);
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("[copy list fail] {}", JSON.toJSONString(portfolioSerBeanList));
+            throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
+        }
+        return portfolioSerBeanList;
     }
 }

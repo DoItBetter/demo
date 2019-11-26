@@ -39,6 +39,7 @@
         <swagger.version>2.7.0</swagger.version>
         <config.client.version>2.0.4-open-sock5</config.client.version>
         <alibaba.schedulerX.client>2.1.5</alibaba.schedulerX.client>
+        <schedulerx2.version>1.0.6</schedulerx2.version>
 
     </properties>
 
@@ -151,8 +152,8 @@
 
             <dependency>
                 <groupId>com.aliyun.schedulerx</groupId>
-                <artifactId>schedulerx2-worker</artifactId>
-                <version>1.0.8</version>
+                <artifactId>schedulerx2-spring-boot-starter</artifactId>
+                <version>${schedulerx2.version}</version>
             </dependency>
 
             <dependency>

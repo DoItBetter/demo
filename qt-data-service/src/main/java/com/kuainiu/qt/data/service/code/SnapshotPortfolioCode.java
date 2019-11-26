@@ -20,6 +20,10 @@ public enum SnapshotPortfolioCode {
      * snapshot portfolio code: repair
      */
     REPAIR("REPAIR", "修数标记"),
+    /**
+     * snapshot portfolio code: repair
+     */
+    UNFINISHED("UNFINISHED", "未完成"),
 
     ;
 

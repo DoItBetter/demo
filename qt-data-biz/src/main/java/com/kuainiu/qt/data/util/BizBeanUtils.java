@@ -3,18 +3,17 @@ package com.kuainiu.qt.data.util;
 import com.alibaba.fastjson.JSON;
 import com.kuainiu.qt.data.biz.bean.*;
 import com.kuainiu.qt.data.exception.BizException;
+import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
-import com.kuainiu.qt.data.facade.request.PortfolioLastRecordPerDayRequest;
 import com.kuainiu.qt.data.facade.request.InfoRatioRequest;
+import com.kuainiu.qt.data.facade.request.PortfolioLastRecordPerDayRequest;
 import com.kuainiu.qt.data.facade.request.PortfolioYieldRequest;
 import com.kuainiu.qt.data.facade.request.SnapshotPortfolioRequest;
-import com.kuainiu.qt.data.service.bean.PortfolioReqSerBean;
-import com.kuainiu.qt.data.service.bean.PortfolioSerBean;
-import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
-import com.kuainiu.qt.data.service.bean.StrategySerBean;
+import com.kuainiu.qt.data.service.bean.*;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -88,9 +87,36 @@ public class BizBeanUtils {
         return reqSerBean;
     }
 
-    public static PortfolioOutBean buildPortfolioOutBean(PortfolioSerBean serBean) {
+    public static PortfolioOutBean buildPortfolioOutBean(PortfolioQrySerBean serBean) throws ServiceException {
         PortfolioOutBean outBean = new PortfolioOutBean();
         BeanMapUtils.map(serBean, outBean);
+        List<StkPositionOutBean> stkPositionList = new ArrayList<>();
+        List<FuturesPositionOutBean> futuresPositionList = new ArrayList<>();
+        List<CashflowOutBean> cashflowList = new ArrayList<>();
+        List<StkAccountOutBean> stkAccountList = new ArrayList<>();
+        List<FuturesAccountOutBean> futuresAccountList = new ArrayList<>();
+        try {
+            stkPositionList = BeanMapUtils.mapAsList(serBean.getStkPositionList(), StkPositionOutBean.class);
+            outBean.setStkPositionList(stkPositionList);
+            futuresPositionList = BeanMapUtils.mapAsList(serBean.getFuturesPositionList(), FuturesPositionOutBean.class);
+            outBean.setFuturesPositionList(futuresPositionList);
+            cashflowList = BeanMapUtils.mapAsList(serBean.getCashflowList(), CashflowOutBean.class);
+            outBean.setCashflowList(cashflowList);
+            for (StkAccountSerBean stkAccount : serBean.getStkAccountList()) {
+                StkAccountOutBean stkAccountOutBean = new StkAccountOutBean();
+                BeanMapUtils.map(stkAccount, stkAccountOutBean);
+                StkFeeOutBean stkFeeOutBean = new StkFeeOutBean();
+                BeanMapUtils.map(stkAccount.getTransactionCost(), stkFeeOutBean);
+                stkAccountOutBean.setTransactionCost(stkFeeOutBean);
+                stkAccountList.add(stkAccountOutBean);
+            }
+            outBean.setStkAccountList(stkAccountList);
+            futuresAccountList = BeanMapUtils.mapAsList(serBean.getFuturesAccountList(), FuturesAccountOutBean.class);
+            outBean.setFuturesAccountList(futuresAccountList);
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("[copy list fail] {}", JSON.toJSONString(serBean));
+            throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
+        }
         return outBean;
     }
 }

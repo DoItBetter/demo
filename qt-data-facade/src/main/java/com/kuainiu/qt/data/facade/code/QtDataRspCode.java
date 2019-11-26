@@ -34,6 +34,7 @@ public enum QtDataRspCode {
     ERR_CHANNEL_RULE_FAIL("渠道路由没命中", "00200013005"),
     ERR_COPY_LIST("Copy list fail", "00200013006"),
     ERR_RESPONSE_REBUILD("出参构建错误", "00200033001"),
+    ERR_SYS_RPC("系统间调用RPC异常", "00200013007"),
 
     /**
      * 系统间问题 ,4xxx
@@ -49,7 +50,10 @@ public enum QtDataRspCode {
     ERR_PARAM_SYS_ID("系统号不存在", "00200014002"),
     ERR_PARAM_REQUEST("请求入参为空", "00200014022"),
     ERR_PARAM_RESPONSE("响应为空", "00200014041"),
-    ERR_PARAM_PORTIFILE_CODE("投资组合不能为空", "00200014003"),
+
+    ERR_PARAM_PORTFOLIO_CODE("投资组合不能为空", "00200014003"),
+    ERR_AIDC_FUTURES_SNAPSHOT_QRY("从AIDC查询期货最新价失败", "00200014004"),
+    ERR_DC_STK_SNAPSHOT_QRY("从数仓查询股票快照失败", "00200014005"),
 
 
     /**
@@ -67,6 +71,9 @@ public enum QtDataRspCode {
     ERR_FUTURES_ACCOUNT_LIST_QRY("期货账户列表查询失败", "00200015009"),
     ERR_SNAPSHOT_FUTURES_ACCOUNT_SER_BEAN("期货账户快照serBean不能为空", "00200015010"),
     ERR_SNAPSHOT_FUTURES_ACCOUNT_CODE("期货账户编号为空", "00200015011"),
+    ERR_QRY_TRANS_PORTFOLIO_FAIL("投资组合查询trans失败！", "00200015012"),
+    ERR_AIDC_ASSET_NAME("从AIDC获取的合约名称为空", "002000150013"),
+    ERR_PORTFOLIO_QRY_FAIL("投资组合查询失败", "002000150014"),
 
 
     /**
@@ -86,7 +93,7 @@ public enum QtDataRspCode {
     ERR_DB_SNAPSHOT_PORTFOLIO_CASHFLOW_BATCH_ADD("出入金快照批量添加失败", "00200016011"),
     ERR_DB_SNAPSHOT_PORTFOLIO_CASHFLOW_QRY("[db]出入金快照查询失败", "00200016012"),
     ERR_DB_SNAPSHOT_STK_FEE_BATCH_ADD("股票快照费用添加失败", "00200016013"),
-    ERR_DB_SNAPSHOT_STK_POSITION_BATCH_ADD("futures仓位快照批量添加失败", "00200016014"),
+    ERR_DB_SNAPSHOT_STK_POSITION_BATCH_ADD("stk仓位快照批量添加失败", "00200016014"),
     ERR_DB_SNAPSHOT_STK_POSITION_QRY("[db]futures仓位快照查询失败", "00200016015"),
 
     ;

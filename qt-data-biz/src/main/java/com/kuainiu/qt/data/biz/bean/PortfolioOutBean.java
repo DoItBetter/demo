@@ -1,6 +1,5 @@
 package com.kuainiu.qt.data.biz.bean;
 
-import com.kuainiu.qt.data.service.bean.FuturesPositionSerBean;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -45,9 +44,9 @@ public class PortfolioOutBean extends BaseOutBean {
 
     private BigDecimal annualizedReturns = BigDecimal.ZERO;
 
-    private List<StkPositionOutBean> stkPositions = new ArrayList<>();
+    private List<StkPositionOutBean> stkPositionList = new ArrayList<>();
 
-    private List<FuturesPositionSerBean> futuresPositions = new ArrayList<>();
+    private List<FuturesPositionOutBean> futuresPositionList = new ArrayList<>();
 
     private BigDecimal std = BigDecimal.ZERO;
 

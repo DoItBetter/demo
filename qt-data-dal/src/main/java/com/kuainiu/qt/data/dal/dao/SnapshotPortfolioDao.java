@@ -49,7 +49,7 @@ public interface SnapshotPortfolioDao {
     SnapshotPortfolio getBalanceReturnStdByPortfolioCode(SnapshotPortfolio snapshotPortfolio);
 
     @ResultMap("BaseResultMap")
-    @Select("select * from t_snapshot_portfolio where portfolio_code = #{portfolioCode} and belong_time=#{belongTime} order by belong_time desc limit 1")
+    @Select("select * from t_snapshot_portfolio where portfolio_code = #{portfolioCode} and belong_time = #{belongTime} order by belong_time desc limit 1")
     SnapshotPortfolio getPortfolioByPortfolioCodeAndBelongTime(SnapshotPortfolio snapshotPortfolio);
 
     List<SnapshotPortfolio> getLastPortfolioByPortfolioCodeAndBelongTime(SnapshotPortfolio snapshotPortfolio);
