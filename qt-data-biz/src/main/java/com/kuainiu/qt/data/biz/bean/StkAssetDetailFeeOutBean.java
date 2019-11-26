@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * Time: 8:05 PM
  */
 @Data
-public class StkAssetDetailFeeOutBean extends BaseOutBean {
+public class StkAssetDetailFeeOutBean extends BaseDataOutBean {
 
     private String assetCode;
 

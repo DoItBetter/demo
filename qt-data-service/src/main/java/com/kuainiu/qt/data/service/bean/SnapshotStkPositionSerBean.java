@@ -12,7 +12,7 @@ import java.util.Date;
  * Time: 3:23 PM
  */
 @Data
-public class SnapshotStkPositionSerBean extends BaseSerBean {
+public class SnapshotStkPositionSerBean extends BaseDataSerBean {
     private Long id;
 
     private String snapshotCode;

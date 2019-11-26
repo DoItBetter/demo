@@ -6,7 +6,7 @@ import com.kuainiu.qt.data.dal.dao.SnapshotStkPositionDao;
 import com.kuainiu.qt.data.dal.entity.SnapshotStkPosition;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
-import com.kuainiu.qt.data.service.SnapshotStkPositionService;
+import com.kuainiu.qt.data.service.StkPositionService;
 import com.kuainiu.qt.data.service.bean.SnapshotStkPositionSerBean;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import com.kuainiu.qt.framework.common.util.CommonConstant;
@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class SnapshotStkPositionServiceImpl implements SnapshotStkPositionService {
+public class StkPositionServiceImpl implements StkPositionService {
     @Autowired
     SnapshotStkPositionDao snapshotStkPositionDao;
 

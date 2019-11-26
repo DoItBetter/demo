@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 7:07 PM
  */
 @Data
-public class SnapshotPortfolioOutBean extends BaseOutBean {
+public class SnapshotPortfolioOutBean extends BaseDataOutBean {
     private Long id;
 
     private String portfolioCode;

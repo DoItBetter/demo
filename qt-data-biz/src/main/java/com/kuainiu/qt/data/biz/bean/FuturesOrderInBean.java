@@ -1,6 +1,5 @@
 package com.kuainiu.qt.data.biz.bean;
 
-import com.kuainiu.qt.framework.common.bean.bizbean.BaseInBean;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,7 +12,7 @@ import java.util.Date;
  * Time: 9:13 PM
  */
 @Data
-public class FuturesOrderInBean extends BaseInBean {
+public class FuturesOrderInBean extends BaseDataInBean {
 
     private String qtOrderId;
 

@@ -1,6 +1,5 @@
 package com.kuainiu.qt.data.biz.bean;
 
-import com.kuainiu.qt.framework.common.bean.bizbean.BaseInBean;
 import lombok.Data;
 
 /**
@@ -10,7 +9,7 @@ import lombok.Data;
  * Time: 11:00 AM
  */
 @Data
-public class FuturesPositionInBean extends BaseInBean {
+public class FuturesPositionInBean extends BaseDataInBean {
     private String assetNo;
 
     private String channelCode;

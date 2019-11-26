@@ -1,6 +1,5 @@
 package com.kuainiu.qt.data.biz.bean;
 
-import com.kuainiu.qt.framework.common.bean.bizbean.BaseInBean;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,7 +11,7 @@ import java.util.Date;
  * Time: 11:44 AM
  */
 @Data
-public class StrategyInBean extends BaseInBean {
+public class StrategyInBean extends BaseDataInBean {
     private Integer id;
 
     private String strategyCode;

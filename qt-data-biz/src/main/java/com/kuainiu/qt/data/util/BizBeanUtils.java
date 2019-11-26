@@ -5,10 +5,7 @@ import com.kuainiu.qt.data.biz.bean.*;
 import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
-import com.kuainiu.qt.data.facade.request.InfoRatioRequest;
-import com.kuainiu.qt.data.facade.request.PortfolioLastRecordPerDayRequest;
-import com.kuainiu.qt.data.facade.request.PortfolioYieldRequest;
-import com.kuainiu.qt.data.facade.request.SnapshotPortfolioRequest;
+import com.kuainiu.qt.data.facade.request.*;
 import com.kuainiu.qt.data.service.bean.*;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -117,6 +114,24 @@ public class BizBeanUtils {
             log.error("[copy list fail] {}", JSON.toJSONString(serBean));
             throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
         }
+        return outBean;
+    }
+
+    public static StkPositionInBean buildStkPositionQryInBean(StkPositionPnlRequest request) {
+        StkPositionInBean inBean = new StkPositionInBean();
+        BeanMapUtils.map(request, inBean);
+        return inBean;
+    }
+
+    public static SnapshotStkPositionSerBean buildStkPositionSerBean(StkPositionInBean inBean) {
+        SnapshotStkPositionSerBean serBean = new SnapshotStkPositionSerBean();
+        BeanMapUtils.map(inBean, serBean);
+        return serBean;
+    }
+
+    public static PortfolioOutBean buildStkPositionOutBean(SnapshotStkPositionSerBean serBean) {
+        PortfolioOutBean outBean = new PortfolioOutBean();
+        BeanMapUtils.map(serBean, outBean);
         return outBean;
     }
 }

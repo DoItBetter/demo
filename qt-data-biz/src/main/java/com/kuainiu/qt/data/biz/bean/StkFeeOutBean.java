@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * Time: 8:15 PM
  */
 @Data
-public class StkFeeOutBean extends BaseOutBean {
+public class StkFeeOutBean extends BaseDataOutBean {
     /**
      * 佣金
      */
