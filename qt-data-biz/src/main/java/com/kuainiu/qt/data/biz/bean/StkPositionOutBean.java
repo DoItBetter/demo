@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * Time: 9:59 AM
  */
 @Data
-public class StkPositionOutBean extends BaseOutBean {
+public class StkPositionOutBean extends BaseDataOutBean {
     private String portfolioCode;
 
     private String strategyCode;

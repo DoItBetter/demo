@@ -1,6 +1,5 @@
 package com.kuainiu.qt.data.service.bean;
 
-import com.kuainiu.qt.framework.common.bean.servicebean.BaseSerBean;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class PortfolioQrySerBean extends BaseSerBean {
+public class PortfolioQrySerBean  extends BaseDataSerBean {
 
     private String portfolioCode;
 
@@ -44,4 +43,8 @@ public class PortfolioQrySerBean extends BaseSerBean {
     private List<FuturesPositionSerBean> futuresPositionList = new ArrayList<>();
 
     private List<CashflowSerBean> cashflowList = new ArrayList<>();
+
+    private List<StkAccountSerBean> stkAccountList = new ArrayList<>();
+
+    private List<FuturesAccountSerBean> futuresAccountList = new ArrayList<>();
 }

@@ -2,7 +2,6 @@ package com.kuainiu.qt.data.util;
 
 import com.kuainiu.qt.data.biz.bean.PortfolioInBean;
 import com.kuainiu.qt.data.biz.bean.PortfolioOutBean;
-import com.kuainiu.qt.data.biz.bean.StdInBean;
 import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.facade.bean.CashflowFacadeBean;
 import com.kuainiu.qt.data.facade.bean.FuturesPositionFacadeBean;
@@ -16,11 +15,6 @@ import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import java.util.List;
 
 public class PortfolioBizUtils {
-    public static StdInBean buildPStdInBean(StdRequest request) {
-        StdInBean inBean = new StdInBean();
-        BeanMapUtils.map(request, inBean);
-        return inBean;
-    }
 
     public static PortfolioInBean buildPortfolioInBean(StdRequest request) throws BizException {
         if (null == request) {

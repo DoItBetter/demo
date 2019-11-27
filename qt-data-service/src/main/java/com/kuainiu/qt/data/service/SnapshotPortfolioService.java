@@ -7,7 +7,6 @@ import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface SnapshotPortfolioService {
     SnapshotPortfolioSerBean getStdByPFCode(String portfolioCode) throws ServiceException;
@@ -28,11 +27,22 @@ public interface SnapshotPortfolioService {
 
     SnapshotPortfolioSerBean findLastBeforeOpenMarket(String portfolioCode) throws ServiceException;
 
-    void dataCheckAndRepair(Map<String, Object> params, String portfolioCode, Date belongTime, int checkMinutes);
+    /**
+     * 取某一分钟infoRatio未计算的订单
+     * @param portfolioCode
+     * @param belongTime
+     * @return
+     */
+    SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime) throws ServiceException;
 
-    void computePortfolioInformationRatio(Map<String, Object> params, String portfolioCode, Date belongTime, String error_flag) throws ServiceException;
+    SnapshotPortfolioSerBean findOneOneMinuteAgo(String portfolioCode) throws ServiceException;
 
-    SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime);
+    SnapshotPortfolioSerBean getLastBeforeOpenMarket(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
 
-    void calcPortfolio(String portfolioCode, Date belongTime);
+    SnapshotPortfolioSerBean getBalanceReturnStdByPortfolioCode(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
+
+    void updateReturnsFields(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException;
+
+    void updateInfoRatio(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException;
+
 }

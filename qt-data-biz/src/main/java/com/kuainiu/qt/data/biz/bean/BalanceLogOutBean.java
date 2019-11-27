@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 4:05 PM
  */
 @Data
-public class BalanceLogOutBean extends BaseOutBean {
+public class BalanceLogOutBean extends BaseDataOutBean {
     private Long id;
 
     private String accountCode;

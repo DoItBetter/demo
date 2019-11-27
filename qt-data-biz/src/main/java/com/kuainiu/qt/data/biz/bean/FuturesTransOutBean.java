@@ -12,7 +12,7 @@ import java.util.Date;
  * Time: 9:12 PM
  */
 @Data
-public class FuturesTransOutBean extends BaseOutBean {
+public class FuturesTransOutBean extends BaseDataOutBean {
     private Long id;
 
     private String qtTransId;

@@ -1,9 +1,9 @@
 package com.kuainiu.qt.data.web.controller;
 
 import com.kuainiu.qt.data.biz.PortfolioBiz;
+import com.kuainiu.qt.data.biz.SnapshotPortfolioBiz;
 import com.kuainiu.qt.data.biz.bean.processor.PortfolioInformationRatioProcessorInBean;
 import com.kuainiu.qt.data.biz.bean.processor.PortfolioProcessorInBean;
-import com.kuainiu.qt.data.biz.task.InformationRatioProcessor;
 import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.facade.QtDataSnapshotPortfolioFacade;
 import com.kuainiu.qt.data.facade.request.*;
@@ -80,7 +80,7 @@ public class PortfolioController {
     }
 
     @Autowired
-    InformationRatioProcessor informationRatioProcessor;
+    SnapshotPortfolioBiz snapshotPortfolioBiz;
 
     @ApiOperation(httpMethod = "POST",value = "测试Info脚本")
     @RequestMapping(value="/portfolioInformationRatioProcessor",produces = "application/json;charset=UTF-8")
@@ -88,6 +88,6 @@ public class PortfolioController {
     public void portfolioInformationRatioProcessor() throws BizException {
         PortfolioInformationRatioProcessorInBean inBean = new PortfolioInformationRatioProcessorInBean();
         inBean.setForce(true);
-        informationRatioProcessor.recordPortfolio(inBean);
+        snapshotPortfolioBiz.recordPortfolio(inBean);
     }
 }

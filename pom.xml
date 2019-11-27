@@ -33,7 +33,7 @@
         <qt.data.common.version>0.0.1-SNAPSHOT</qt.data.common.version>
         <qt.data.biz.version>0.0.1-SNAPSHOT</qt.data.biz.version>
         <framework.version>1.0.2-SNAPSHOT</framework.version>
-        <qt.trans.facade.version>0.1.06-SNAPSHOT</qt.trans.facade.version>
+        <qt.trans.facade.version>0.1.07-SNAPSHOT</qt.trans.facade.version>
         <dubbo.version>2.7.0</dubbo.version>
         <edas.dubbo.extension.version>2.0.3</edas.dubbo.extension.version>
         <swagger.version>2.7.0</swagger.version>

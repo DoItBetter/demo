@@ -1,18 +1,22 @@
 package com.kuainiu.qt.data.service.bean;
 
-import com.kuainiu.qt.framework.common.util.CommonConstant;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
  * User: ckhero
- * Date: 2019/6/7
- * Time: 11:05 AM
+ * Date: 2019/7/13
+ * Time: 3:25 PM
  */
 @Data
-public class FuturesPositionSerBean extends BaseSerBean {
+public class FuturesPositionSerBean extends BaseDataSerBean {
+    private Long id;
+
+    private String snapshotCode;
+
     private String portfolioCode;
 
     private String strategyCode;
@@ -37,24 +41,33 @@ public class FuturesPositionSerBean extends BaseSerBean {
 
     private BigDecimal marketValue = BigDecimal.ZERO;
 
-    private Integer closableBuyQty = CommonConstant.ZERO;
+    private Integer closableBuyQty = 0;
 
-    private Integer buyTodayQty = CommonConstant.ZERO;
+    private Integer buyTodayQty = 0;
 
-    private Integer buyAccountTodayQty = CommonConstant.ZERO;
+    private Integer buyAccountTodayQty = 0;
 
     private BigDecimal buyAvgOpenPrice = BigDecimal.ZERO;
 
     private BigDecimal buyAvgHoldingPrice = BigDecimal.ZERO;
 
-    private Integer closableSellQty = CommonConstant.ZERO;
+    private Integer closableSellQty = 0;
 
-    private Integer sellTodayQty = CommonConstant.ZERO;
+    private Integer sellTodayQty = 0;
 
-    private Integer sellAccountTodayQty = CommonConstant.ZERO;
+    private Integer sellAccountTodayQty = 0;
 
     private BigDecimal sellAvgOpenPrice = BigDecimal.ZERO;
 
     private BigDecimal sellAvgHoldingPrice = BigDecimal.ZERO;
 
+    private Date belongTime;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private Date startCreateTime;
+
+    private Date endCreateTime;
 }

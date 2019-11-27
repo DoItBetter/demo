@@ -3,6 +3,7 @@ package com.kuainiu.qt.data.dal.dao;
 import com.kuainiu.qt.data.dal.entity.SnapshotPortfolio;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -49,7 +50,8 @@ public interface SnapshotPortfolioDao {
     SnapshotPortfolio getBalanceReturnStdByPortfolioCode(SnapshotPortfolio snapshotPortfolio);
 
     @ResultMap("BaseResultMap")
-    @Select("select * from t_snapshot_portfolio where portfolio_code = #{portfolioCode} and belong_time = #{belongTime} order by belong_time desc limit 1")
+    @Select("select * from t_snapshot_portfolio where portfolio_code = #{portfolioCode} and belong_time = #{belongTime} " +
+            "and error_flag=#{errorFlag} order by belong_time desc limit 1")
     SnapshotPortfolio getPortfolioByPortfolioCodeAndBelongTime(SnapshotPortfolio snapshotPortfolio);
 
     List<SnapshotPortfolio> getLastPortfolioByPortfolioCodeAndBelongTime(SnapshotPortfolio snapshotPortfolio);
@@ -61,4 +63,33 @@ public interface SnapshotPortfolioDao {
     @ResultMap("BaseResultMapWithAccount")
     @Select("select * from t_snapshot_portfolio where `portfolio_code` = #{portfolioCode} and belong_time < #{endBelongTime} order by belong_time desc limit 1")
     SnapshotPortfolio getLastBeforeOpenMarket(SnapshotPortfolio snapshotPortfolio);
+
+    @Update("<script>" +
+            "update t_snapshot_portfolio set " +
+            "<if test=\"baseReturns != null\">\n" +
+            "   base_returns = #{baseReturns,jdbcType=DECIMAL},\n" +
+            " </if>\n" +
+            " <if test=\"baseRealtimeReturns != null\">\n" +
+            "   base_realtime_returns = #{baseRealtimeReturns,jdbcType=DECIMAL},\n" +
+            " </if> " +
+            "<if test=\"balanceReturns != null\">\n" +
+            "   balance_returns = #{balanceReturns,jdbcType=DECIMAL},\n" +
+            " </if>\n" +
+            "   id = #{id}" +
+            " where id = #{id}" +
+            "</script>")
+    int updateReturnsFields(SnapshotPortfolio snapshotPortfolio);
+
+    @Update("<script>" +
+            "update t_snapshot_portfolio set " +
+            "<if test=\"informationRatio != null\">\n" +
+            "   information_ratio = #{informationRatio,jdbcType=DECIMAL},\n" +
+            " </if>\n" +
+            "<if test=\"errorFlag != null\">\n" +
+            "   error_flag = #{errorFlag,jdbcType=VARCHAR},\n" +
+            " </if>\n" +
+            "   id = #{id}" +
+            " where id = #{id}" +
+            "</script>")
+    int updateInfoRatio(SnapshotPortfolio snapshotPortfolio);
 }

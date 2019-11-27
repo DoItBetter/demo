@@ -3,8 +3,6 @@ package com.kuainiu.qt.data.biz.bean;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,7 +11,7 @@ import java.util.List;
  * Time: 9:56 PM
  */
 @Data
-public class StkAccountOutBean extends BaseOutBean {
+public class StkAccountOutBean extends BaseDataOutBean {
     private String portfolioCode;
 
     private String strategyCode;
@@ -46,9 +44,4 @@ public class StkAccountOutBean extends BaseOutBean {
      * 当日费用明细
      */
     private StkFeeOutBean transactionCost;
-
-    /**
-     * 账户下的仓位
-     */
-    private List<StkPositionOutBean> positions = new ArrayList<>();
 }

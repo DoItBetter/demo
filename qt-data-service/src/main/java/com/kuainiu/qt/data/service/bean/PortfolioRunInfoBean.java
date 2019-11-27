@@ -12,9 +12,11 @@ import java.math.BigDecimal;
  * Time: 16:29
  */
 @Data
-public class PortfolioRunInfoBean {
-    private BigDecimal baseTotalReturns;
-    private int runDays;
-    private JSONArray runDayList;
+public class PortfolioRunInfoBean  extends BaseDataSerBean{
 
+    private BigDecimal baseTotalReturns;
+
+    private int runDays;
+
+    private JSONArray runDayList;
 }

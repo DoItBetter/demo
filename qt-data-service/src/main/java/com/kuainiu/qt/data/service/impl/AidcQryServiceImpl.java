@@ -1,17 +1,22 @@
 package com.kuainiu.qt.data.service.impl;
 
-import com.kuainiu.qt.data.common.util.CommonConstant;
-import com.kuainiu.qt.data.common.util.QtDateUtils;
-import com.kuainiu.qt.data.common.util.RedisKeyUtils;
-import com.kuainiu.qt.data.common.util.RedisUtil;
+import com.kuainiu.qt.data.common.util.*;
 import com.kuainiu.qt.data.exception.ServiceException;
+import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.AidcQryService;
+import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
+import com.kuainiu.qt.data.service.http.AidcCDHttp;
 import com.kuainiu.qt.data.service.http.AidcSHHttp;
+import com.kuainiu.qt.data.service.http.request.StockEarningRate300Request;
 import com.kuainiu.qt.data.service.http.request.aidc.AidcTradeDateRequest;
+import com.kuainiu.qt.data.service.http.response.StockEarningRate300Response;
+import com.kuainiu.qt.data.service.http.response.aidc.InstrumentResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +35,9 @@ public class AidcQryServiceImpl implements AidcQryService {
 
     @Autowired
     AidcSHHttp aidcSHHttp;
+
+    @Autowired
+    AidcCDHttp aidcCDHttp;
 
     @Override
     public boolean isTransToday() throws ServiceException {
@@ -51,5 +59,51 @@ public class AidcQryServiceImpl implements AidcQryService {
         request.setEnd_date(QtDateUtils.converToYMD(endDate));
         request.setType(1);
         return aidcSHHttp.qryTradeDate(request);
+    }
+
+    @Override
+    public String getAssetName(String transboard, String assetNo) throws ServiceException {
+        String redisKey = RedisConst.KEY_ASSET_NAME + transboard + assetNo;
+        String assetName = (String) redisUtil.get(redisKey);
+        if (null != assetName) {
+            return assetName;
+        }
+
+        try {
+            InstrumentResponse response = aidcCDHttp.qryInstrument(transboard + assetNo);
+            assetName = response.getData().getSymbol();
+        } catch (ServiceException e) {
+            throw new ServiceException(QtDataRspCode.ERR_AIDC_ASSET_NAME, "[" + transboard + assetNo + "]");
+        }
+
+        redisUtil.set(redisKey, assetName, QtDateUtils.getSecondsLefToday());
+        return assetName;
+    }
+
+    @Override
+    public Integer getPortfolioRundays(String portfolioCode, Date startDate) throws ServiceException {
+        String redisKey = RedisKeyUtils.getPortfolioRunDaysKey(portfolioCode);
+        Integer runDays = (Integer) redisUtil.get(redisKey);
+        if (null == runDays) {
+            List<String> runDayList = getRundayList(startDate, QtDateUtils.getCurrDate());
+            runDays = runDayList.size();
+            redisUtil.set(redisKey, runDays, QtDateUtils.getSecondsLefToday());
+        }
+        return runDays;
+    }
+
+    @Override
+    public BigDecimal qryRm(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException {
+        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstant.DATEFORMAT_YMDHMS);
+        String timeStr = sdf.format(snapshotPortfolio.getBelongTime());
+        StockEarningRate300Request stockEarningRate300Request = new StockEarningRate300Request();
+        stockEarningRate300Request.setDatetime(timeStr);
+        StockEarningRate300Response earningResponse = new StockEarningRate300Response();
+        try {
+            earningResponse = aidcCDHttp.queryEarningRate300(stockEarningRate300Request);
+        } catch (Exception e) {
+            throw new ServiceException(QtDataRspCode.ERR_AIDC_QRY_RM_FAIL);
+        }
+        return earningResponse.getData().getData();
     }
 }

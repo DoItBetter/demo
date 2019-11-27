@@ -14,7 +14,7 @@ import java.util.Map;
  * Time: 8:43 PM
  */
 @Data
-public class AccountSerBean {
+public class AccountSerBean extends BaseDataSerBean{
 
     private Long id;
 

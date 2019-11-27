@@ -12,7 +12,7 @@ import java.util.Date;
  * Time: 3:47 PM
  */
 @Data
-public class CashflowSerBean extends BaseSerBean {
+public class CashflowSerBean extends BaseDataSerBean {
     private BigDecimal totalValue;
 
     private BigDecimal cashflowValue;

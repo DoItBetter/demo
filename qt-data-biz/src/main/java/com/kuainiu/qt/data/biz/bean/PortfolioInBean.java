@@ -1,6 +1,5 @@
 package com.kuainiu.qt.data.biz.bean;
 
-import com.kuainiu.qt.framework.common.bean.bizbean.BaseInBean;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
  * Time: 4:44 PM
  */
 @Data
-public class PortfolioInBean extends BaseInBean {
+public class PortfolioInBean extends BaseDataInBean {
     private String portfolioCode;
 
     private String portfolioName;

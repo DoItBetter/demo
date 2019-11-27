@@ -19,4 +19,6 @@ public interface PortfolioQryBiz {
     List<SnapshotPortfolioOutBean> qryLastRecordPerDay(SnapshotPortfolioInBean inBean) throws BizException;
 
     PortfolioOutBean qryPortfolioFromLocal(PortfolioInBean inBean) throws BizException;
+
+    PortfolioOutBean qryPortfolio(PortfolioInBean inBean) throws BizException;
 }

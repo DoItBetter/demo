@@ -1,7 +1,7 @@
 package com.kuainiu.qt.data.biz.calc;
 
-import com.kuainiu.qt.data.biz.bean.FuturesAccountOutBean;
-import com.kuainiu.qt.data.biz.bean.SnapshotFuturesAccountOutBean;
+import com.kuainiu.qt.data.service.bean.FuturesAccountSerBean;
+import com.kuainiu.qt.data.service.bean.SnapshotFuturesAccountSerBean;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,10 +14,10 @@ import java.util.List;
  */
 public interface FuturesAccountCalc {
 
-    BigDecimal calcTotalFund(FuturesAccountOutBean account);
+    BigDecimal calcTotalFund(FuturesAccountSerBean account);
 
-    BigDecimal calcTotalFund(SnapshotFuturesAccountOutBean account);
+    BigDecimal calcTotalFund(SnapshotFuturesAccountSerBean account);
 
-    BigDecimal calcTotalFund(List<SnapshotFuturesAccountOutBean> accountList);
+    BigDecimal calcTotalFund(List<SnapshotFuturesAccountSerBean> accountList);
 
 }

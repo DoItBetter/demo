@@ -1,7 +1,8 @@
 package com.kuainiu.qt.data.biz.bean;
 
-import com.kuainiu.qt.framework.common.bean.bizbean.BaseInBean;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +11,7 @@ import lombok.Data;
  * Time: 11:00 AM
  */
 @Data
-public class FuturesPositionInBean extends BaseInBean {
+public class FuturesPositionInBean extends BaseDataInBean {
     private String assetNo;
 
     private String channelCode;
@@ -18,4 +19,6 @@ public class FuturesPositionInBean extends BaseInBean {
     private String portfolioCode;
 
     private String strategyCode;
+
+    private Date endBelongTime;
 }

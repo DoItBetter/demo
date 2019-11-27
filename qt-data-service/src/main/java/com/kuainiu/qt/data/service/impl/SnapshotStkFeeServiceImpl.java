@@ -27,8 +27,9 @@ public class SnapshotStkFeeServiceImpl implements SnapshotStkFeeService {
             return;
         }
         try {
-            List<SnapshotStkFee> stkAccountList = BeanMapUtils.mapAsList(serBeanList, SnapshotStkFee.class);
-            snapshotStkFeeDao.batchInsert(stkAccountList);
+            List<SnapshotStkFee> stkFeeList = BeanMapUtils.mapAsList(serBeanList, SnapshotStkFee.class);
+            snapshotStkFeeDao.batchInsert(stkFeeList);
+            log.info("批量入库的stkFeeList = {} " , stkFeeList);
         } catch (Exception e) {
             log.error("[Service][Snapshot]batch insert SnapshotStkFee fail", e);
             log.error("[Service][Snapshot]batch insert SnapshotStkFee fail,data={}", JSON.toJSONString(serBeanList));

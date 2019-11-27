@@ -5,10 +5,7 @@ import com.kuainiu.qt.data.biz.bean.*;
 import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
-import com.kuainiu.qt.data.facade.request.InfoRatioRequest;
-import com.kuainiu.qt.data.facade.request.PortfolioLastRecordPerDayRequest;
-import com.kuainiu.qt.data.facade.request.PortfolioYieldRequest;
-import com.kuainiu.qt.data.facade.request.SnapshotPortfolioRequest;
+import com.kuainiu.qt.data.facade.request.*;
 import com.kuainiu.qt.data.service.bean.*;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -93,6 +90,8 @@ public class BizBeanUtils {
         List<StkPositionOutBean> stkPositionList = new ArrayList<>();
         List<FuturesPositionOutBean> futuresPositionList = new ArrayList<>();
         List<CashflowOutBean> cashflowList = new ArrayList<>();
+        List<StkAccountOutBean> stkAccountList = new ArrayList<>();
+        List<FuturesAccountOutBean> futuresAccountList = new ArrayList<>();
         try {
             stkPositionList = BeanMapUtils.mapAsList(serBean.getStkPositionList(), StkPositionOutBean.class);
             outBean.setStkPositionList(stkPositionList);
@@ -100,10 +99,57 @@ public class BizBeanUtils {
             outBean.setFuturesPositionList(futuresPositionList);
             cashflowList = BeanMapUtils.mapAsList(serBean.getCashflowList(), CashflowOutBean.class);
             outBean.setCashflowList(cashflowList);
+            for (StkAccountSerBean stkAccount : serBean.getStkAccountList()) {
+                StkAccountOutBean stkAccountOutBean = new StkAccountOutBean();
+                BeanMapUtils.map(stkAccount, stkAccountOutBean);
+                StkFeeOutBean stkFeeOutBean = new StkFeeOutBean();
+                BeanMapUtils.map(stkAccount.getTransactionCost(), stkFeeOutBean);
+                stkAccountOutBean.setTransactionCost(stkFeeOutBean);
+                stkAccountList.add(stkAccountOutBean);
+            }
+            outBean.setStkAccountList(stkAccountList);
+            futuresAccountList = BeanMapUtils.mapAsList(serBean.getFuturesAccountList(), FuturesAccountOutBean.class);
+            outBean.setFuturesAccountList(futuresAccountList);
         } catch (InstantiationException | IllegalAccessException e) {
-            log.error("[copy list fail] {}", JSON.toJSONString(stkPositionList));
+            log.error("[copy list fail] {}", JSON.toJSONString(serBean));
             throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
         }
         return outBean;
+    }
+
+    public static StkPositionInBean buildStkPositionQryInBean(StkPositionPnlRequest request) {
+        StkPositionInBean inBean = new StkPositionInBean();
+        BeanMapUtils.map(request, inBean);
+        return inBean;
+    }
+
+    public static StkPositionReqSerBean buildStkPositionReqSerBean(StkPositionInBean inBean) {
+        StkPositionReqSerBean serBean = new StkPositionReqSerBean();
+        BeanMapUtils.map(inBean, serBean);
+        return serBean;
+    }
+
+    public static StkPositionOutBean buildStkPositionOutBean(StkPositionSerBean serBean) {
+        StkPositionOutBean outBean = new StkPositionOutBean();
+        BeanMapUtils.map(serBean, outBean);
+        return outBean;
+    }
+
+    public static FuturesPositionReqSerBean buildFuturesPositionReqSerBean(FuturesPositionInBean inBean) {
+        FuturesPositionReqSerBean reqSerBean = new FuturesPositionReqSerBean();
+        BeanMapUtils.map(inBean, reqSerBean);
+        return reqSerBean;
+    }
+
+    public static FuturesPositionOutBean buildFuturesPositionOutBean(FuturesPositionSerBean serBean) {
+        FuturesPositionOutBean outBean = new FuturesPositionOutBean();
+        BeanMapUtils.map(serBean, outBean);
+        return outBean;
+    }
+
+    public static FuturesPositionInBean buildFuturesPositionQryInBean(FuturesPositionPnlRequest request) {
+        FuturesPositionInBean inBean = new FuturesPositionInBean();
+        BeanMapUtils.map(request, inBean);
+        return inBean;
     }
 }

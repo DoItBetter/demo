@@ -24,6 +24,8 @@ import java.util.List;
 @Service
 @Slf4j
 public class PortfolioServiceImpl implements PortfolioService {
+    private final String QT_TRANS_RESPONSE_SUCC = "0";
+
     @Reference
     QtTransPortfolioQryFacade qtTransPortfolioQryFacade;
 
@@ -38,9 +40,12 @@ public class PortfolioServiceImpl implements PortfolioService {
             log.info("qry all response : " + response);
         } catch (RpcException e){
             log.error("trans qry portfolio all fail rpc", e);
-            throw new ServiceException(QtDataRspCode.SYS_TIMEOUT);
+            throw new ServiceException(QtDataRspCode.ERR_SYS_RPC);
         } catch (Exception e){
             log.error("trans fail", e);
+        }
+        if (!response.getCode().equals(QT_TRANS_RESPONSE_SUCC)) {
+            throw new ServiceException(response.getMsg());
         }
         portfolioSerBeanList = SerBeanUtils.buildPortfolioSerBeanList(response);
         return portfolioSerBeanList;
@@ -56,10 +61,13 @@ public class PortfolioServiceImpl implements PortfolioService {
             log.info("qry portfolio info response : " + response);
         } catch (RpcException e){
             log.error("trans qry portfolio info fail rpc", e);
-            throw new ServiceException(QtDataRspCode.SYS_TIMEOUT);
+            throw new ServiceException(QtDataRspCode.ERR_SYS_RPC);
         } catch (Exception e){
             log.error("trans fail ，reqSerBean ：" + reqSerBean, e);
             throw new ServiceException(QtDataRspCode.ERR_QRY_TRANS_PORTFOLIO_FAIL, e.getMessage());
+        }
+        if (!response.getCode().equals(QT_TRANS_RESPONSE_SUCC)) {
+            throw new ServiceException(response.getMsg());
         }
         return SerBeanUtils.buildPortfolioSerBean(response);
     }
@@ -72,9 +80,12 @@ public class PortfolioServiceImpl implements PortfolioService {
             log.info("qry portfolio info response : " + response);
         } catch (RpcException e){
             log.error("trans qry portfolio info fail rpc", e);
-            throw new ServiceException(QtDataRspCode.SYS_TIMEOUT);
+            throw new ServiceException(QtDataRspCode.ERR_SYS_RPC);
         } catch (Exception e){
             log.error("trans fail", e);
+        }
+        if (!response.getCode().equals(QT_TRANS_RESPONSE_SUCC)) {
+            throw new ServiceException(response.getMsg());
         }
         return SerBeanUtils.buildPortfolioSerBeanList(response);
     }

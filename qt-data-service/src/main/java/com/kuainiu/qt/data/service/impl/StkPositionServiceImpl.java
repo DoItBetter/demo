@@ -1,13 +1,14 @@
 package com.kuainiu.qt.data.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.kuainiu.qt.data.common.util.QtDateUtils;
 import com.kuainiu.qt.data.dal.dao.SnapshotStkPositionDao;
 import com.kuainiu.qt.data.dal.entity.SnapshotStkPosition;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
-import com.kuainiu.qt.data.service.SnapshotStkPositionService;
+import com.kuainiu.qt.data.service.StkPositionService;
 import com.kuainiu.qt.data.service.bean.SnapshotStkPositionSerBean;
+import com.kuainiu.qt.data.service.bean.StkPositionReqSerBean;
+import com.kuainiu.qt.data.service.bean.StkPositionSerBean;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import com.kuainiu.qt.framework.common.util.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class SnapshotStkPositionServiceImpl implements SnapshotStkPositionService {
+public class StkPositionServiceImpl implements StkPositionService {
     @Autowired
     SnapshotStkPositionDao snapshotStkPositionDao;
 
@@ -38,11 +38,11 @@ public class SnapshotStkPositionServiceImpl implements SnapshotStkPositionServic
         }
         try {
             List<SnapshotStkPosition> stkPositionList = BeanMapUtils.mapAsList(serBeanList, SnapshotStkPosition.class);
-            log.info("批量入库的stkPositionList : " + stkPositionList);
             snapshotStkPositionDao.batchInsert(stkPositionList);
+            log.info("批量入库的stkPositionList ={} ", stkPositionList);
         } catch (Exception e) {
             log.error("[batch insert SnapshotStkPosition fail]", e);
-//            throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_STK_POSITION_BATCH_ADD);
+            throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_STK_POSITION_BATCH_ADD);
         }
     }
 
@@ -65,22 +65,23 @@ public class SnapshotStkPositionServiceImpl implements SnapshotStkPositionServic
     }
 
     @Override
-    public SnapshotStkPositionSerBean findLastYesterday(SnapshotStkPositionSerBean snapshotStkPositionSerBean) throws ServiceException {
-        log.info("[Service][STK] qry last position snapshot,assetNo={},strategyCode={}", snapshotStkPositionSerBean.getAssetNo(), snapshotStkPositionSerBean.getStrategyCode());
+    public StkPositionSerBean findLastYesterday(StkPositionReqSerBean stkPositionReqSerBean) throws ServiceException {
+        StkPositionSerBean stkPositionSerBean = new StkPositionSerBean();
+        SnapshotStkPosition snapshotStkPosition = new SnapshotStkPosition();
+        log.info("[Service][STK] qry last position snapshot,assetNo={},strategyCode={}", stkPositionReqSerBean.getAssetNo(), stkPositionReqSerBean.getStrategyCode());
         try {
-            SnapshotStkPosition snapshotStkPosition = new SnapshotStkPosition();
-            BeanMapUtils.map(snapshotStkPositionSerBean, snapshotStkPosition);
-            Date endBelongTime = QtDateUtils.isBeforeOpenMarket() ? QtDateUtils.getOpenMarketYesterday() : QtDateUtils.getOpenMarket();
-            snapshotStkPosition.setEndBelongTime(endBelongTime);
+            BeanMapUtils.map(stkPositionReqSerBean, snapshotStkPosition);
             snapshotStkPosition = snapshotStkPositionDao.findOne(snapshotStkPosition);
-            if (snapshotStkPosition != null) {
-                BeanMapUtils.map(snapshotStkPosition, snapshotStkPositionSerBean);
+            if (snapshotStkPosition == null) {
+                return stkPositionSerBean;
             }
+            BeanMapUtils.map(snapshotStkPosition, stkPositionSerBean);
         } catch (Exception e) {
             log.error("findLastYesterday fail", e);
+            log.error("findLastYesterday fail, snapshotStkPosition ={}", snapshotStkPosition);
             throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_STK_POSITION_QRY);
         }
-        log.info("[Service][STK] qry last position snapshot,res={}", JSON.toJSONString(snapshotStkPositionSerBean));
-        return snapshotStkPositionSerBean;
+        log.info("[Service][STK] qry last position snapshot,res={}", JSON.toJSONString(stkPositionSerBean));
+        return stkPositionSerBean;
     }
 }
