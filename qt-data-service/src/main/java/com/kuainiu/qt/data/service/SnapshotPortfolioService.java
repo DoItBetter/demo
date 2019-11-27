@@ -37,9 +37,12 @@ public interface SnapshotPortfolioService {
 
     SnapshotPortfolioSerBean findOneOneMinuteAgo(String portfolioCode) throws ServiceException;
 
-    void updateByPrimaryKey(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException;
-
     SnapshotPortfolioSerBean getLastBeforeOpenMarket(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
 
     SnapshotPortfolioSerBean getBalanceReturnStdByPortfolioCode(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
+
+    void updateReturnsFields(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException;
+
+    void updateInfoRatio(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException;
+
 }

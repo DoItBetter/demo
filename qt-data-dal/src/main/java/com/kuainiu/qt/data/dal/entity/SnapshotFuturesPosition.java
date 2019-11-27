@@ -65,4 +65,5 @@ public class SnapshotFuturesPosition {
 
     private Date endCreateTime;
 
+    private Date endBelongTime;
 }

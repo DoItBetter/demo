@@ -47,7 +47,7 @@ public class PortfolioQryBizImpl implements PortfolioQryBiz {
     AidcQryService aidcQryService;
 
     @Autowired
-    SnapshotFuturesPositionsService snapshotFuturesPositionsService;
+    FuturesPositionsService futuresPositionsService;
 
     @Autowired
     SnapshotPortfolioCashflowService snapshotPortfolioCashflowService;
@@ -174,8 +174,8 @@ public class PortfolioQryBizImpl implements PortfolioQryBiz {
             outBean.setStkPositionList(stkPositionOutBeanList);
 
             //期货仓位
-            List<SnapshotFuturesPositionsSerBean> snapshotFuturesPositionsSerBeanList = snapshotFuturesPositionsService.getListBySnapshotCode(portfolioSerBean.getSnapshotCode());
-            List<FuturesPositionOutBean> futuresPositionOutBeanList = BeanMapUtils.mapAsList(snapshotFuturesPositionsSerBeanList, FuturesPositionOutBean.class);
+            List<FuturesPositionSerBean> futuresPositionSerBeanList = futuresPositionsService.getListBySnapshotCode(portfolioSerBean.getSnapshotCode());
+            List<FuturesPositionOutBean> futuresPositionOutBeanList = BeanMapUtils.mapAsList(futuresPositionSerBeanList, FuturesPositionOutBean.class);
             outBean.setFuturesPositionList(futuresPositionOutBeanList);
 
             //出入金

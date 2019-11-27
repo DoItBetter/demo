@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 public class SnapshotGroupSerBean {
-    List<SnapshotFuturesPositionsSerBean> futuresPositionsSerBeanList = new ArrayList<>();
+    List<FuturesPositionSerBean> futuresPositionSerBeanList = new ArrayList<>();
 
     List<SnapshotPortfolioCashflowSerBean> portfolioCashflowSerBeanList = new ArrayList<>();
 

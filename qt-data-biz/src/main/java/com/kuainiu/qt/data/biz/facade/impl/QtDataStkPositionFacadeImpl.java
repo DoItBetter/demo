@@ -2,8 +2,8 @@ package com.kuainiu.qt.data.biz.facade.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.kuainiu.qt.data.biz.StkPositionBiz;
-import com.kuainiu.qt.data.biz.bean.PortfolioOutBean;
 import com.kuainiu.qt.data.biz.bean.StkPositionInBean;
+import com.kuainiu.qt.data.biz.bean.StkPositionOutBean;
 import com.kuainiu.qt.data.facade.QtDataStkPositionFacade;
 import com.kuainiu.qt.data.facade.request.StkPositionPnlRequest;
 import com.kuainiu.qt.data.facade.response.StkPositionPnlResponse;
@@ -28,7 +28,7 @@ public class QtDataStkPositionFacadeImpl implements QtDataStkPositionFacade {
         try {
             ParamCheckHandle.checkStkPositionPnlRequest(request);
             StkPositionInBean inBean = BizBeanUtils.buildStkPositionQryInBean(request);
-            PortfolioOutBean outBean = stkPositionBiz.getPnl(inBean);
+            StkPositionOutBean outBean = stkPositionBiz.getHistoryPnl(inBean);
             response = BizResponseUtils.buildStkPositionQryResponse(outBean);
             ResponseUtils.success(response);
         } catch (Exception e) {

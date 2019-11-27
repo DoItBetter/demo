@@ -1,9 +1,10 @@
 package com.kuainiu.qt.data.service.bean;
 
-import com.kuainiu.qt.framework.common.bean.servicebean.BaseSerBean;
 import lombok.Data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,7 +13,7 @@ import java.util.*;
  * Time: 8:30 PM
  */
 @Data
-public class PortfolioSerBean extends BaseSerBean {
+public class PortfolioSerBean extends BaseDataSerBean{
 
     private String portfolioCode;
 

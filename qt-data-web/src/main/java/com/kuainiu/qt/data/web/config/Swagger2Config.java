@@ -53,4 +53,16 @@ public class Swagger2Config {
                 .apiInfo(apiInfo())
                 .enable(enable);
     }
+
+    @Bean("FuturesPositionApis")
+    public Docket futuresPositionApis() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("期货仓位模块")
+                .select()
+                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
+                .paths(PathSelectors.regex("/futuresPosition.*"))
+                .build()
+                .apiInfo(apiInfo())
+                .enable(enable);
+    }
 }

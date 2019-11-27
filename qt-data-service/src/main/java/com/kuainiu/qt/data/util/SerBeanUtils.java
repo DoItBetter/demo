@@ -5,7 +5,7 @@ import com.kuainiu.qt.data.dal.entity.SnapshotPortfolio;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.bean.*;
-import com.kuainiu.qt.data.service.bean.trans.StkAssetDetailFeeSerBean;
+import com.kuainiu.qt.data.service.bean.StkAssetDetailFeeSerBean;
 import com.kuainiu.qt.data.service.http.AidcCDHttp;
 import com.kuainiu.qt.data.service.http.impl.AidcCDHttpImpl;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;

@@ -123,15 +123,33 @@ public class BizBeanUtils {
         return inBean;
     }
 
-    public static SnapshotStkPositionSerBean buildStkPositionSerBean(StkPositionInBean inBean) {
-        SnapshotStkPositionSerBean serBean = new SnapshotStkPositionSerBean();
+    public static StkPositionReqSerBean buildStkPositionReqSerBean(StkPositionInBean inBean) {
+        StkPositionReqSerBean serBean = new StkPositionReqSerBean();
         BeanMapUtils.map(inBean, serBean);
         return serBean;
     }
 
-    public static PortfolioOutBean buildStkPositionOutBean(SnapshotStkPositionSerBean serBean) {
-        PortfolioOutBean outBean = new PortfolioOutBean();
+    public static StkPositionOutBean buildStkPositionOutBean(StkPositionSerBean serBean) {
+        StkPositionOutBean outBean = new StkPositionOutBean();
         BeanMapUtils.map(serBean, outBean);
         return outBean;
+    }
+
+    public static FuturesPositionReqSerBean buildFuturesPositionReqSerBean(FuturesPositionInBean inBean) {
+        FuturesPositionReqSerBean reqSerBean = new FuturesPositionReqSerBean();
+        BeanMapUtils.map(inBean, reqSerBean);
+        return reqSerBean;
+    }
+
+    public static FuturesPositionOutBean buildFuturesPositionOutBean(FuturesPositionSerBean serBean) {
+        FuturesPositionOutBean outBean = new FuturesPositionOutBean();
+        BeanMapUtils.map(serBean, outBean);
+        return outBean;
+    }
+
+    public static FuturesPositionInBean buildFuturesPositionQryInBean(FuturesPositionPnlRequest request) {
+        FuturesPositionInBean inBean = new FuturesPositionInBean();
+        BeanMapUtils.map(request, inBean);
+        return inBean;
     }
 }

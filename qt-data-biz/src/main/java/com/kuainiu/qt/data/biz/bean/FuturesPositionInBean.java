@@ -2,6 +2,8 @@ package com.kuainiu.qt.data.biz.bean;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * Created by IntelliJ IDEA.
  * User: ckhero
@@ -17,4 +19,6 @@ public class FuturesPositionInBean extends BaseDataInBean {
     private String portfolioCode;
 
     private String strategyCode;
+
+    private Date endBelongTime;
 }

@@ -3,7 +3,7 @@ package com.kuainiu.qt.data.service.bean;
 import lombok.Data;
 
 @Data
-public class PortfolioReqSerBean extends BaseReqSerBean{
+public class PortfolioReqSerBean extends BaseDataReqSerBean {
     private String portfolioCode;
 
     /**

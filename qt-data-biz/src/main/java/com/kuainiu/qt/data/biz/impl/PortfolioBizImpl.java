@@ -65,7 +65,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
                 PortfolioInBean inBean = BizBeanUtils.buildPortfolioInBean(serBean);
                 PortfolioOutBean portfolio = portfolioQryBiz.qryPortfolioFromLocal(inBean);
                 log.info("qryPortfolioFromLocal serBean" + serBean);
-                SnapshotGroupSerBean groupSerBean = calcSsGroupBean(portfolio);
+                SnapshotGroupSerBean groupSerBean = buildGroupBean(portfolio);
                 snapshotPortfolioService.setSnapshotPortfolioTx(groupSerBean);
             }
         } catch (ServiceException e) {
@@ -74,7 +74,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
         }
         log.info("运行落快照脚本结束");
     }
-    private SnapshotGroupSerBean calcSsGroupBean(PortfolioOutBean portfolio) throws ServiceException {
+    private SnapshotGroupSerBean buildGroupBean(PortfolioOutBean portfolio) throws ServiceException {
         SnapshotGroupSerBean ssGroupBean = new SnapshotGroupSerBean();
         String portfolioCode = portfolio.getPortfolioCode();
         try {
@@ -89,23 +89,23 @@ public class PortfolioBizImpl implements PortfolioBiz {
             ssGroupBean.setPortfolioSerBean(ssPortfolio);
 
             //出入金信息
-            List<SnapshotPortfolioCashflowSerBean> ssCashflowList = resetCashflowList(portfolio.getCashflowList(), snapshotCode);
+            List<SnapshotPortfolioCashflowSerBean> ssCashflowList = buildCashflowList(portfolio.getCashflowList(), snapshotCode);
             ssGroupBean.setPortfolioCashflowSerBeanList(ssCashflowList);
 
             //股票仓位
-            List<SnapshotStkPositionSerBean> stkPositionList = resetStkPositionList(portfolio.getStkPositionList(), snapshotCode);
+            List<SnapshotStkPositionSerBean> stkPositionList = buildStkPositionList(portfolio.getStkPositionList(), snapshotCode);
             ssGroupBean.setStkPositionSerBeanList(stkPositionList);
 
             //期货仓位
-            List<SnapshotFuturesPositionsSerBean> futuresPositionList = resetFuturesPositionList(portfolio.getFuturesPositionList(), snapshotCode);
-            ssGroupBean.setFuturesPositionsSerBeanList(futuresPositionList);
+            List<FuturesPositionSerBean> futuresPositionList = buildFuturesPositionList(portfolio.getFuturesPositionList(), snapshotCode);
+            ssGroupBean.setFuturesPositionSerBeanList(futuresPositionList);
 
             //期货账户信息
-            List<SnapshotFuturesAccountSerBean> futuresAccountList = resetFuturesAccountList(portfolio.getFuturesAccountList(), snapshotCode);
+            List<SnapshotFuturesAccountSerBean> futuresAccountList = buildFuturesAccountList(portfolio.getFuturesAccountList(), snapshotCode);
             ssGroupBean.setFuturesAccountList(futuresAccountList);
 
             //股票账户及费用
-            List<SnapshotStkAccountSerBean> stkAccountList = resetStkAccountList(portfolio.getStkAccountList(), snapshotCode);
+            List<SnapshotStkAccountSerBean> stkAccountList = buildStkAccountList(portfolio.getStkAccountList(), snapshotCode);
             ssGroupBean.setStkAccountList(stkAccountList);
 
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
         return belongDate;
     }
 
-    private List<SnapshotPortfolioCashflowSerBean> resetCashflowList(List<CashflowOutBean> cashflowList, String snapshotCode) {
+    private List<SnapshotPortfolioCashflowSerBean> buildCashflowList(List<CashflowOutBean> cashflowList, String snapshotCode) {
         List<SnapshotPortfolioCashflowSerBean> ssCashflowList = new ArrayList<>();
         if (cashflowList == null) {
             return ssCashflowList;
@@ -148,7 +148,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
         return ssCashflowList;
     }
 
-    private List<SnapshotStkPositionSerBean> resetStkPositionList(List<StkPositionOutBean> positionList, String snapshotCode) {
+    private List<SnapshotStkPositionSerBean> buildStkPositionList(List<StkPositionOutBean> positionList, String snapshotCode) {
         List<SnapshotStkPositionSerBean> ssPositionList = new ArrayList<>();
         if (positionList == null) {
             return ssPositionList;
@@ -163,13 +163,13 @@ public class PortfolioBizImpl implements PortfolioBiz {
         return ssPositionList;
     }
 
-    private List<SnapshotFuturesPositionsSerBean> resetFuturesPositionList(List<FuturesPositionOutBean> positionList, String snapshotCode) {
-        List<SnapshotFuturesPositionsSerBean> ssPositionList = new ArrayList<>();
+    private List<FuturesPositionSerBean> buildFuturesPositionList(List<FuturesPositionOutBean> positionList, String snapshotCode) {
+        List<FuturesPositionSerBean> ssPositionList = new ArrayList<>();
         if (positionList == null) {
             return ssPositionList;
         }
         for (FuturesPositionOutBean position : positionList) {
-            SnapshotFuturesPositionsSerBean ssPosition = new SnapshotFuturesPositionsSerBean();
+            FuturesPositionSerBean ssPosition = new FuturesPositionSerBean();
             BeanMapUtils.map(position, ssPosition);
             ssPosition.setSnapshotCode(snapshotCode);
             ssPosition.setBelongTime(belongTime);
@@ -178,7 +178,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
         return ssPositionList;
     }
 
-    private List<SnapshotFuturesAccountSerBean> resetFuturesAccountList(List<FuturesAccountOutBean> accountList, String snapshotCode) {
+    private List<SnapshotFuturesAccountSerBean> buildFuturesAccountList(List<FuturesAccountOutBean> accountList, String snapshotCode) {
         List<SnapshotFuturesAccountSerBean> ssAccountList = new ArrayList<>();
         if (accountList == null) {
             return ssAccountList;
@@ -193,7 +193,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
         return ssAccountList;
     }
 
-    private List<SnapshotStkAccountSerBean> resetStkAccountList(List<StkAccountOutBean> accountList, String snapshotCode) {
+    private List<SnapshotStkAccountSerBean> buildStkAccountList(List<StkAccountOutBean> accountList, String snapshotCode) {
         List<SnapshotStkAccountSerBean> ssAccountList = new ArrayList<>();
         if (accountList == null) {
             return ssAccountList;

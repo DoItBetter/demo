@@ -37,7 +37,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     StkPositionService stkPositionService;
 
     @Autowired
-    SnapshotFuturesPositionsService snapshotFuturesPositionsService;
+    FuturesPositionsService futuresPositionsService;
 
     @Autowired
     SnapshotPortfolioCashflowService snapshotPortfolioCashflowService;
@@ -147,8 +147,8 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
         stkPositionService.batchInsert(stkPositionList);
 
         //期货仓位快照
-        List<SnapshotFuturesPositionsSerBean> futuresPositionsSerBeanList = serBean.getFuturesPositionsSerBeanList();
-        snapshotFuturesPositionsService.batchInsert(futuresPositionsSerBeanList);
+        List<FuturesPositionSerBean> futuresPositionSerBeanList = serBean.getFuturesPositionSerBeanList();
+        futuresPositionsService.batchInsert(futuresPositionSerBeanList);
 
         //出入金快照
         List<SnapshotPortfolioCashflowSerBean> cashflowSerBeanList = serBean.getPortfolioCashflowSerBeanList();
@@ -234,24 +234,24 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
 
     @Override
     public SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime) throws ServiceException {
-        SnapshotPortfolio snapshotPortfolio = new SnapshotPortfolio();
+        SnapshotPortfolio snapshotPortfolio = getPortfolio(portfolioCode, belongTime, SnapshotPortfolioCode.UNFINISHED.getCode());
         try {
-            snapshotPortfolio = snapshotPortfolioDao.getPortfolioByPortfolioCodeAndBelongTime(getPortfolio(portfolioCode, belongTime));
+            snapshotPortfolio = snapshotPortfolioDao.getPortfolioByPortfolioCodeAndBelongTime(snapshotPortfolio);
         } catch (Exception e) {
             log.error("get snapshotPortfolio fail " + snapshotPortfolio, e);
         }
         if (snapshotPortfolio == null) {
             log.error("getPortfolioByBelongTime snapshotPortfolio is null, belongTime = {}", belongTime);
-            throw new ServiceException(QtDataRspCode.ERR_PORTFOLIO_QRY_BY_BELONGTIME_FAIL);
         }
         return SerBeanUtils.buildSnapshotPortfolioSerBean(snapshotPortfolio);
     }
 
-    private SnapshotPortfolio getPortfolio(String portfolioCode, Date belongTime) {
-        SnapshotPortfolio param = new SnapshotPortfolio();
-        param.setPortfolioCode(portfolioCode);
-        param.setBelongTime(belongTime);
-        return param;
+    private SnapshotPortfolio getPortfolio(String portfolioCode, Date belongTime, String errorFlag) {
+        SnapshotPortfolio snapshotPortfolio = new SnapshotPortfolio();
+        snapshotPortfolio.setPortfolioCode(portfolioCode);
+        snapshotPortfolio.setBelongTime(belongTime);
+        snapshotPortfolio.setErrorFlag(errorFlag);
+        return snapshotPortfolio;
     }
 
     @Override
@@ -272,22 +272,6 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
             throw new ServiceException(QtDataRspCode.ERR_DBERR, e);
         }
         return serBean;
-    }
-
-    @Override
-    public void updateByPrimaryKey(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException {
-        SnapshotPortfolio snapshotPortfolio = BeanUtils.buildSnapshotPortfolio(snapshotPortfolioSerBean);
-        int i = 0;
-        try {
-            i = snapshotPortfolioDao.updateByPrimaryKeySelective(snapshotPortfolio);
-        } catch (Exception e) {
-            log.error("snapshot portfolio updateByPrimaryKey error = {}", e);
-            throw new ServiceException(QtDataRspCode.ERR_DBERR);
-        }
-        if (i == 0) {
-            log.error("snapshot portfolio updateByPrimaryKey fail");
-            throw new ServiceException(QtDataRspCode.ERR_DB_UPDATE);
-        }
     }
 
     @Override
@@ -312,5 +296,37 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
             throw new ServiceException(QtDataRspCode.ERR_DBERR);
         }
         return SerBeanUtils.buildSnapshotPortfolioSerBean(snapshotPortfolio);
+    }
+
+    @Override
+    public void updateReturnsFields(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException {
+        SnapshotPortfolio snapshotPortfolio = BeanUtils.buildSnapshotPortfolio(snapshotPortfolioSerBean);
+        int i = 0;
+        try {
+            i = snapshotPortfolioDao.updateReturnsFields(snapshotPortfolio);
+        } catch (Exception e) {
+            log.error("snapshot portfolio updateReturnsFields error = {}", e);
+            throw new ServiceException(QtDataRspCode.ERR_DBERR);
+        }
+        if (i == 0) {
+            log.error("snapshot portfolio updateReturnsFields fail");
+            throw new ServiceException(QtDataRspCode.ERR_DB_UPDATE);
+        }
+    }
+
+    @Override
+    public void updateInfoRatio(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException {
+        SnapshotPortfolio snapshotPortfolio = BeanUtils.buildSnapshotPortfolio(snapshotPortfolioSerBean);
+        int i = 0;
+        try {
+            i = snapshotPortfolioDao.updateInfoRatio(snapshotPortfolio);
+        } catch (Exception e) {
+            log.error("snapshot portfolio updateInfoRatio error = {}", e);
+            throw new ServiceException(QtDataRspCode.ERR_DBERR);
+        }
+        if (i == 0) {
+            log.error("snapshot portfolio updateInfoRatio fail");
+            throw new ServiceException(QtDataRspCode.ERR_DB_UPDATE);
+        }
     }
 }
