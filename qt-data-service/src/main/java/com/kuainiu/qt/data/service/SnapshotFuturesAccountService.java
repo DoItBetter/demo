@@ -18,9 +18,5 @@ public interface SnapshotFuturesAccountService {
 
     SnapshotFuturesAccountSerBean getLastBeforeOpenMarket(String accountCode) throws ServiceException;
 
-    SnapshotFuturesAccountSerBean getLastBeforeOpenMarket(SnapshotFuturesAccountSerBean serBean) throws ServiceException;
-
     List<SnapshotFuturesAccountSerBean> getListBySnapshotCode(String snapshotCode) throws ServiceException;
-
-    void update(SnapshotFuturesAccountSerBean serBean) throws ServiceException;
 }

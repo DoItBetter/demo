@@ -58,22 +58,27 @@ public class AidcQryServiceImpl implements AidcQryService {
         request.setBegin_date(QtDateUtils.converToYMD(startDate));
         request.setEnd_date(QtDateUtils.converToYMD(endDate));
         request.setType(1);
-        return aidcSHHttp.qryTradeDate(request);
+        List<String> rundayList = aidcSHHttp.qryTradeDate(request);
+        log.info("[AIDC] rundayList = {}", rundayList);
+        return rundayList;
     }
 
     @Override
     public String getAssetName(String transboard, String assetNo) throws ServiceException {
-        String redisKey = RedisConst.KEY_ASSET_NAME + transboard + assetNo;
+        String buildAssetNo = transboard + assetNo;
+        String redisKey = RedisConst.KEY_ASSET_NAME + buildAssetNo;
         String assetName = (String) redisUtil.get(redisKey);
         if (null != assetName) {
             return assetName;
         }
 
         try {
-            InstrumentResponse response = aidcCDHttp.qryInstrument(transboard + assetNo);
+            log.info("[AIDC] qryInstrument request ={}", buildAssetNo);
+            InstrumentResponse response = aidcCDHttp.qryInstrument(buildAssetNo);
             assetName = response.getData().getSymbol();
+            log.info("[AIDC] qryInstrument response ={}", response);
         } catch (ServiceException e) {
-            throw new ServiceException(QtDataRspCode.ERR_AIDC_ASSET_NAME, "[" + transboard + assetNo + "]");
+            throw new ServiceException(QtDataRspCode.ERR_AIDC_ASSET_NAME, "[" + buildAssetNo + "]");
         }
 
         redisUtil.set(redisKey, assetName, QtDateUtils.getSecondsLefToday());
@@ -89,6 +94,7 @@ public class AidcQryServiceImpl implements AidcQryService {
             runDays = runDayList.size();
             redisUtil.set(redisKey, runDays, QtDateUtils.getSecondsLefToday());
         }
+        log.info("[AIDC] getPortfolioRundays , redisKey = {}, runDays = {}", redisKey, runDays);
         return runDays;
     }
 
@@ -101,6 +107,7 @@ public class AidcQryServiceImpl implements AidcQryService {
         StockEarningRate300Response earningResponse = new StockEarningRate300Response();
         try {
             earningResponse = aidcCDHttp.queryEarningRate300(stockEarningRate300Request);
+            log.info("[AIDC] qryRm response ={}", earningResponse);
         } catch (Exception e) {
             throw new ServiceException(QtDataRspCode.ERR_AIDC_QRY_RM_FAIL);
         }

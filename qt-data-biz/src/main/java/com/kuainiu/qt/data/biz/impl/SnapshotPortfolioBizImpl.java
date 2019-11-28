@@ -60,7 +60,7 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     @Override
     public void recordPortfolio(PortfolioInformationRatioProcessorInBean jobParam) {
         Date belongTime = QtDateUtils.getZeroSecondTime(QtDateUtils.getTestTime());
-        log.info("[Biz][Portfolio] InformationRatioProcessor start,belongTime={}", belongTime);
+        log.info("[Biz][Portfolio] InformationRatioProcessor recordPortfolio,belongTime={}", belongTime);
         try {
             if (!snapshotPortfolioService.needRun() || !jobParam.isForce()) {
                 log.warn("today is not trans day or curr time is not in open market!");
@@ -74,7 +74,6 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
         } catch (ServiceException e) {
             log.info("[Biz][Portfolio] InformationRatioProcessor fail", e);
         }
-        log.info("[Biz][Portfolio] InformationRatioProcessor end");
     }
 
     @Override
