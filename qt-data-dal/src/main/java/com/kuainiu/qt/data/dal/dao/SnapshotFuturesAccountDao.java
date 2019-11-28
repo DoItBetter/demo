@@ -27,10 +27,6 @@ public interface SnapshotFuturesAccountDao {
 
     @ResultMap("BaseResultMap")
     @Select("select * from t_snapshot_futures_account where snapshot_code = #{snapshotCode} ")
-    List<SnapshotFuturesAccount> getListBySnapshotCode(SnapshotFuturesAccount record);
-
-    @ResultMap("BaseResultMap")
-    @Select("select * from t_snapshot_futures_account where snapshot_code = #{snapshotCode} ")
     List<SnapshotFuturesAccount> findListBySnapshotCode(String snapshotCode);
 
 

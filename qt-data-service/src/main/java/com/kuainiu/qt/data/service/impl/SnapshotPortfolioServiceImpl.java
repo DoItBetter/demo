@@ -237,6 +237,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
         SnapshotPortfolio snapshotPortfolio = getPortfolio(portfolioCode, belongTime, SnapshotPortfolioCode.UNFINISHED.getCode());
         try {
             snapshotPortfolio = snapshotPortfolioDao.getPortfolioByPortfolioCodeAndBelongTime(snapshotPortfolio);
+            log.info("getPortfolioByPortfolioCodeAndBelongTime , snapshotPortfolio res = {}", snapshotPortfolio);
         } catch (Exception e) {
             log.error("get snapshotPortfolio fail " + snapshotPortfolio, e);
         }
