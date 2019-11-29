@@ -1,5 +1,6 @@
 package com.kuainiu.qt.data.biz.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.kuainiu.qt.data.biz.SnapshotPortfolioBiz;
 import com.kuainiu.qt.data.biz.bean.SnapshotPortfolioInBean;
 import com.kuainiu.qt.data.biz.bean.SnapshotPortfolioOutBean;
@@ -12,12 +13,17 @@ import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.AidcQryService;
 import com.kuainiu.qt.data.service.PortfolioService;
 import com.kuainiu.qt.data.service.SnapshotPortfolioService;
+import com.kuainiu.qt.data.service.bean.PortfolioReqSerBean;
 import com.kuainiu.qt.data.service.bean.PortfolioSerBean;
+import com.kuainiu.qt.data.service.bean.SnapshotPortfolioReqSerBean;
 import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
 import com.kuainiu.qt.data.service.code.SnapshotPortfolioCode;
 import com.kuainiu.qt.data.service.http.AidcSHHttp;
 import com.kuainiu.qt.data.util.BizBeanUtils;
+import com.kuainiu.qt.data.util.BizReqSerBeanUtils;
+import com.kuainiu.qt.data.util.CalculateUtil;
 import com.kuainiu.qt.framework.common.util.CalculateUtils;
+import com.kuainiu.qt.trans.facade.code.PortfolioStatusCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,11 +52,14 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     AidcQryService aidcQryService;
 
     @Override
-    public SnapshotPortfolioOutBean qryLastBeforeOpenMarket(SnapshotPortfolioInBean inBean) throws BizException {
+    public SnapshotPortfolioOutBean findByBelongTimeAndErrorFlag(SnapshotPortfolioInBean inBean) throws BizException {
         SnapshotPortfolioOutBean  outBean;
         try {
-            SnapshotPortfolioSerBean serBean = snapshotPortfolioService.findLastBeforeOpenMarket(inBean.getPortfolioCode());
+            log.info("[Biz]findByBelongTimeAndErrorFlag inBean={}", JSON.toJSONString(inBean));
+            SnapshotPortfolioReqSerBean reqSerBean = BizReqSerBeanUtils.buildSnapshotPortfolioReqSerBean(inBean);
+            SnapshotPortfolioSerBean serBean = snapshotPortfolioService.findByBelongTimeAndErrorFlag(reqSerBean);
             outBean = BizBeanUtils.buildSnapshotPortfolioOutBean(serBean);
+            log.info("[Biz]findByBelongTimeAndErrorFlag outBean={}", JSON.toJSONString(outBean));
         } catch (ServiceException e) {
             throw new BizException(QtDataRspCode.ERR_PORTFOLIOSNAPSHOT_INFO_QRY_FAIL, e.getMsg());
         }
@@ -59,13 +68,15 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
 
     @Override
     public void recordPortfolio(PortfolioInformationRatioProcessorInBean jobParam) {
-        Date belongTime = QtDateUtils.getZeroSecondTime(QtDateUtils.getTestTime());
+        Date belongTime = QtDateUtils.getZeroSecondTime(QtDateUtils.getCurrDate());
         log.info("[Biz][Portfolio] InformationRatioProcessor recordPortfolio,belongTime={}", belongTime);
         try {
             if (!snapshotPortfolioService.needRun() || !jobParam.isForce()) {
                 log.warn("today is not trans day or curr time is not in open market!");
             }
-            List<PortfolioSerBean> portfolioSerBeanList = portfolioService.findDistinctPortfolioCode();
+            PortfolioReqSerBean reqSerBean = new PortfolioReqSerBean();
+            reqSerBean.setStatus(PortfolioStatusCode.VALID.getCode());
+            List<PortfolioSerBean> portfolioSerBeanList = portfolioService.findAll(reqSerBean);
             log.info("[Biz][Portfolio]snapshot={}", portfolioSerBeanList);
             for (PortfolioSerBean portfolioSerBean : portfolioSerBeanList) {
                 String portfolioCode = portfolioSerBean.getPortfolioCode();
@@ -113,14 +124,19 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
         queryStdSP.setPortfolioCode(portfolioCode);
         queryStdSP.setEndBelongTime(belongTime);
         BigDecimal std = snapshotPortfolioService.getBalanceReturnStdByPortfolioCode(queryStdSP).getStd();
+        if(CalculateUtil.isZero(std)) {
+            log.error("[Service] getStd error, std={}",std);
+        }
         double result = balanceReturns.doubleValue() / (std.doubleValue() / Math.sqrt(T.doubleValue()) * Math.sqrt(TRANS_DAYS_A_YEAR.doubleValue()));
         return new BigDecimal(result);
     }
 
     private BigDecimal qryHistoryBaseReturns(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException {
-        snapshotPortfolio.setErrorFlag("");
+        snapshotPortfolio.setErrorFlag(SnapshotPortfolioCode.SUCCESS.getCode());
         snapshotPortfolio.setEndBelongTime(QtDateUtils.getOpenMarket());
-        SnapshotPortfolioSerBean item = snapshotPortfolioService.getLastBeforeOpenMarket(snapshotPortfolio);
+        log.info("[Service] findByBelongTimeAndErrorFlag request={}",snapshotPortfolio);
+        SnapshotPortfolioSerBean item = snapshotPortfolioService.getByBelongTimeAndErrorFlag(snapshotPortfolio);
+        log.info("[Service] findByBelongTimeAndErrorFlag response={}", item);
         return item.getBaseReturns();
     }
 }

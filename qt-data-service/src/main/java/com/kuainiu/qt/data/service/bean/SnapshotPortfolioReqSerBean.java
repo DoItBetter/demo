@@ -16,7 +16,7 @@ public class SnapshotPortfolioReqSerBean extends BaseQryReqSerBean {
 
     private Date startBelongTime;
 
-    private Date belongTime;
-
     private Date endBelongTime;
+
+    private String errorFlag;
 }

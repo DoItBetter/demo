@@ -181,7 +181,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
 
             portfolio.setPortfolioCode(portfolioCode);
             portfolio.setEndBelongTime(belongTime);
-            portfolio = snapshotPortfolioDao.getLastBeforeOpenMarket(portfolio);
+            portfolio = snapshotPortfolioDao.findByBelongTimeAndErrorFlag(portfolio);
             log.info("[Service][Snapshot]qry last day record, data={}", JSON.toJSONString(portfolio));
             if (null == portfolio || null == portfolio.getId()) {
                 return portfolioSerBean;
@@ -211,22 +211,19 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     }
 
     @Override
-    public SnapshotPortfolioSerBean findLastBeforeOpenMarket(String portfolioCode) throws ServiceException {
+    public SnapshotPortfolioSerBean findByBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean snapshotPortfolioReqSerBean) throws ServiceException {
         SnapshotPortfolioSerBean portfolioSerBean = new SnapshotPortfolioSerBean();
-        SnapshotPortfolio portfolio = new SnapshotPortfolio();
+        SnapshotPortfolio portfolio = BeanUtils.buildSnapshotPortfolio(snapshotPortfolioReqSerBean);
         try {
-
-            Date endBelongTime = QtDateUtils.isBeforeOpenMarket() ? QtDateUtils.getOpenMarketYesterday() : QtDateUtils.getOpenMarket();
-            portfolio.setPortfolioCode(portfolioCode);
-            portfolio.setEndBelongTime(endBelongTime);
-            portfolio = snapshotPortfolioDao.getLastBeforeOpenMarket(portfolio);
-            log.info("[Service][Snapshot]qry last day record, data={}", JSON.toJSONString(portfolio));
+            log.info("[Service][Snapshot]findByBelongTimeAndErrorFlag, db request={}", JSON.toJSONString(portfolio));
+            portfolio = snapshotPortfolioDao.findByBelongTimeAndErrorFlag(portfolio);
+            log.info("[Service][Snapshot]findByBelongTimeAndErrorFlag, db response={}", JSON.toJSONString(portfolio));
             if (null == portfolio || null == portfolio.getId()) {
                 return portfolioSerBean;
             }
             portfolioSerBean = SerBeanUtils.buildSnapshotPortfolio(portfolio);
         } catch (Exception e) {
-            log.info("[service][DB][Portfolio] qry last day record from db fail,e", e);
+            log.info("[service][DB][Portfolio] findByBelongTimeAndErrorFlag from db fail,e", e);
             throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_PORTFOLIO_QRY);
         }
         return portfolioSerBean;
@@ -276,12 +273,12 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     }
 
     @Override
-    public SnapshotPortfolioSerBean getLastBeforeOpenMarket(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException {
+    public SnapshotPortfolioSerBean getByBelongTimeAndErrorFlag(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException {
         SnapshotPortfolio snapshotPortfolio = BeanUtils.buildSnapshotPortfolio(snapshotPortfolioSerBean);
         try {
-            snapshotPortfolio = snapshotPortfolioDao.getLastBeforeOpenMarket(snapshotPortfolio);
+            snapshotPortfolio = snapshotPortfolioDao.findByBelongTimeAndErrorFlag(snapshotPortfolio);
         } catch (Exception e) {
-            log.error("snapshot portfolio getLastBeforeOpenMarket error = {}", e);
+            log.error("snapshot portfolio findByBelongTimeAndErrorFlag error = {}", e);
             throw new ServiceException(QtDataRspCode.ERR_DBERR);
         }
         return SerBeanUtils.buildSnapshotPortfolioSerBean(snapshotPortfolio);
@@ -292,6 +289,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
         SnapshotPortfolio snapshotPortfolio = BeanUtils.buildSnapshotPortfolio(snapshotPortfolioSerBean);
         try {
             snapshotPortfolio = snapshotPortfolioDao.getBalanceReturnStdByPortfolioCode(snapshotPortfolio);
+            log.info("snapshot portfolio getBalanceReturnStdByPortfolioCode db response={}", snapshotPortfolio);
         } catch (Exception e) {
             log.error("snapshot portfolio getBalanceReturnStdByPortfolioCode error = {}", e);
             throw new ServiceException(QtDataRspCode.ERR_DBERR);

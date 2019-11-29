@@ -57,6 +57,8 @@ public enum QtDataRspCode {
     ERR_PARAM_STRATEGY_CODE_NULL("策略编号不能为空", "00200014006"),
     ERR_PARAM_ASSET_NO_NULL("合约代码不能为空", "00200014007"),
     ERR_AIDC_QRY_RM_FAIL("丛AIDC查询RM失败", "00200014008"),
+    ERR_PARAM_END_BELONG_TIME_NULL("endBelongTime为空", "00200014009"),
+    ERR_PARAM_ERROR_FLAG_NULL("错误标志参数为空", "00200014010"),
 
 
     /**

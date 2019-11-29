@@ -25,7 +25,7 @@ public interface SnapshotPortfolioService {
 
     void addOne(SnapshotPortfolioSerBean serBean) throws ServiceException;
 
-    SnapshotPortfolioSerBean findLastBeforeOpenMarket(String portfolioCode) throws ServiceException;
+    SnapshotPortfolioSerBean findByBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean snapshotPortfolioReqSerBean) throws ServiceException;
 
     /**
      * 取某一分钟infoRatio未计算的订单
@@ -37,7 +37,7 @@ public interface SnapshotPortfolioService {
 
     SnapshotPortfolioSerBean findOneOneMinuteAgo(String portfolioCode) throws ServiceException;
 
-    SnapshotPortfolioSerBean getLastBeforeOpenMarket(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
+    SnapshotPortfolioSerBean getByBelongTimeAndErrorFlag(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
 
     SnapshotPortfolioSerBean getBalanceReturnStdByPortfolioCode(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
 

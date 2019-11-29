@@ -1,18 +1,18 @@
 package com.kuainiu.qt.data.facade.request;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@ApiModel
 public class SnapshotPortfolioRequest extends BaseDataRequest {
+    @ApiModelProperty(value = "策略组合编号")
     private String portfolioCode;
-
-    private Date startBelongTime;
-
+    @ApiModelProperty(value = "时间节点")
     private Date endBelongTime;
-
-    Integer pageNo = 0;
-
-    Integer pageSize = 1000;
+    @ApiModelProperty(value = "错误标志")
+    private String errorFlag;
 }

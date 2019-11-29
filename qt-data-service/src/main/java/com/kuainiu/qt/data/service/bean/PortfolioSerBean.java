@@ -2,9 +2,7 @@ package com.kuainiu.qt.data.service.bean;
 
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,5 +23,5 @@ public class PortfolioSerBean extends BaseDataSerBean{
 
     private String status;
 
-    private List<StrategySerBean> strategyList = new ArrayList<>();
+    private String channelCode;
 }

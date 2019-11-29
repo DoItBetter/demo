@@ -10,4 +10,6 @@ public class PortfolioReqSerBean extends BaseDataReqSerBean {
      * 是否是实时计算
      */
     private Boolean realTimeCalc = true;
+
+    private String status;
 }

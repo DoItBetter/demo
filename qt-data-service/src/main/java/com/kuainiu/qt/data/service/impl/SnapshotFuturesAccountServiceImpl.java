@@ -76,9 +76,9 @@ public class SnapshotFuturesAccountServiceImpl implements SnapshotFuturesAccount
             Date endBelongTime = QtDateUtils.isBeforeOpenMarket() ? QtDateUtils.getOpenMarketYesterday() : QtDateUtils.getOpenMarket();
             futuresAccount.setAccountCode(accountCode);
             futuresAccount.setEndBelongTime(endBelongTime);
-            log.info("[Service][Snapshot] getLastBeforeOpenMarket futuresAccount ={}", futuresAccount);
+            log.info("[Service][Snapshot] findByBelongTimeAndErrorFlag futuresAccount ={}", futuresAccount);
             futuresAccount = futuresAccountDao.getLastBeforeOpenMarket(futuresAccount);
-            log.info("[Service][Snapshot] getLastBeforeOpenMarket result ={}", futuresAccount);
+            log.info("[Service][Snapshot] findByBelongTimeAndErrorFlag result ={}", futuresAccount);
             if (null != futuresAccount) {
                 BeanMapUtils.map(futuresAccount, serBean);
             }
