@@ -62,5 +62,11 @@ public class ParamCheckHandle {
     if (null == request.getPortfolioCode()) {
       throw new BizException(QtDataRspCode.ERR_PARAM_PORTFOLIO_CODE_NULL);
     }
+    if (null == request.getEndBelongTime()) {
+      throw new BizException(QtDataRspCode.ERR_PARAM_END_BELONG_TIME_NULL);
+    }
+    if (null == request.getErrorFlag()) {
+      throw new BizException(QtDataRspCode.ERR_PARAM_ERROR_FLAG_NULL);
+    }
   }
 }

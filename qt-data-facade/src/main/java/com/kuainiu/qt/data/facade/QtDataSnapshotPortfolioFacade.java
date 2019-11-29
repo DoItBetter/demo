@@ -15,5 +15,5 @@ public interface QtDataSnapshotPortfolioFacade {
 
     SnapshotPortfolioListResponse qryLastRecordPerDay(PortfolioLastRecordPerDayRequest request);
 
-    SnapshotPortfolioResponse qryLastBeforeOpenMarket(SnapshotPortfolioRequest request);
+    SnapshotPortfolioResponse findByBelongTimeAndErrorFlag(SnapshotPortfolioRequest request);
 }

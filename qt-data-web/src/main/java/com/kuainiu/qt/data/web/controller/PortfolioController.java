@@ -60,10 +60,10 @@ public class PortfolioController {
     }
 
     @ApiOperation(httpMethod = "POST",value = "查询")
-    @RequestMapping(value="/qryLastBeforeOpenMarket",produces = "application/json;charset=UTF-8")
-    @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "PortfolioLastRecordPerDayRequest", paramType = "PortfolioLastRecordPerDayRequest")
-    public SnapshotPortfolioResponse qryLastBeforeOpenMarket(@RequestBody SnapshotPortfolioRequest request) {
-        return qtDataSnapshotPortfolioFacade.qryLastBeforeOpenMarket(request);
+    @RequestMapping(value="/findByBelongTimeAndErrorFlag",produces = "application/json;charset=UTF-8")
+    @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "SnapshotPortfolioRequest", paramType = "SnapshotPortfolioRequest")
+    public SnapshotPortfolioResponse findByBelongTimeAndErrorFlag(@RequestBody SnapshotPortfolioRequest request) {
+        return qtDataSnapshotPortfolioFacade.findByBelongTimeAndErrorFlag(request);
     }
 
     @Autowired

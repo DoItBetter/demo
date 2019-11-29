@@ -9,7 +9,7 @@ import com.kuainiu.qt.data.exception.ServiceException;
 import java.util.Date;
 
 public interface SnapshotPortfolioBiz {
-    SnapshotPortfolioOutBean qryLastBeforeOpenMarket(SnapshotPortfolioInBean inBean) throws BizException;
+    SnapshotPortfolioOutBean findByBelongTimeAndErrorFlag(SnapshotPortfolioInBean inBean) throws BizException;
 
     void recordPortfolio(PortfolioInformationRatioProcessorInBean jobParam);
 

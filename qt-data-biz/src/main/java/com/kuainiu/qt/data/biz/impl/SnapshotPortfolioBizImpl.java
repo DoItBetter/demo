@@ -15,10 +15,12 @@ import com.kuainiu.qt.data.service.PortfolioService;
 import com.kuainiu.qt.data.service.SnapshotPortfolioService;
 import com.kuainiu.qt.data.service.bean.PortfolioReqSerBean;
 import com.kuainiu.qt.data.service.bean.PortfolioSerBean;
+import com.kuainiu.qt.data.service.bean.SnapshotPortfolioReqSerBean;
 import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
 import com.kuainiu.qt.data.service.code.SnapshotPortfolioCode;
 import com.kuainiu.qt.data.service.http.AidcSHHttp;
 import com.kuainiu.qt.data.util.BizBeanUtils;
+import com.kuainiu.qt.data.util.BizReqSerBeanUtils;
 import com.kuainiu.qt.data.util.CalculateUtil;
 import com.kuainiu.qt.framework.common.util.CalculateUtils;
 import com.kuainiu.qt.trans.facade.code.PortfolioStatusCode;
@@ -50,13 +52,14 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     AidcQryService aidcQryService;
 
     @Override
-    public SnapshotPortfolioOutBean qryLastBeforeOpenMarket(SnapshotPortfolioInBean inBean) throws BizException {
+    public SnapshotPortfolioOutBean findByBelongTimeAndErrorFlag(SnapshotPortfolioInBean inBean) throws BizException {
         SnapshotPortfolioOutBean  outBean;
         try {
-            log.info("[Biz]qryLastBeforeOpenMarket inBean={}", JSON.toJSONString(inBean));
-            SnapshotPortfolioSerBean serBean = snapshotPortfolioService.findLastBeforeOpenMarket(inBean.getPortfolioCode());
+            log.info("[Biz]findByBelongTimeAndErrorFlag inBean={}", JSON.toJSONString(inBean));
+            SnapshotPortfolioReqSerBean reqSerBean = BizReqSerBeanUtils.buildSnapshotPortfolioReqSerBean(inBean);
+            SnapshotPortfolioSerBean serBean = snapshotPortfolioService.findByBelongTimeAndErrorFlag(reqSerBean);
             outBean = BizBeanUtils.buildSnapshotPortfolioOutBean(serBean);
-            log.info("[Biz]qryLastBeforeOpenMarket outBean={}", JSON.toJSONString(outBean));
+            log.info("[Biz]findByBelongTimeAndErrorFlag outBean={}", JSON.toJSONString(outBean));
         } catch (ServiceException e) {
             throw new BizException(QtDataRspCode.ERR_PORTFOLIOSNAPSHOT_INFO_QRY_FAIL, e.getMsg());
         }
@@ -131,9 +134,9 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     private BigDecimal qryHistoryBaseReturns(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException {
         snapshotPortfolio.setErrorFlag(SnapshotPortfolioCode.SUCCESS.getCode());
         snapshotPortfolio.setEndBelongTime(QtDateUtils.getOpenMarket());
-        log.info("[Service] getLastBeforeOpenMarket request={}",snapshotPortfolio);
-        SnapshotPortfolioSerBean item = snapshotPortfolioService.getLastBeforeOpenMarket(snapshotPortfolio);
-        log.info("[Service] getLastBeforeOpenMarket response={}", item);
+        log.info("[Service] findByBelongTimeAndErrorFlag request={}",snapshotPortfolio);
+        SnapshotPortfolioSerBean item = snapshotPortfolioService.getByBelongTimeAndErrorFlag(snapshotPortfolio);
+        log.info("[Service] findByBelongTimeAndErrorFlag response={}", item);
         return item.getBaseReturns();
     }
 }

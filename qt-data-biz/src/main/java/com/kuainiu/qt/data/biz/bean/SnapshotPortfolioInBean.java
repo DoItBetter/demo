@@ -13,6 +13,8 @@ public class SnapshotPortfolioInBean extends BaseDataInBean {
 
     private Date endBelongTime;
 
+    private String errorFlag;
+
     Integer pageNo = 0;
 
     Integer pageSize = 1000;

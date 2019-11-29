@@ -118,19 +118,19 @@ public class QtDataSnapshotPortfolioFacadeImpl implements QtDataSnapshotPortfoli
     }
 
     @Override
-    public SnapshotPortfolioResponse qryLastBeforeOpenMarket(SnapshotPortfolioRequest request) {
+    public SnapshotPortfolioResponse findByBelongTimeAndErrorFlag(SnapshotPortfolioRequest request) {
         log.info("[qryLastRecordPerDay request] {}", JSON.toJSONString(request));
         SnapshotPortfolioResponse response = new SnapshotPortfolioResponse();
         try {
             ParamCheckHandle.checkQryLastBeforeOpenMarketRequest(request);
             SnapshotPortfolioInBean inBean = BizBeanUtils.buildSnapshotPortfolioInBean(request);
-            SnapshotPortfolioOutBean outBean = snapshotPortfolioBiz.qryLastBeforeOpenMarket(inBean);
+            SnapshotPortfolioOutBean outBean = snapshotPortfolioBiz.findByBelongTimeAndErrorFlag(inBean);
             response = BizResponseUtils.buildSnapshotPortfolioResponse(outBean);
             ResponseUtils.success(response);
         } catch (Exception e) {
             ResponseUtils.sysError(response, e);
         }
-        log.info("[qryLastBeforeOpenMarket response] {}", JSON.toJSONString(response));
+        log.info("[findByBelongTimeAndErrorFlag response] {}", JSON.toJSONString(response));
         return response;
     }
 }
