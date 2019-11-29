@@ -37,12 +37,11 @@ public interface SnapshotPortfolioService {
 
     SnapshotPortfolioSerBean findOneOneMinuteAgo(String portfolioCode) throws ServiceException;
 
-    SnapshotPortfolioSerBean getByBelongTimeAndErrorFlag(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
+    SnapshotPortfolioSerBean getByBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 
-    SnapshotPortfolioSerBean getBalanceReturnStdByPortfolioCode(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
+    SnapshotPortfolioSerBean getBalanceReturnStdByPortfolioCode(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 
-    void updateReturnsFields(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException;
+    void updateReturnsFields(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 
-    void updateInfoRatio(SnapshotPortfolioSerBean snapshotPortfolioSerBean) throws ServiceException;
-
+    void updateInfoRatio(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 }

@@ -1,9 +1,9 @@
 package com.kuainiu.qt.data.service;
 
 import com.kuainiu.qt.data.exception.ServiceException;
-import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
+import com.kuainiu.qt.data.service.bean.aidc.RmReqSerBean;
+import com.kuainiu.qt.data.service.bean.aidc.RmSerBean;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -20,5 +20,5 @@ public interface AidcQryService {
 
     Integer getPortfolioRundays(String portfolioCode, Date startDate) throws ServiceException;
 
-    BigDecimal qryRm(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException;
+    RmSerBean qryRm(RmReqSerBean reqSerBean) throws ServiceException;
 }

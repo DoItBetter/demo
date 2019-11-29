@@ -1,5 +1,6 @@
-package com.kuainiu.qt.data.service.bean;
+package com.kuainiu.qt.data.service.bean.trans;
 
+import com.kuainiu.qt.data.service.bean.BaseDataReqSerBean;
 import lombok.Data;
 
 @Data
