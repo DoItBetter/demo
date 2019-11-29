@@ -82,6 +82,7 @@ public enum QtDataRspCode {
     ERR_PORTFOLIO_QRY_BY_BELONGTIME_FAIL("某时刻投资组合查询失败", "002000150015"),
     ERR_QRY_TRANS_PORTFOLIO_ALL_FAIL("所有可用投资组合查询失败", "002000150016"),
     ERR_QRY_TRANS_PORTFOLIO_DISTINCT_FAIL("投资组合去重查询失败", "002000150017"),
+    ERR_CALC_INFO_RATIO("infomation ratio 计算失败", "002000150018"),
 
 
     /**

@@ -4,19 +4,19 @@ import com.kuainiu.qt.data.common.util.*;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.AidcQryService;
-import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
+import com.kuainiu.qt.data.service.bean.aidc.RmReqSerBean;
+import com.kuainiu.qt.data.service.bean.aidc.RmSerBean;
 import com.kuainiu.qt.data.service.http.AidcCDHttp;
 import com.kuainiu.qt.data.service.http.AidcSHHttp;
 import com.kuainiu.qt.data.service.http.request.StockEarningRate300Request;
 import com.kuainiu.qt.data.service.http.request.aidc.AidcTradeDateRequest;
 import com.kuainiu.qt.data.service.http.response.StockEarningRate300Response;
 import com.kuainiu.qt.data.service.http.response.aidc.InstrumentResponse;
+import com.kuainiu.qt.data.util.SerBeanUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -99,18 +99,20 @@ public class AidcQryServiceImpl implements AidcQryService {
     }
 
     @Override
-    public BigDecimal qryRm(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException {
-        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstant.DATEFORMAT_YMDHMS);
-        String timeStr = sdf.format(snapshotPortfolio.getBelongTime());
-        StockEarningRate300Request stockEarningRate300Request = new StockEarningRate300Request();
-        stockEarningRate300Request.setDatetime(timeStr);
+    public RmSerBean qryRm(RmReqSerBean reqSerBean) throws ServiceException {
+        StockEarningRate300Request request = SerBeanUtils.buildRmRequest(reqSerBean);
         StockEarningRate300Response earningResponse = new StockEarningRate300Response();
         try {
-            earningResponse = aidcCDHttp.queryEarningRate300(stockEarningRate300Request);
+            earningResponse = aidcCDHttp.queryEarningRate300(request);
             log.info("[AIDC] qryRm response ={}", earningResponse);
-        } catch (Exception e) {
+        } catch (ServiceException e) {
+            log.error("[AIDC] qryRm response ={}, e={}", earningResponse, e);
             throw new ServiceException(QtDataRspCode.ERR_AIDC_QRY_RM_FAIL);
         }
-        return earningResponse.getData().getData();
+        if (earningResponse.getData() == null) {
+            log.error("[AIDC] qryRm data is null, response ={}", earningResponse);
+            throw new ServiceException(QtDataRspCode.ERR_AIDC_QRY_RM_FAIL);
+        }
+        return SerBeanUtils.buildRmSerBean(earningResponse);
     }
 }

@@ -15,6 +15,8 @@ import com.kuainiu.qt.data.facade.code.StkFeeTypeCode;
 import com.kuainiu.qt.data.service.PortfolioService;
 import com.kuainiu.qt.data.service.SnapshotPortfolioService;
 import com.kuainiu.qt.data.service.bean.*;
+import com.kuainiu.qt.data.service.bean.trans.PortfolioReqSerBean;
+import com.kuainiu.qt.data.service.bean.trans.PortfolioSerBean;
 import com.kuainiu.qt.data.util.BizBeanUtils;
 import com.kuainiu.qt.data.util.CalculateUtil;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;

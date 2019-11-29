@@ -23,6 +23,8 @@ public class QtDateUtils {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+
     public static final int MINUTE_THIRTY = 30;
 
     public static final int MINUTE_ZERO= 0;
@@ -236,6 +238,11 @@ public class QtDateUtils {
 
     public static String converToYMD(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat(QtDateUtils.DATE_FORMAT);
+        return sdf.format(QtDateUtils.getCurrDate());
+    }
+
+    public static String converToYMDhms(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(QtDateUtils.DATE_TIME_FORMAT);
         return sdf.format(QtDateUtils.getCurrDate());
     }
 
