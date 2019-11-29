@@ -12,7 +12,7 @@ public class BaseReponse implements Serializable {
 
     private static final long serialVersionUID = -7916964510630016103L;
 
-    private static final String SYSTEM_NAME = "[TRANS]";
+    private static final String SYSTEM_NAME = "[DATA]";
 
     private String msg;
 

@@ -53,8 +53,6 @@ public class BizBeanUtils {
     public static PortfolioInBean buildPortfolioInBean(PortfolioSerBean serBean) throws BizException {
         PortfolioInBean portfolioInBean = new PortfolioInBean();
         BeanMapUtils.map(serBean, portfolioInBean);
-        List<StrategyInBean> strategyInBeanList = buildStrategyList(serBean.getStrategyList());
-        portfolioInBean.setStrategyList(strategyInBeanList);
         return portfolioInBean;
     }
 

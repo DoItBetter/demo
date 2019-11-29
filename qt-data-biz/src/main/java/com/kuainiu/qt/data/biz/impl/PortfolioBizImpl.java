@@ -10,7 +10,6 @@ import com.kuainiu.qt.data.common.util.seq.SysSeqNoManager;
 import com.kuainiu.qt.data.common.util.seq.SysSeqRuleEnum;
 import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.exception.ServiceException;
-import com.kuainiu.qt.data.facade.code.PortfolioStatusCode;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.facade.code.StkFeeTypeCode;
 import com.kuainiu.qt.data.service.PortfolioService;
@@ -19,6 +18,7 @@ import com.kuainiu.qt.data.service.bean.*;
 import com.kuainiu.qt.data.util.BizBeanUtils;
 import com.kuainiu.qt.data.util.CalculateUtil;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
+import com.kuainiu.qt.trans.facade.code.PortfolioStatusCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,9 +56,9 @@ public class PortfolioBizImpl implements PortfolioBiz {
             //所属时间
             belongTime = QtDateUtils.getZeroSecondTime(QtDateUtils.getCurrDate());
 
-            PortfolioSerBean portfolioSerBean = new PortfolioSerBean();
-            portfolioSerBean.setStatus(PortfolioStatusCode.VALID.getCode());
-            List<PortfolioSerBean> portfolioList = portfolioService.findAll(portfolioSerBean);
+            PortfolioReqSerBean portfolioReqSerBean = new PortfolioReqSerBean();
+            portfolioReqSerBean.setStatus(PortfolioStatusCode.VALID.getCode());
+            List<PortfolioSerBean> portfolioList = portfolioService.findAll(portfolioReqSerBean);
 
             for (PortfolioSerBean serBean : portfolioList) {
                 PortfolioInBean inBean = BizBeanUtils.buildPortfolioInBean(serBean);

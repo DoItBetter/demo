@@ -8,9 +8,7 @@ import com.kuainiu.qt.data.service.bean.PortfolioSerBean;
 import java.util.List;
 
 public interface PortfolioService {
-    List<PortfolioSerBean> findAll(PortfolioSerBean serBean) throws ServiceException;
+    List<PortfolioSerBean> findAll(PortfolioReqSerBean reqSerBean) throws ServiceException;
 
     PortfolioQrySerBean qryPortfolio(PortfolioReqSerBean reqSerBean) throws ServiceException;
-
-    List<PortfolioSerBean> findDistinctPortfolioCode() throws ServiceException;
 }

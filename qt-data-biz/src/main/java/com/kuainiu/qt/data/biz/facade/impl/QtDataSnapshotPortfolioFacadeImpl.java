@@ -71,6 +71,7 @@ public class QtDataSnapshotPortfolioFacadeImpl implements QtDataSnapshotPortfoli
         log.info("[qryPortfolioInfRatio request] {}", JSON.toJSONString(request));
         InfoRatioResponse response = new InfoRatioResponse();
         try {
+            ParamCheckHandle.checkInfoRatioQryRequest(request);
             SnapshotPortfolioInBean inBean = BizBeanUtils.buildSnapshotPortfolioInBean(request);
             SnapshotPortfolioOutBean serBean = portfolioQryBiz.qryInfoRatio(inBean);
             response.setInformationRatio(serBean.getInformationRatio());
@@ -87,6 +88,7 @@ public class QtDataSnapshotPortfolioFacadeImpl implements QtDataSnapshotPortfoli
         log.info("[qrySnapshotPortfolioList request] {}", JSON.toJSONString(request));
         SnapshotPortfolioListResponse response = new SnapshotPortfolioListResponse();
         try {
+            ParamCheckHandle.checkQrySnapshotPFListRequest(request);
             SnapshotPortfolioInBean inBean = BizBeanUtils.buildSnapshotPortfolioInBean(request);
             List<SnapshotPortfolioOutBean> outBeanList = portfolioQryBiz.qrySnapshotPortfolioList(inBean);
             BizResponseUtils.buildQtTransSnapshotPortfolioQryResponse(outBeanList, response);
@@ -103,6 +105,7 @@ public class QtDataSnapshotPortfolioFacadeImpl implements QtDataSnapshotPortfoli
         log.info("[qryLastRecordPerDay request] {}", JSON.toJSONString(request));
         SnapshotPortfolioListResponse response = new SnapshotPortfolioListResponse();
         try {
+            ParamCheckHandle.checkQryLastRecordperDay(request);
             SnapshotPortfolioInBean inBean = BizBeanUtils.buildSnapshotPortfolioInBean(request);
             List<SnapshotPortfolioOutBean> outBeanList = portfolioQryBiz.qryLastRecordPerDay(inBean);
             BizResponseUtils.buildQtTransSnapshotPortfolioQryResponse(outBeanList, response);
@@ -119,6 +122,7 @@ public class QtDataSnapshotPortfolioFacadeImpl implements QtDataSnapshotPortfoli
         log.info("[qryLastRecordPerDay request] {}", JSON.toJSONString(request));
         SnapshotPortfolioResponse response = new SnapshotPortfolioResponse();
         try {
+            ParamCheckHandle.checkQryLastBeforeOpenMarketRequest(request);
             SnapshotPortfolioInBean inBean = BizBeanUtils.buildSnapshotPortfolioInBean(request);
             SnapshotPortfolioOutBean outBean = snapshotPortfolioBiz.qryLastBeforeOpenMarket(inBean);
             response = BizResponseUtils.buildSnapshotPortfolioResponse(outBean);
