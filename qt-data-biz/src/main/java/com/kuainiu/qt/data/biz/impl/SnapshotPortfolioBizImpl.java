@@ -1,6 +1,5 @@
 package com.kuainiu.qt.data.biz.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.kuainiu.qt.data.biz.SnapshotPortfolioBiz;
 import com.kuainiu.qt.data.biz.bean.SnapshotPortfolioInBean;
 import com.kuainiu.qt.data.biz.bean.SnapshotPortfolioOutBean;
@@ -59,11 +58,9 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     public SnapshotPortfolioOutBean findByBelongTimeAndErrorFlag(SnapshotPortfolioInBean inBean) throws BizException {
         SnapshotPortfolioOutBean  outBean;
         try {
-            log.info("[Biz]findByBelongTimeAndErrorFlag inBean={}", JSON.toJSONString(inBean));
             SnapshotPortfolioReqSerBean reqSerBean = BizReqSerBeanUtils.buildSnapshotPortfolioReqSerBean(inBean);
             SnapshotPortfolioSerBean serBean = snapshotPortfolioService.findByBelongTimeAndErrorFlag(reqSerBean);
             outBean = BizBeanUtils.buildSnapshotPortfolioOutBean(serBean);
-            log.info("[Biz]findByBelongTimeAndErrorFlag outBean={}", JSON.toJSONString(outBean));
         } catch (ServiceException e) {
             throw new BizException(QtDataRspCode.ERR_PORTFOLIOSNAPSHOT_INFO_QRY_FAIL, e.getMsg());
         }
@@ -95,19 +92,19 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     public void calcPortfolio(String portfolioCode, Date belongTime) throws ServiceException {
         SnapshotPortfolioSerBean snapshotPortfolio = new SnapshotPortfolioSerBean();
         try {
-            snapshotPortfolio = snapshotPortfolioService.getPortfolioByBelongTime(portfolioCode, belongTime);
+            snapshotPortfolio = snapshotPortfolioService.getPortfolioByBelongTime(portfolioCode, belongTime, SnapshotPortfolioCode.UNFINISHED.getCode());
             BigDecimal tr = snapshotPortfolio.getTotalReturns();
             Integer T = aidcQryService.getPortfolioRundays(snapshotPortfolio.getPortfolioCode(), snapshotPortfolio.getStartDate());
             BigDecimal rm = qryRm(belongTime);
             BigDecimal baseReturns = calcBaseReturns(snapshotPortfolio, rm);
             BigDecimal balanceReturns = calcBalanceReturns(tr, baseReturns);
-            BigDecimal infoRatio = calcInfoRatio(portfolioCode, belongTime, balanceReturns, T);
             SnapshotPortfolioReqSerBean reqSerBean = new SnapshotPortfolioReqSerBean();
             BeanMapUtils.map(snapshotPortfolio, reqSerBean);
             reqSerBean.setBaseReturns(baseReturns);
             reqSerBean.setBaseRealtimeReturns(rm);
             reqSerBean.setBalanceReturns(balanceReturns);
             snapshotPortfolioService.updateReturnsFields(reqSerBean);
+            BigDecimal infoRatio = calcInfoRatio(portfolioCode, belongTime, balanceReturns, T);
             reqSerBean.setInformationRatio(infoRatio);
             reqSerBean.setErrorFlag(SnapshotPortfolioCode.SUCCESS.getCode());
             snapshotPortfolioService.updateInfoRatio(reqSerBean);
@@ -120,7 +117,7 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     private BigDecimal qryRm(Date belongTime) throws ServiceException {
         BigDecimal rm = CommonConstant.BIG_DECIMAL_ZERO;
         RmReqSerBean rmReqSerBean = new RmReqSerBean();
-        rmReqSerBean.setDatetime(QtDateUtils.converToYMDhms(belongTime));
+        rmReqSerBean.setDatetime(QtDateUtils.converToYMDHms(belongTime));
         RmSerBean rmSerBean = aidcQryService.qryRm(rmReqSerBean);
         log.info("[AIDC] qryRm serBean ={}", rmSerBean);
         rm = rmSerBean.getData();

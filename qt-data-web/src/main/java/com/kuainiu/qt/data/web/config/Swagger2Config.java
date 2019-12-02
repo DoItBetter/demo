@@ -65,4 +65,16 @@ public class Swagger2Config {
                 .apiInfo(apiInfo())
                 .enable(enable);
     }
+
+    @Bean("TestApis")
+    public Docket testApis() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("测试接口模块")
+                .select()
+                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
+                .paths(PathSelectors.regex("/test.*"))
+                .build()
+                .apiInfo(apiInfo())
+                .enable(enable);
+    }
 }

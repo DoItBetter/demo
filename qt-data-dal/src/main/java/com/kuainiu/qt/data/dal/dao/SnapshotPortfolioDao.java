@@ -72,12 +72,12 @@ public interface SnapshotPortfolioDao {
             " </if>\n" +
             " <if test=\"baseRealtimeReturns != null\">\n" +
             "   base_realtime_returns = #{baseRealtimeReturns,jdbcType=DECIMAL},\n" +
-            " </if> " +
+            " </if>\n" +
             "<if test=\"balanceReturns != null\">\n" +
             "   balance_returns = #{balanceReturns,jdbcType=DECIMAL},\n" +
             " </if>\n" +
-            "   id = #{id}" +
-            " where id = #{id}" +
+            "   snapshot_code = #{snapshotCode}" +
+            " where snapshot_code = #{snapshotCode}" +
             "</script>")
     int updateReturnsFields(SnapshotPortfolio snapshotPortfolio);
 
@@ -89,8 +89,8 @@ public interface SnapshotPortfolioDao {
             "<if test=\"errorFlag != null\">\n" +
             "   error_flag = #{errorFlag,jdbcType=VARCHAR},\n" +
             " </if>\n" +
-            "   id = #{id}" +
-            " where id = #{id}" +
+            "   snapshot_code = #{snapshotCode}" +
+            " where snapshot_code = #{snapshotCode}" +
             "</script>")
     int updateInfoRatio(SnapshotPortfolio snapshotPortfolio);
 }
