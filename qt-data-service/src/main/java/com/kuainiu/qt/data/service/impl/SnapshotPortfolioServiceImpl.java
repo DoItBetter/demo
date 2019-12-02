@@ -146,7 +146,6 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void setSnapshotPortfolioTx(SnapshotGroupSerBean serBean) throws ServiceException {
-        log.info("入库前参数组" + serBean);
         //投资组合快照 添加
         SnapshotPortfolioSerBean portfolioSerBean = serBean.getPortfolioSerBean();
         addOne(portfolioSerBean);
@@ -239,8 +238,8 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     }
 
     @Override
-    public SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime) throws ServiceException {
-        SnapshotPortfolio snapshotPortfolio = getPortfolio(portfolioCode, belongTime, SnapshotPortfolioCode.UNFINISHED.getCode());
+    public SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime, String errorflag) throws ServiceException {
+        SnapshotPortfolio snapshotPortfolio = getPortfolio(portfolioCode, belongTime, errorflag);
         try {
             snapshotPortfolio = snapshotPortfolioDao.getPortfolioByPortfolioCodeAndBelongTime(snapshotPortfolio);
             log.info("getPortfolioByPortfolioCodeAndBelongTime , snapshotPortfolio res = {}", snapshotPortfolio);

@@ -33,7 +33,7 @@ public interface SnapshotPortfolioService {
      * @param belongTime
      * @return
      */
-    SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime) throws ServiceException;
+    SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime, String errorFlag) throws ServiceException;
 
     SnapshotPortfolioSerBean findOneOneMinuteAgo(String portfolioCode) throws ServiceException;
 
