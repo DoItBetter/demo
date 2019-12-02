@@ -1,9 +1,9 @@
-package com.kuainiu.qt.data.service.bean;
+package com.kuainiu.qt.data.service.bean.trans;
 
-import com.kuainiu.qt.framework.common.bean.servicebean.BaseSerBean;
+import com.kuainiu.qt.data.service.bean.BaseDataSerBean;
 import lombok.Data;
 
-import java.util.*;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,7 +12,7 @@ import java.util.*;
  * Time: 8:30 PM
  */
 @Data
-public class PortfolioSerBean extends BaseSerBean {
+public class PortfolioSerBean extends BaseDataSerBean {
 
     private String portfolioCode;
 
@@ -24,5 +24,5 @@ public class PortfolioSerBean extends BaseSerBean {
 
     private String status;
 
-    private List<StrategySerBean> strategyList = new ArrayList<>();
+    private String channelCode;
 }

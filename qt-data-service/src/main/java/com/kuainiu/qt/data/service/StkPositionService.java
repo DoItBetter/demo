@@ -2,6 +2,8 @@ package com.kuainiu.qt.data.service;
 
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.service.bean.SnapshotStkPositionSerBean;
+import com.kuainiu.qt.data.service.bean.StkPositionReqSerBean;
+import com.kuainiu.qt.data.service.bean.StkPositionSerBean;
 
 import java.util.List;
 
@@ -16,5 +18,5 @@ public interface StkPositionService {
 
     List<SnapshotStkPositionSerBean> getListBySnapshotCode(String snapshotCode) throws ServiceException;
 
-    SnapshotStkPositionSerBean findLastYesterday(SnapshotStkPositionSerBean snapshotStkPositionSerBean) throws ServiceException;
+    StkPositionSerBean findLastYesterday(StkPositionReqSerBean stkPositionReqSerBean) throws ServiceException;
 }

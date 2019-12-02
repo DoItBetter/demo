@@ -7,6 +7,9 @@ import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.facade.request.*;
 import com.kuainiu.qt.data.service.bean.*;
+import com.kuainiu.qt.data.service.bean.trans.PortfolioQrySerBean;
+import com.kuainiu.qt.data.service.bean.trans.PortfolioReqSerBean;
+import com.kuainiu.qt.data.service.bean.trans.PortfolioSerBean;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,8 +56,6 @@ public class BizBeanUtils {
     public static PortfolioInBean buildPortfolioInBean(PortfolioSerBean serBean) throws BizException {
         PortfolioInBean portfolioInBean = new PortfolioInBean();
         BeanMapUtils.map(serBean, portfolioInBean);
-        List<StrategyInBean> strategyInBeanList = buildStrategyList(serBean.getStrategyList());
-        portfolioInBean.setStrategyList(strategyInBeanList);
         return portfolioInBean;
     }
 
@@ -93,20 +94,28 @@ public class BizBeanUtils {
         List<StkAccountOutBean> stkAccountList = new ArrayList<>();
         List<FuturesAccountOutBean> futuresAccountList = new ArrayList<>();
         try {
-            stkPositionList = BeanMapUtils.mapAsList(serBean.getStkPositionList(), StkPositionOutBean.class);
+            outBean.setStkPositionList(stkPositionList);
+            serBean.getStkPositionList().forEach(stkPositionSerBean -> {
+                StkPositionOutBean stkPositionOutBean = new StkPositionOutBean();
+                BeanMapUtils.map(stkPositionSerBean, stkPositionOutBean);
+                StkAssetDetailFeeOutBean feeOutBean = new StkAssetDetailFeeOutBean();
+                BeanMapUtils.map(stkPositionSerBean.getStkFee(), feeOutBean);
+                stkPositionOutBean.setStkFee(feeOutBean);
+                stkPositionList.add(stkPositionOutBean);
+            });
             outBean.setStkPositionList(stkPositionList);
             futuresPositionList = BeanMapUtils.mapAsList(serBean.getFuturesPositionList(), FuturesPositionOutBean.class);
             outBean.setFuturesPositionList(futuresPositionList);
             cashflowList = BeanMapUtils.mapAsList(serBean.getCashflowList(), CashflowOutBean.class);
             outBean.setCashflowList(cashflowList);
-            for (StkAccountSerBean stkAccount : serBean.getStkAccountList()) {
+            serBean.getStkAccountList().forEach(stkAccountSerBean -> {
                 StkAccountOutBean stkAccountOutBean = new StkAccountOutBean();
-                BeanMapUtils.map(stkAccount, stkAccountOutBean);
-                StkFeeOutBean stkFeeOutBean = new StkFeeOutBean();
-                BeanMapUtils.map(stkAccount.getTransactionCost(), stkFeeOutBean);
-                stkAccountOutBean.setTransactionCost(stkFeeOutBean);
+                BeanMapUtils.map(stkAccountSerBean, stkAccountOutBean);
+                StkFeeOutBean feeOutBean = new StkFeeOutBean();
+                BeanMapUtils.map(stkAccountSerBean.getTransactionCost(), feeOutBean);
+                stkAccountOutBean.setTransactionCost(feeOutBean);
                 stkAccountList.add(stkAccountOutBean);
-            }
+            });
             outBean.setStkAccountList(stkAccountList);
             futuresAccountList = BeanMapUtils.mapAsList(serBean.getFuturesAccountList(), FuturesAccountOutBean.class);
             outBean.setFuturesAccountList(futuresAccountList);
@@ -123,15 +132,33 @@ public class BizBeanUtils {
         return inBean;
     }
 
-    public static SnapshotStkPositionSerBean buildStkPositionSerBean(StkPositionInBean inBean) {
-        SnapshotStkPositionSerBean serBean = new SnapshotStkPositionSerBean();
+    public static StkPositionReqSerBean buildStkPositionReqSerBean(StkPositionInBean inBean) {
+        StkPositionReqSerBean serBean = new StkPositionReqSerBean();
         BeanMapUtils.map(inBean, serBean);
         return serBean;
     }
 
-    public static PortfolioOutBean buildStkPositionOutBean(SnapshotStkPositionSerBean serBean) {
-        PortfolioOutBean outBean = new PortfolioOutBean();
+    public static StkPositionOutBean buildStkPositionOutBean(StkPositionSerBean serBean) {
+        StkPositionOutBean outBean = new StkPositionOutBean();
         BeanMapUtils.map(serBean, outBean);
         return outBean;
+    }
+
+    public static FuturesPositionReqSerBean buildFuturesPositionReqSerBean(FuturesPositionInBean inBean) {
+        FuturesPositionReqSerBean reqSerBean = new FuturesPositionReqSerBean();
+        BeanMapUtils.map(inBean, reqSerBean);
+        return reqSerBean;
+    }
+
+    public static FuturesPositionOutBean buildFuturesPositionOutBean(FuturesPositionSerBean serBean) {
+        FuturesPositionOutBean outBean = new FuturesPositionOutBean();
+        BeanMapUtils.map(serBean, outBean);
+        return outBean;
+    }
+
+    public static FuturesPositionInBean buildFuturesPositionQryInBean(FuturesPositionPnlRequest request) {
+        FuturesPositionInBean inBean = new FuturesPositionInBean();
+        BeanMapUtils.map(request, inBean);
+        return inBean;
     }
 }

@@ -1,10 +1,5 @@
 package com.kuainiu.qt.data.web.controller;
 
-import com.kuainiu.qt.data.biz.PortfolioBiz;
-import com.kuainiu.qt.data.biz.SnapshotPortfolioBiz;
-import com.kuainiu.qt.data.biz.bean.processor.PortfolioInformationRatioProcessorInBean;
-import com.kuainiu.qt.data.biz.bean.processor.PortfolioProcessorInBean;
-import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.facade.QtDataSnapshotPortfolioFacade;
 import com.kuainiu.qt.data.facade.request.*;
 import com.kuainiu.qt.data.facade.response.*;
@@ -60,34 +55,9 @@ public class PortfolioController {
     }
 
     @ApiOperation(httpMethod = "POST",value = "查询")
-    @RequestMapping(value="/qryLastBeforeOpenMarket",produces = "application/json;charset=UTF-8")
-    @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "PortfolioLastRecordPerDayRequest", paramType = "PortfolioLastRecordPerDayRequest")
-    public SnapshotPortfolioResponse qryLastBeforeOpenMarket(@RequestBody SnapshotPortfolioRequest request) {
-        return qtDataSnapshotPortfolioFacade.qryLastBeforeOpenMarket(request);
-    }
-
-    @Autowired
-    PortfolioBiz portfolioBiz;
-
-    @ApiOperation(httpMethod = "POST",value = "测试脚本")
-    @RequestMapping(value="/portfolioProcessor",produces = "application/json;charset=UTF-8")
-    @ApiImplicitParam(name = "request", value = "request", required = false, dataType = "", paramType = "")
-    public void qryPortfolio() throws BizException {
-        PortfolioProcessorInBean inBean = new PortfolioProcessorInBean();
-        inBean.setPortfolioCode("PF000001");
-        inBean.setForce(true);
-        portfolioBiz.recordSnapshot(inBean);
-    }
-
-    @Autowired
-    SnapshotPortfolioBiz snapshotPortfolioBiz;
-
-    @ApiOperation(httpMethod = "POST",value = "测试Info脚本")
-    @RequestMapping(value="/portfolioInformationRatioProcessor",produces = "application/json;charset=UTF-8")
-    @ApiImplicitParam(name = "request", value = "request", required = false, dataType = "", paramType = "")
-    public void portfolioInformationRatioProcessor() throws BizException {
-        PortfolioInformationRatioProcessorInBean inBean = new PortfolioInformationRatioProcessorInBean();
-        inBean.setForce(true);
-        snapshotPortfolioBiz.recordPortfolio(inBean);
+    @RequestMapping(value="/findByBelongTimeAndErrorFlag",produces = "application/json;charset=UTF-8")
+    @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "SnapshotPortfolioRequest", paramType = "SnapshotPortfolioRequest")
+    public SnapshotPortfolioResponse findByBelongTimeAndErrorFlag(@RequestBody SnapshotPortfolioRequest request) {
+        return qtDataSnapshotPortfolioFacade.findByBelongTimeAndErrorFlag(request);
     }
 }

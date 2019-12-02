@@ -9,6 +9,8 @@ import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.*;
 import com.kuainiu.qt.data.service.bean.*;
+import com.kuainiu.qt.data.service.bean.trans.PortfolioQrySerBean;
+import com.kuainiu.qt.data.service.bean.trans.PortfolioReqSerBean;
 import com.kuainiu.qt.data.util.BizBeanUtils;
 import com.kuainiu.qt.data.util.BizReqSerBeanUtils;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
@@ -47,7 +49,7 @@ public class PortfolioQryBizImpl implements PortfolioQryBiz {
     AidcQryService aidcQryService;
 
     @Autowired
-    SnapshotFuturesPositionsService snapshotFuturesPositionsService;
+    FuturesPositionsService futuresPositionsService;
 
     @Autowired
     SnapshotPortfolioCashflowService snapshotPortfolioCashflowService;
@@ -174,8 +176,8 @@ public class PortfolioQryBizImpl implements PortfolioQryBiz {
             outBean.setStkPositionList(stkPositionOutBeanList);
 
             //期货仓位
-            List<SnapshotFuturesPositionsSerBean> snapshotFuturesPositionsSerBeanList = snapshotFuturesPositionsService.getListBySnapshotCode(portfolioSerBean.getSnapshotCode());
-            List<FuturesPositionOutBean> futuresPositionOutBeanList = BeanMapUtils.mapAsList(snapshotFuturesPositionsSerBeanList, FuturesPositionOutBean.class);
+            List<FuturesPositionSerBean> futuresPositionSerBeanList = futuresPositionsService.getListBySnapshotCode(portfolioSerBean.getSnapshotCode());
+            List<FuturesPositionOutBean> futuresPositionOutBeanList = BeanMapUtils.mapAsList(futuresPositionSerBeanList, FuturesPositionOutBean.class);
             outBean.setFuturesPositionList(futuresPositionOutBeanList);
 
             //出入金

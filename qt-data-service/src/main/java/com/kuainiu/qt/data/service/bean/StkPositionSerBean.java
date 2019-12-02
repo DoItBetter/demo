@@ -1,12 +1,15 @@
 package com.kuainiu.qt.data.service.bean;
 
-import com.kuainiu.qt.data.service.bean.trans.StkAssetDetailFeeSerBean;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 public class StkPositionSerBean extends BaseDataSerBean {
+
+    private String snapshotCode;
+
     private String portfolioCode;
 
     private String strategyCode;
@@ -71,4 +74,6 @@ public class StkPositionSerBean extends BaseDataSerBean {
     private StkAssetDetailFeeSerBean stkFee;
 
     private String assetName;
+
+    private Date endBelongTime;
 }

@@ -5,14 +5,9 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ckhero
- * Date: 2019/7/13
- * Time: 3:25 PM
- */
 @Data
-public class SnapshotFuturesPositionsSerBean extends BaseDataSerBean {
+public class FuturesPositionReqSerBean extends BaseDataReqSerBean {
+
     private Long id;
 
     private String snapshotCode;
@@ -63,12 +58,9 @@ public class SnapshotFuturesPositionsSerBean extends BaseDataSerBean {
 
     private Date belongTime;
 
-    private Date createTime;
-
-    private Date updateTime;
-
     private Date startCreateTime;
 
     private Date endCreateTime;
 
+    private Date endBelongTime;
 }

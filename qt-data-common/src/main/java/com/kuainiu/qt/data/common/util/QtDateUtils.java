@@ -23,6 +23,8 @@ public class QtDateUtils {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     public static final int MINUTE_THIRTY = 30;
 
     public static final int MINUTE_ZERO= 0;
@@ -40,8 +42,8 @@ public class QtDateUtils {
     //用于测试
     public static Date getTestTime() {
         Calendar cal = new GregorianCalendar();
-        cal.set(Calendar.HOUR_OF_DAY, 15);
-        cal.set(Calendar.MINUTE, 26);
+        cal.set(Calendar.HOUR_OF_DAY, 16);
+        cal.set(Calendar.MINUTE, 30);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
@@ -239,6 +241,11 @@ public class QtDateUtils {
         return sdf.format(QtDateUtils.getCurrDate());
     }
 
+    public static String converToYMDHms(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(QtDateUtils.DATE_TIME_FORMAT);
+        return sdf.format(QtDateUtils.getCurrDate());
+    }
+
     /**
      * 是否开市之前
      * @return
@@ -299,6 +306,7 @@ public class QtDateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
 }

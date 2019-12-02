@@ -2,7 +2,6 @@ package com.kuainiu.qt.data.util;
 
 import com.kuainiu.qt.data.dal.entity.SnapshotPortfolio;
 import com.kuainiu.qt.data.exception.ServiceException;
-import com.kuainiu.qt.data.facade.code.QtDataRspCode;
 import com.kuainiu.qt.data.service.bean.SnapshotPortfolioReqSerBean;
 import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
@@ -18,10 +17,6 @@ public class BeanUtils {
     }
 
     public static SnapshotPortfolio buildSnapshotPortfolio(SnapshotPortfolioSerBean serBean) throws ServiceException {
-        if (serBean == null) {
-            log.error("snapshot portfolio serBean is null");
-            throw new ServiceException(QtDataRspCode.ERR_EMPTY_SER_BEAN);
-        }
         SnapshotPortfolio snapshotPortfolio = new SnapshotPortfolio();
         BeanMapUtils.map(serBean, snapshotPortfolio);
         return snapshotPortfolio;

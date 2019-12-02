@@ -1,6 +1,5 @@
-package com.kuainiu.qt.data.service.bean.trans;
+package com.kuainiu.qt.data.service.bean;
 
-import com.kuainiu.qt.data.service.bean.BaseDataSerBean;
 import lombok.Data;
 
 import java.math.BigDecimal;

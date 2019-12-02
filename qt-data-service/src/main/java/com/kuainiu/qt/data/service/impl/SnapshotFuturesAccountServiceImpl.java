@@ -76,7 +76,9 @@ public class SnapshotFuturesAccountServiceImpl implements SnapshotFuturesAccount
             Date endBelongTime = QtDateUtils.isBeforeOpenMarket() ? QtDateUtils.getOpenMarketYesterday() : QtDateUtils.getOpenMarket();
             futuresAccount.setAccountCode(accountCode);
             futuresAccount.setEndBelongTime(endBelongTime);
+            log.info("[Service][Snapshot] findByBelongTimeAndErrorFlag futuresAccount ={}", futuresAccount);
             futuresAccount = futuresAccountDao.getLastBeforeOpenMarket(futuresAccount);
+            log.info("[Service][Snapshot] findByBelongTimeAndErrorFlag result ={}", futuresAccount);
             if (null != futuresAccount) {
                 BeanMapUtils.map(futuresAccount, serBean);
             }
@@ -93,51 +95,21 @@ public class SnapshotFuturesAccountServiceImpl implements SnapshotFuturesAccount
         if (StringUtils.isBlank(snapshotCode)) {
             throw new ServiceException(QtDataRspCode.ERR_SNAPSHOT_FUTURES_ACCOUNT_SNAPSHOT_CODE);
         }
-        log.warn("[Service][Snapshot]qry futures account by snapshotcode,snapshotCode={}", snapshotCode);
+        log.info("[Service][Snapshot]qry futures account by snapshotcode,snapshotCode={}", snapshotCode);
         List<SnapshotFuturesAccountSerBean> accountList = new ArrayList<>();
-        SnapshotFuturesAccount futuresAccount = new SnapshotFuturesAccount();
         try {
-            futuresAccount.setSnapshotCode(snapshotCode);
-            List<SnapshotFuturesAccount> accountListDB = futuresAccountDao.getListBySnapshotCode(futuresAccount);
-            log.warn("[Service][Snapshot]qry futures account by snapshotcode,res={}", JSON.toJSONString(accountListDB));
+            List<SnapshotFuturesAccount> accountListDB = futuresAccountDao.findListBySnapshotCode(snapshotCode);
+            log.info("[Service][Snapshot]qry futures account by snapshotcode,res={}", JSON.toJSONString(accountListDB));
             if (null == accountListDB) {
-                log.warn("[Service][Snapshot]qry futures account list empty,snapshotCode={}", JSON.toJSONString(accountListDB));
+                log.info("[Service][Snapshot]qry futures account list empty,snapshotCode={}", JSON.toJSONString(accountListDB));
             } else {
                 accountList = BeanMapUtils.mapAsList(accountListDB, SnapshotFuturesAccountSerBean.class);
             }
         } catch (Exception e) {
             log.error("[Service][Snapshot]qry last account list fail,e", e);
-            log.error("[Service][Snapshot]qry last account list fail,data={}", JSON.toJSONString(futuresAccount));
+            log.error("[Service][Snapshot]qry last account list fail,data={}", JSON.toJSONString(accountList));
             throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_FUTURES_ACCOUNT_LIST_QRY);
         }
         return accountList;
-    }
-
-    @Override
-    public void update(SnapshotFuturesAccountSerBean serBean) throws ServiceException {
-        SnapshotFuturesAccount account = new SnapshotFuturesAccount();
-        BeanMapUtils.map(serBean, account);
-        futuresAccountDao.updateByPrimaryKey(account);
-    }
-
-    @Override
-    public SnapshotFuturesAccountSerBean getLastBeforeOpenMarket(SnapshotFuturesAccountSerBean serBean) throws ServiceException {
-        if (StringUtils.isBlank(serBean.getAccountCode())) {
-            throw new ServiceException(QtDataRspCode.ERR_SNAPSHOT_FUTURES_ACCOUNT_CODE);
-        }
-        log.info("getLastBeforeOpenMarket,serBean={}", serBean);
-        SnapshotFuturesAccount futuresAccount = new SnapshotFuturesAccount();
-        try {
-            BeanMapUtils.map(serBean, futuresAccount);
-            futuresAccount = futuresAccountDao.getLastBeforeOpenMarket(futuresAccount);
-            if (null != futuresAccount) {
-                BeanMapUtils.map(futuresAccount, serBean);
-            }
-        } catch (Exception e) {
-            log.error("[Service][Snapshot]qry last account before market fail,e", e);
-            log.error("[Service][Snapshot]qry last account before market fail,data={}", JSON.toJSONString(futuresAccount));
-            throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_FUTURES_ACCOUNT_QRY);
-        }
-        return serBean;
     }
 }

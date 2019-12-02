@@ -6,27 +6,32 @@ import com.kuainiu.qt.data.biz.bean.SnapshotPortfolioOutBean;
 import com.kuainiu.qt.data.biz.bean.processor.PortfolioInformationRatioProcessorInBean;
 import com.kuainiu.qt.data.common.util.CommonConstant;
 import com.kuainiu.qt.data.common.util.QtDateUtils;
+import com.kuainiu.qt.data.common.util.RedisUtil;
 import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
+import com.kuainiu.qt.data.service.AidcQryService;
 import com.kuainiu.qt.data.service.PortfolioService;
 import com.kuainiu.qt.data.service.SnapshotPortfolioService;
-import com.kuainiu.qt.data.service.bean.PortfolioSerBean;
+import com.kuainiu.qt.data.service.bean.SnapshotPortfolioReqSerBean;
 import com.kuainiu.qt.data.service.bean.SnapshotPortfolioSerBean;
+import com.kuainiu.qt.data.service.bean.aidc.RmReqSerBean;
+import com.kuainiu.qt.data.service.bean.aidc.RmSerBean;
+import com.kuainiu.qt.data.service.bean.trans.PortfolioReqSerBean;
+import com.kuainiu.qt.data.service.bean.trans.PortfolioSerBean;
 import com.kuainiu.qt.data.service.code.SnapshotPortfolioCode;
-import com.kuainiu.qt.data.service.http.AidcCDHttp;
 import com.kuainiu.qt.data.service.http.AidcSHHttp;
-import com.kuainiu.qt.data.service.http.request.StockEarningRate300Request;
-import com.kuainiu.qt.data.service.http.request.aidc.AidcTradeDateRequest;
-import com.kuainiu.qt.data.service.http.response.StockEarningRate300Response;
 import com.kuainiu.qt.data.util.BizBeanUtils;
+import com.kuainiu.qt.data.util.BizReqSerBeanUtils;
+import com.kuainiu.qt.data.util.CalculateUtil;
+import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import com.kuainiu.qt.framework.common.util.CalculateUtils;
+import com.kuainiu.qt.trans.facade.code.PortfolioStatusCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -42,16 +47,19 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     AidcSHHttp aidcSHHttp;
 
     @Autowired
-    AidcCDHttp portfolioHttp;
-
-    @Autowired
     PortfolioService portfolioService;
 
+    @Autowired
+    RedisUtil redisUtil;
+    @Autowired
+    AidcQryService aidcQryService;
+
     @Override
-    public SnapshotPortfolioOutBean qryLastBeforeOpenMarket(SnapshotPortfolioInBean inBean) throws BizException {
+    public SnapshotPortfolioOutBean findByBelongTimeAndErrorFlag(SnapshotPortfolioInBean inBean) throws BizException {
         SnapshotPortfolioOutBean  outBean;
         try {
-            SnapshotPortfolioSerBean serBean = snapshotPortfolioService.findLastBeforeOpenMarket(inBean.getPortfolioCode());
+            SnapshotPortfolioReqSerBean reqSerBean = BizReqSerBeanUtils.buildSnapshotPortfolioReqSerBean(inBean);
+            SnapshotPortfolioSerBean serBean = snapshotPortfolioService.findByBelongTimeAndErrorFlag(reqSerBean);
             outBean = BizBeanUtils.buildSnapshotPortfolioOutBean(serBean);
         } catch (ServiceException e) {
             throw new BizException(QtDataRspCode.ERR_PORTFOLIOSNAPSHOT_INFO_QRY_FAIL, e.getMsg());
@@ -62,55 +70,58 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     @Override
     public void recordPortfolio(PortfolioInformationRatioProcessorInBean jobParam) {
         Date belongTime = QtDateUtils.getZeroSecondTime(QtDateUtils.getCurrDate());
-        log.info("[Biz][Portfolio] InformationRatioProcessor start,belongTime={}", belongTime);
+        log.info("[Biz][Portfolio] InformationRatioProcessor recordPortfolio,belongTime={}", belongTime);
         try {
-            List<PortfolioSerBean> portfolioSerBeanList = portfolioService.findDistinctPortfolioCode();
+            if (!snapshotPortfolioService.needRun() || !jobParam.isForce()) {
+                log.warn("today is not trans day or curr time is not in open market!");
+            }
+            PortfolioReqSerBean reqSerBean = new PortfolioReqSerBean();
+            reqSerBean.setStatus(PortfolioStatusCode.VALID.getCode());
+            List<PortfolioSerBean> portfolioSerBeanList = portfolioService.findAll(reqSerBean);
             log.info("[Biz][Portfolio]snapshot={}", portfolioSerBeanList);
-            if (snapshotPortfolioService.needRun() || jobParam.isForce()) {
-                for (PortfolioSerBean portfolioSerBean : portfolioSerBeanList) {
-                    String portfolioCode = portfolioSerBean.getPortfolioCode();
-                    calcPortfolio(portfolioCode, belongTime);
-                }
+            for (PortfolioSerBean portfolioSerBean : portfolioSerBeanList) {
+                String portfolioCode = portfolioSerBean.getPortfolioCode();
+                calcPortfolio(portfolioCode, belongTime);
             }
         } catch (ServiceException e) {
             log.info("[Biz][Portfolio] InformationRatioProcessor fail", e);
         }
-        log.info("[Biz][Portfolio] InformationRatioProcessor end");
     }
 
     @Override
     public void calcPortfolio(String portfolioCode, Date belongTime) throws ServiceException {
-        SnapshotPortfolioSerBean snapshotPortfolio = snapshotPortfolioService.getPortfolioByBelongTime(portfolioCode, belongTime);
+        SnapshotPortfolioSerBean snapshotPortfolio = new SnapshotPortfolioSerBean();
         try {
+            snapshotPortfolio = snapshotPortfolioService.getPortfolioByBelongTime(portfolioCode, belongTime, SnapshotPortfolioCode.UNFINISHED.getCode());
             BigDecimal tr = snapshotPortfolio.getTotalReturns();
-            BigDecimal T = qryRundays(snapshotPortfolio);
-            BigDecimal rm = qryRm(snapshotPortfolio);
+            Integer T = aidcQryService.getPortfolioRundays(snapshotPortfolio.getPortfolioCode(), snapshotPortfolio.getStartDate());
+            BigDecimal rm = qryRm(belongTime);
             BigDecimal baseReturns = calcBaseReturns(snapshotPortfolio, rm);
             BigDecimal balanceReturns = calcBalanceReturns(tr, baseReturns);
+            SnapshotPortfolioReqSerBean reqSerBean = new SnapshotPortfolioReqSerBean();
+            BeanMapUtils.map(snapshotPortfolio, reqSerBean);
+            reqSerBean.setBaseReturns(baseReturns);
+            reqSerBean.setBaseRealtimeReturns(rm);
+            reqSerBean.setBalanceReturns(balanceReturns);
+            snapshotPortfolioService.updateReturnsFields(reqSerBean);
             BigDecimal infoRatio = calcInfoRatio(portfolioCode, belongTime, balanceReturns, T);
-            snapshotPortfolio.setBaseReturns(baseReturns);
-            snapshotPortfolio.setBaseRealtimeReturns(rm);
-            snapshotPortfolio.setBalanceReturns(balanceReturns);
-            snapshotPortfolio.setInformationRatio(infoRatio);
-            snapshotPortfolio.setErrorFlag(SnapshotPortfolioCode.SUCCESS.getCode());
-            snapshotPortfolioService.updateByPrimaryKey(snapshotPortfolio);
+            reqSerBean.setInformationRatio(infoRatio);
+            reqSerBean.setErrorFlag(SnapshotPortfolioCode.SUCCESS.getCode());
+            snapshotPortfolioService.updateInfoRatio(reqSerBean);
         } catch (Exception e) {
             log.error("calc snapshotPortfolio information fail " + snapshotPortfolio);
+            throw new ServiceException(QtDataRspCode.ERR_CALC_INFO_RATIO, e.getMessage());
         }
     }
 
-    public BigDecimal qryRundays(SnapshotPortfolioSerBean snapshotPortfolio) {
-        int rundays = 0;
-        AidcTradeDateRequest request = new AidcTradeDateRequest();
-        request.setBegin_date(snapshotPortfolio.getStartDate().toString());
-        request.setEnd_date(QtDateUtils.getCurrDate().toString());
-        request.setType(1);
-        try {
-            rundays = aidcSHHttp.qryTradeDate(request).size();
-        } catch (ServiceException e) {
-            log.error("qryPortfolioRunDays fail");
-        }
-        return new BigDecimal(rundays);
+    private BigDecimal qryRm(Date belongTime) throws ServiceException {
+        BigDecimal rm = CommonConstant.BIG_DECIMAL_ZERO;
+        RmReqSerBean rmReqSerBean = new RmReqSerBean();
+        rmReqSerBean.setDatetime(QtDateUtils.converToYMDHms(belongTime));
+        RmSerBean rmSerBean = aidcQryService.qryRm(rmReqSerBean);
+        log.info("[AIDC] qryRm serBean ={}", rmSerBean);
+        rm = rmSerBean.getData();
+        return rm;
     }
 
     private BigDecimal calcBaseReturns(SnapshotPortfolioSerBean snapshotPortfolio, BigDecimal rm) throws ServiceException {
@@ -122,28 +133,25 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
         return CalculateUtils.sumBigDecimal(tr, baseReturns);
     }
 
-    private BigDecimal calcInfoRatio(String portfolioCode, Date belongTime, BigDecimal balanceReturns, BigDecimal T) throws ServiceException {
-        SnapshotPortfolioSerBean queryStdSP = new SnapshotPortfolioSerBean();
+    private BigDecimal calcInfoRatio(String portfolioCode, Date belongTime, BigDecimal balanceReturns, Integer T) throws ServiceException {
+        SnapshotPortfolioReqSerBean queryStdSP = new SnapshotPortfolioReqSerBean();
         queryStdSP.setPortfolioCode(portfolioCode);
         queryStdSP.setEndBelongTime(belongTime);
         BigDecimal std = snapshotPortfolioService.getBalanceReturnStdByPortfolioCode(queryStdSP).getStd();
+        log.info("[Service] getBalanceReturnStd , std={}",std);
+        if(CalculateUtil.isZero(std)) {
+            log.error("[Service] getStd error, std={}",std);
+        }
         double result = balanceReturns.doubleValue() / (std.doubleValue() / Math.sqrt(T.doubleValue()) * Math.sqrt(TRANS_DAYS_A_YEAR.doubleValue()));
         return new BigDecimal(result);
     }
 
-    private BigDecimal qryRm(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException {
-        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstant.DATEFORMAT_YMDHMS);
-        String timeStr = sdf.format(snapshotPortfolio.getBelongTime());
-        StockEarningRate300Request stockEarningRate300Request = new StockEarningRate300Request();
-        stockEarningRate300Request.setDatetime(timeStr);
-        StockEarningRate300Response earningResponse = portfolioHttp.queryEarningRate300(stockEarningRate300Request);
-        return earningResponse.getData().getData();
-    }
-
     private BigDecimal qryHistoryBaseReturns(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException {
-        snapshotPortfolio.setErrorFlag("");
-        snapshotPortfolio.setEndBelongTime(QtDateUtils.getOpenMarket());
-        SnapshotPortfolioSerBean item = snapshotPortfolioService.getLastBeforeOpenMarket(snapshotPortfolio);
+        SnapshotPortfolioReqSerBean reqSerBean = new SnapshotPortfolioReqSerBean();
+        reqSerBean = BizReqSerBeanUtils.buildHistoryBaseReturnsReqSerBean(snapshotPortfolio);
+        log.info("[Service] findByBelongTimeAndErrorFlag request={}",snapshotPortfolio);
+        SnapshotPortfolioSerBean item = snapshotPortfolioService.getByBelongTimeAndErrorFlag(reqSerBean);
+        log.info("[Service] findByBelongTimeAndErrorFlag response={}", item);
         return item.getBaseReturns();
     }
 }
