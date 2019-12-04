@@ -11,7 +11,7 @@ import java.util.List;
 public interface SnapshotPortfolioService {
     SnapshotPortfolioSerBean getStdByPFCode(String portfolioCode) throws ServiceException;
 
-    SnapshotPortfolioSerBean getInfoRatioByPFCode(String portfolioCode) throws ServiceException;
+    SnapshotPortfolioSerBean getByPFCodeAndErrorFlag(String portfolioCode) throws ServiceException;
 
     List<SnapshotPortfolioSerBean> findSnapshotPortfolioList(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 
@@ -25,7 +25,7 @@ public interface SnapshotPortfolioService {
 
     void addOne(SnapshotPortfolioSerBean serBean) throws ServiceException;
 
-    SnapshotPortfolioSerBean findByBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean snapshotPortfolioReqSerBean) throws ServiceException;
+    SnapshotPortfolioSerBean findByPFCodeBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 
     /**
      * 取某一分钟infoRatio未计算的订单
@@ -37,11 +37,13 @@ public interface SnapshotPortfolioService {
 
     SnapshotPortfolioSerBean findOneOneMinuteAgo(String portfolioCode) throws ServiceException;
 
-    SnapshotPortfolioSerBean getByBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
+    SnapshotPortfolioSerBean getByPFCodeBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 
     SnapshotPortfolioSerBean getBalanceReturnStdByPortfolioCode(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 
     void updateReturnsFields(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 
     void updateInfoRatio(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
+
+    SnapshotPortfolioSerBean findByBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException;
 }

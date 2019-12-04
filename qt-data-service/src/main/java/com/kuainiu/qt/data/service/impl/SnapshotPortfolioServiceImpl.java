@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,13 +77,13 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     }
 
     @Override
-    public SnapshotPortfolioSerBean getInfoRatioByPFCode(String portfolioCode) throws ServiceException {
+    public SnapshotPortfolioSerBean getByPFCodeAndErrorFlag(String portfolioCode) throws ServiceException {
         SnapshotPortfolioSerBean serBean = new SnapshotPortfolioSerBean();
         try {
             SnapshotPortfolio portfolio = new SnapshotPortfolio();
             portfolio.setPortfolioCode(portfolioCode);
             portfolio.setErrorFlag(SnapshotPortfolioCode.SUCCESS.getCode());
-            SnapshotPortfolio snapshotPortfolio = snapshotPortfolioDao.getInfoRatioByPFCode(portfolio);
+            SnapshotPortfolio snapshotPortfolio = snapshotPortfolioDao.getByPFCodeAndErrorFlag(portfolio);
             if (snapshotPortfolio != null) {
                 serBean = SerBeanUtils.buildSnapshotPortfolioSerBean(snapshotPortfolio);
             }
@@ -129,7 +128,6 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     @Override
     public boolean needRun() throws ServiceException {
         Date currDate = QtDateUtils.getCurrDate();
-        String today = new SimpleDateFormat(CommonConstant.DATE_FORMAT).format(currDate);
 
         if (!QtDateUtils.isInStockPreparingTime(currDate)) {
             log.info("not in stock trading time");
@@ -189,7 +187,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
 
             portfolio.setPortfolioCode(portfolioCode);
             portfolio.setEndBelongTime(belongTime);
-            portfolio = snapshotPortfolioDao.findByBelongTimeAndErrorFlag(portfolio);
+            portfolio = snapshotPortfolioDao.findByPFCodeBelongTimeAndErrorFlag(portfolio);
             log.info("[Service][Snapshot]qry last day record, data={}", JSON.toJSONString(portfolio));
             if (null == portfolio || null == portfolio.getId()) {
                 return portfolioSerBean;
@@ -219,27 +217,27 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     }
 
     @Override
-    public SnapshotPortfolioSerBean findByBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean snapshotPortfolioReqSerBean) throws ServiceException {
+    public SnapshotPortfolioSerBean findByPFCodeBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean snapshotPortfolioReqSerBean) throws ServiceException {
         SnapshotPortfolioSerBean portfolioSerBean = new SnapshotPortfolioSerBean();
         SnapshotPortfolio portfolio = BeanUtils.buildSnapshotPortfolio(snapshotPortfolioReqSerBean);
         try {
-            log.info("[Service][Snapshot]findByBelongTimeAndErrorFlag, db request={}", JSON.toJSONString(portfolio));
-            portfolio = snapshotPortfolioDao.findByBelongTimeAndErrorFlag(portfolio);
-            log.info("[Service][Snapshot]findByBelongTimeAndErrorFlag, db response={}", JSON.toJSONString(portfolio));
+            log.info("[Service][Snapshot]findByPFCodeBelongTimeAndErrorFlag, db request={}", JSON.toJSONString(portfolio));
+            portfolio = snapshotPortfolioDao.findByPFCodeBelongTimeAndErrorFlag(portfolio);
+            log.info("[Service][Snapshot]findByPFCodeBelongTimeAndErrorFlag, db response={}", JSON.toJSONString(portfolio));
             if (null == portfolio || null == portfolio.getId()) {
                 return portfolioSerBean;
             }
             portfolioSerBean = SerBeanUtils.buildSnapshotPortfolio(portfolio);
         } catch (Exception e) {
-            log.info("[service][DB][Portfolio] findByBelongTimeAndErrorFlag from db fail,e", e);
+            log.info("[service][DB][Portfolio] findByPFCodeBelongTimeAndErrorFlag from db fail,e", e);
             throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_PORTFOLIO_QRY);
         }
         return portfolioSerBean;
     }
 
     @Override
-    public SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime, String errorflag) throws ServiceException {
-        SnapshotPortfolio snapshotPortfolio = getPortfolio(portfolioCode, belongTime, errorflag);
+    public SnapshotPortfolioSerBean getPortfolioByBelongTime(String portfolioCode, Date belongTime, String errorFlag) throws ServiceException {
+        SnapshotPortfolio snapshotPortfolio = getPortfolio(portfolioCode, belongTime, errorFlag);
         try {
             snapshotPortfolio = snapshotPortfolioDao.getPortfolioByPortfolioCodeAndBelongTime(snapshotPortfolio);
             log.info("getPortfolioByPortfolioCodeAndBelongTime , snapshotPortfolio res = {}", snapshotPortfolio);
@@ -247,7 +245,7 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
             log.error("get snapshotPortfolio fail " + snapshotPortfolio, e);
         }
         if (snapshotPortfolio == null) {
-            log.error("getPortfolioByBelongTime snapshotPortfolio is null, belongTime = {}", belongTime);
+            log.error("getPortfolioByBelongTime snapshotPortfolio is null, portfolioCode = {}, belongTime = {}, errorflag = {}", portfolioCode, belongTime, errorFlag);
         }
         return SerBeanUtils.buildSnapshotPortfolioSerBean(snapshotPortfolio);
     }
@@ -281,13 +279,13 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
     }
 
     @Override
-    public SnapshotPortfolioSerBean getByBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException {
+    public SnapshotPortfolioSerBean getByPFCodeBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException {
         SnapshotPortfolioSerBean serBean = new SnapshotPortfolioSerBean();
         SnapshotPortfolio snapshotPortfolio = BeanUtils.buildSnapshotPortfolio(reqSerBean);
         try {
-            snapshotPortfolio = snapshotPortfolioDao.findByBelongTimeAndErrorFlag(snapshotPortfolio);
+            snapshotPortfolio = snapshotPortfolioDao.findByPFCodeBelongTimeAndErrorFlag(snapshotPortfolio);
         } catch (Exception e) {
-            log.error("snapshot portfolio findByBelongTimeAndErrorFlag error = {}", e);
+            log.error("snapshot portfolio findByPFCodeBelongTimeAndErrorFlag error = {}", e);
             throw new ServiceException(QtDataRspCode.ERR_DBERR);
         }
         if (snapshotPortfolio != null) {
@@ -343,5 +341,22 @@ public class SnapshotPortfolioServiceImpl implements SnapshotPortfolioService {
             log.error("snapshot portfolio updateInfoRatio fail");
             throw new ServiceException(QtDataRspCode.ERR_DB_UPDATE);
         }
+    }
+
+    @Override
+    public SnapshotPortfolioSerBean findByBelongTimeAndErrorFlag(SnapshotPortfolioReqSerBean reqSerBean) throws ServiceException {
+        SnapshotPortfolioSerBean serBean = new SnapshotPortfolioSerBean();
+        SnapshotPortfolio snapshotPortfolio = BeanUtils.buildSnapshotPortfolio(reqSerBean);
+        try {
+            snapshotPortfolio = snapshotPortfolioDao.findByBelongTimeAndErrorFlag(snapshotPortfolio);
+            log.info("snapshot portfolio findByPFCodeBelongTimeAndErrorFlag db response={}", snapshotPortfolio);
+        } catch (Exception e) {
+            log.error("snapshot portfolio findByPFCodeBelongTimeAndErrorFlag error = {}", e);
+            throw new ServiceException(QtDataRspCode.ERR_DBERR);
+        }
+        if (snapshotPortfolio != null) {
+            serBean = SerBeanUtils.buildSnapshotPortfolioSerBean(snapshotPortfolio);
+        }
+        return serBean;
     }
 }

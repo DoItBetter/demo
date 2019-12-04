@@ -23,8 +23,6 @@ public class QtDateUtils {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
-    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
     public static final int MINUTE_THIRTY = 30;
 
     public static final int MINUTE_ZERO= 0;
@@ -38,6 +36,10 @@ public class QtDateUtils {
     public static final int CLOSE_MARKET_ONE_HOUR_LATER = 16;
 
     public static final int CLOSE_MARKET_MINUTE = 0;
+
+    public static final int ADD_DAYS_SUB_ONE = -1;
+
+    public static final int ADD_DAY_ZERO = 0;
 
     //用于测试
     public static Date getTestTime() {
@@ -97,10 +99,10 @@ public class QtDateUtils {
         return date;
     }
 
-    public static Date dayStrFormatDate(String time) {
+    public static Date dateTimeStrFormatDate(String time) {
         Date date = null;
         try {
-            SimpleDateFormat format = new SimpleDateFormat(CommonConstant.DATE_FORMAT);
+            SimpleDateFormat format = new SimpleDateFormat(CommonConstant.DATEFORMAT_YMDHMS);
             date = format.parse(time);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -242,8 +244,17 @@ public class QtDateUtils {
     }
 
     public static String converToYMDHms(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(QtDateUtils.DATE_TIME_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstant.DATEFORMAT_YMDHMS);
         return sdf.format(QtDateUtils.getCurrDate());
+    }
+
+    /**
+     * 某时刻是否是在开市之前
+     * @param time
+     * @return
+     */
+    public static boolean isBeforeOpenMarket(Date time) {
+        return time.before(getOpenMarket());
     }
 
     /**
@@ -309,4 +320,29 @@ public class QtDateUtils {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
+
+    private static Date changeTime(Date date, int addDay, int hour, int min, int second){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, addDay);
+
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE,min);
+        calendar.set(Calendar.SECOND,second);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    public static Date getStartBelongTimePortfolio(){
+        return changeTime(QtDateUtils.getCurrDate(), ADD_DAYS_SUB_ONE,HOUR_NINE,MINUTE_THIRTY,SECOND_ZERO);
+    }
+
+    public static Date getStartBelongTimeYield(){
+        return changeTime(QtDateUtils.getCurrDate(),ADD_DAY_ZERO,HOUR_NINE,MINUTE_THIRTY,SECOND_ZERO);
+    }
+
+    public static Date getEndBelongTimeYield(){
+        return changeTime(QtDateUtils.getCurrDate(),ADD_DAY_ZERO,HOUR_FIFTEEN,MINUTE_THIRTY,SECOND_ZERO);
+    }
+
 }

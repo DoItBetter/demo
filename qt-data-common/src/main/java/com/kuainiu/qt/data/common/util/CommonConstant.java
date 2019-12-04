@@ -72,12 +72,12 @@ public class CommonConstant {
 
     public static final String STOCK_DAY_AM_STARTTIME = "09:30:00";
 
-    public static final String STOCK_DAY_AM_ENDTIME = "11:30:00";
+    public static final String STOCK_DAY_AM_ENDTIME = "11:31:00";
 
     public static final String STOCK_DAY_PM_STARTTIME = "13:00:00";
-
-    public static final String STOCK_DAY_PM_ENDTIME = "15:00:00";
     //脚本跑到三点半
+    public static final String STOCK_DAY_PM_ENDTIME = "15:01:00";
+
     public static final String STOCK_DAY_PM_FINESHTIME = "15:30:01";
 
     public static final String SUCCESS = "1000";

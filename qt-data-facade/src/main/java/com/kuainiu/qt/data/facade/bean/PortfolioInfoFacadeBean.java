@@ -1,4 +1,4 @@
-package com.kuainiu.qt.data.biz.bean;
+package com.kuainiu.qt.data.facade.bean;
 
 import lombok.Data;
 
@@ -7,14 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ckhero
- * Date: 2019/6/18
- * Time: 4:45 PM
- */
 @Data
-public class PortfolioOutBean extends BaseDataOutBean {
+public class PortfolioInfoFacadeBean extends BaseFacadeBean {
 
     private String portfolioCode;
 
@@ -44,17 +38,11 @@ public class PortfolioOutBean extends BaseDataOutBean {
 
     private BigDecimal annualizedReturns = BigDecimal.ZERO;
 
-    private List<StkPositionOutBean> stkPositionList = new ArrayList<>();
+    private List<StkPositionFacadeBean> stkPositionList = new ArrayList<>();
 
-    private List<FuturesPositionOutBean> futuresPositionList = new ArrayList<>();
+    private List<FuturesPositionFacadeBean> futuresPositionList = new ArrayList<>();
 
-    private BigDecimal std = BigDecimal.ZERO;
-
-    List<StkAccountOutBean> stkAccountList = new ArrayList<>();
-
-    List<FuturesAccountOutBean> futuresAccountList = new ArrayList<>();
-
-    private List<CashflowOutBean> cashflowList = new ArrayList<>();
+    private List<CashflowFacadeBean> cashflowList = new ArrayList<>();
 
     private BigDecimal baseRealtimeReturns;
 

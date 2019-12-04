@@ -6,13 +6,16 @@ import com.kuainiu.qt.data.biz.bean.processor.PortfolioInformationRatioProcessor
 import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.exception.ServiceException;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public interface SnapshotPortfolioBiz {
-    SnapshotPortfolioOutBean findByBelongTimeAndErrorFlag(SnapshotPortfolioInBean inBean) throws BizException;
+    SnapshotPortfolioOutBean findByPFCodeBelongTimeAndErrorFlag(SnapshotPortfolioInBean inBean) throws BizException;
 
     void recordPortfolio(PortfolioInformationRatioProcessorInBean jobParam);
 
     void calcPortfolio(String portfolioCode, Date belongTime) throws ServiceException;
+
+    BigDecimal getRm(Date time) throws ServiceException ;
 
 }

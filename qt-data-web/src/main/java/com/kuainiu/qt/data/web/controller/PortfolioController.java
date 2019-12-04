@@ -57,7 +57,7 @@ public class PortfolioController {
     @ApiOperation(httpMethod = "POST",value = "查询")
     @RequestMapping(value="/findByBelongTimeAndErrorFlag",produces = "application/json;charset=UTF-8")
     @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "SnapshotPortfolioRequest", paramType = "SnapshotPortfolioRequest")
-    public SnapshotPortfolioResponse findByBelongTimeAndErrorFlag(@RequestBody SnapshotPortfolioRequest request) {
-        return qtDataSnapshotPortfolioFacade.findByBelongTimeAndErrorFlag(request);
+    public SnapshotPortfolioResponse findByPFCodeBelongTimeAndErrorFlag(@RequestBody SnapshotPortfolioRequest request) {
+        return qtDataSnapshotPortfolioFacade.findByPFCodeBelongTimeAndErrorFlag(request);
     }
 }

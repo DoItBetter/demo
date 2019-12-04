@@ -58,11 +58,15 @@ public interface SnapshotPortfolioDao {
 
     @ResultMap("BaseResultMap")
     @Select("select * from t_snapshot_portfolio where `portfolio_code` = #{portfolioCode} and error_flag=#{errorFlag}  order by belong_time desc limit 1")
-    SnapshotPortfolio getInfoRatioByPFCode(SnapshotPortfolio snapshotPortfolio);
+    SnapshotPortfolio getByPFCodeAndErrorFlag(SnapshotPortfolio snapshotPortfolio);
 
     @ResultMap("BaseResultMapWithAccount")
     @Select("select * from t_snapshot_portfolio where `portfolio_code` = #{portfolioCode} and belong_time < #{endBelongTime} " +
             "and error_flag=#{errorFlag} order by belong_time desc limit 1")
+    SnapshotPortfolio findByPFCodeBelongTimeAndErrorFlag(SnapshotPortfolio snapshotPortfolio);
+
+    @ResultMap("BaseResultMap")
+    @Select("select * from t_snapshot_portfolio where belong_time < #{endBelongTime} and error_flag=#{errorFlag}  order by belong_time desc limit 1")
     SnapshotPortfolio findByBelongTimeAndErrorFlag(SnapshotPortfolio snapshotPortfolio);
 
     @Update("<script>" +
