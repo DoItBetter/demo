@@ -29,7 +29,7 @@
         <qt.data.web.version>0.0.1-SNAPSHOT</qt.data.web.version>
         <qt.data.service.version>0.0.1-SNAPSHOT</qt.data.service.version>
         <qt.data.dal.version>0.0.1-SNAPSHOT</qt.data.dal.version>
-        <qt.data.facade.version>0.0.3-SNAPSHOT</qt.data.facade.version>
+        <qt.data.facade.version>0.0.4-SNAPSHOT</qt.data.facade.version>
         <qt.data.common.version>0.0.1-SNAPSHOT</qt.data.common.version>
         <qt.data.biz.version>0.0.1-SNAPSHOT</qt.data.biz.version>
         <framework.version>1.0.2-SNAPSHOT</framework.version>
