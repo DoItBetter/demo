@@ -21,17 +21,17 @@ public class FuturesPositionBizImpl implements FuturesPositionBiz {
     FuturesPositionsService futuresPositionsService;
 
     @Override
-    public FuturesPositionOutBean getHistoryPnl(FuturesPositionInBean inBean) throws BizException {
-        log.info("[Biz][FUTURES] getHistoryPnl start, inBean = {}", inBean);
+    public FuturesPositionOutBean findFuturesPosition(FuturesPositionInBean inBean) throws BizException {
+        log.info("[Biz][FUTURES] findFuturesPosition start, inBean = {}", inBean);
         FuturesPositionReqSerBean reqSerBean = BizBeanUtils.buildFuturesPositionReqSerBean(inBean);
         FuturesPositionSerBean serBean = new FuturesPositionSerBean();
         try {
-            serBean = futuresPositionsService.findLastYesterday(reqSerBean);
+            serBean = futuresPositionsService.findFuturesPosition(reqSerBean);
         } catch (ServiceException e) {
-            log.error("[Biz][FUTURES] getHistoryPnl fail , e={}", e);
+            log.error("[Biz][FUTURES] findFuturesPosition fail , e={}", e);
             throw new BizException(QtDataRspCode.ERR_DB_SNAPSHOT_FUTURES_POSITION_QRY);
         }
-        log.info("[Biz][FUTURES] getHistoryPnl end ", serBean);
+        log.info("[Biz][FUTURES] findFuturesPosition end ", serBean);
         return BizBeanUtils.buildFuturesPositionOutBean(serBean);
     }
 }

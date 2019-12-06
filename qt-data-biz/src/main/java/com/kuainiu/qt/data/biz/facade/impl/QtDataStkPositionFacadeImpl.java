@@ -5,8 +5,8 @@ import com.kuainiu.qt.data.biz.StkPositionBiz;
 import com.kuainiu.qt.data.biz.bean.StkPositionInBean;
 import com.kuainiu.qt.data.biz.bean.StkPositionOutBean;
 import com.kuainiu.qt.data.facade.QtDataStkPositionFacade;
-import com.kuainiu.qt.data.facade.request.StkPositionPnlRequest;
-import com.kuainiu.qt.data.facade.response.StkPositionPnlResponse;
+import com.kuainiu.qt.data.facade.request.StkPositionRequest;
+import com.kuainiu.qt.data.facade.response.StkPositionResponse;
 import com.kuainiu.qt.data.param.ParamCheckHandle;
 import com.kuainiu.qt.data.util.BizBeanUtils;
 import com.kuainiu.qt.data.util.BizResponseUtils;
@@ -22,13 +22,13 @@ public class QtDataStkPositionFacadeImpl implements QtDataStkPositionFacade {
     StkPositionBiz stkPositionBiz;
 
     @Override
-    public StkPositionPnlResponse getPnl(StkPositionPnlRequest request) {
+    public StkPositionResponse findStkPosition(StkPositionRequest request) {
         log.info("[get stk Pnl]request={}", JSON.toJSONString(request));
-        StkPositionPnlResponse response = new StkPositionPnlResponse();
+        StkPositionResponse response = new StkPositionResponse();
         try {
             ParamCheckHandle.checkStkPositionPnlRequest(request);
             StkPositionInBean inBean = BizBeanUtils.buildStkPositionQryInBean(request);
-            StkPositionOutBean outBean = stkPositionBiz.getHistoryPnl(inBean);
+            StkPositionOutBean outBean = stkPositionBiz.findStkPosition(inBean);
             response = BizResponseUtils.buildStkPositionQryResponse(outBean);
             ResponseUtils.success(response);
         } catch (Exception e) {

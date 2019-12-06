@@ -6,5 +6,5 @@ import com.kuainiu.qt.data.exception.BizException;
 
 public interface FuturesPositionBiz {
 
-    FuturesPositionOutBean getHistoryPnl(FuturesPositionInBean inBean) throws BizException;
+    FuturesPositionOutBean findFuturesPosition(FuturesPositionInBean inBean) throws BizException;
 }

@@ -22,7 +22,7 @@ public class ParamCheckHandle {
     }
   }
 
-  public static void checkStkPositionPnlRequest(StkPositionPnlRequest request) throws BizException {
+  public static void checkStkPositionPnlRequest(StkPositionRequest request) throws BizException {
     if (null == request.getStrategyCode()) {
       throw new BizException(QtDataRspCode.ERR_PARAM_STRATEGY_CODE_NULL);
     }
@@ -31,7 +31,7 @@ public class ParamCheckHandle {
     }
   }
 
-  public static void checkFuturesPositionPnlRequest(FuturesPositionPnlRequest request) throws BizException {
+  public static void checkFuturesPositionPnlRequest(FuturesPositionRequest request) throws BizException {
     if (null == request.getStrategyCode()) {
       throw new BizException(QtDataRspCode.ERR_PARAM_STRATEGY_CODE_NULL);
     }

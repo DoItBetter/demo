@@ -126,7 +126,7 @@ public class BizBeanUtils {
         return outBean;
     }
 
-    public static StkPositionInBean buildStkPositionQryInBean(StkPositionPnlRequest request) {
+    public static StkPositionInBean buildStkPositionQryInBean(StkPositionRequest request) {
         StkPositionInBean inBean = new StkPositionInBean();
         BeanMapUtils.map(request, inBean);
         return inBean;
@@ -156,7 +156,7 @@ public class BizBeanUtils {
         return outBean;
     }
 
-    public static FuturesPositionInBean buildFuturesPositionQryInBean(FuturesPositionPnlRequest request) {
+    public static FuturesPositionInBean buildFuturesPositionQryInBean(FuturesPositionRequest request) {
         FuturesPositionInBean inBean = new FuturesPositionInBean();
         BeanMapUtils.map(request, inBean);
         return inBean;

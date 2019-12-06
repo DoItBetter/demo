@@ -18,5 +18,5 @@ public interface StkPositionService {
 
     List<SnapshotStkPositionSerBean> getListBySnapshotCode(String snapshotCode) throws ServiceException;
 
-    StkPositionSerBean findLastYesterday(StkPositionReqSerBean stkPositionReqSerBean) throws ServiceException;
+    StkPositionSerBean findStkPosition(StkPositionReqSerBean stkPositionReqSerBean) throws ServiceException;
 }

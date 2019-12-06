@@ -8,7 +8,9 @@ import java.util.Date;
 
 @Data
 @ApiModel
-public class  StkPositionPnlRequest extends BaseDataRequest {
+public class FuturesPositionRequest extends BaseDataRequest {
+    @ApiModelProperty(value = "策略组合编号")
+    private String portfolioCode;
     @ApiModelProperty(value = "策略编号")
     private String strategyCode;
     @ApiModelProperty(value = "合约代码")

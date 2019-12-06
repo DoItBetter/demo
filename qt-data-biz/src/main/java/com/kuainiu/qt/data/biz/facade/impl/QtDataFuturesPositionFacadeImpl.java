@@ -5,8 +5,8 @@ import com.kuainiu.qt.data.biz.FuturesPositionBiz;
 import com.kuainiu.qt.data.biz.bean.FuturesPositionInBean;
 import com.kuainiu.qt.data.biz.bean.FuturesPositionOutBean;
 import com.kuainiu.qt.data.facade.QtDataFuturesPositionFacade;
-import com.kuainiu.qt.data.facade.request.FuturesPositionPnlRequest;
-import com.kuainiu.qt.data.facade.response.FuturesPositionPnlResponse;
+import com.kuainiu.qt.data.facade.request.FuturesPositionRequest;
+import com.kuainiu.qt.data.facade.response.FuturesPositionResponse;
 import com.kuainiu.qt.data.param.ParamCheckHandle;
 import com.kuainiu.qt.data.util.BizBeanUtils;
 import com.kuainiu.qt.data.util.BizResponseUtils;
@@ -22,17 +22,17 @@ public class QtDataFuturesPositionFacadeImpl implements QtDataFuturesPositionFac
     @Autowired
     FuturesPositionBiz futuresPositionBiz;
     @Override
-    public FuturesPositionPnlResponse getPnl(FuturesPositionPnlRequest request) {
-        log.info("[get futures Pnl]request={}", JSON.toJSONString(request));
-        FuturesPositionPnlResponse response = new FuturesPositionPnlResponse();
+    public FuturesPositionResponse findFuturesPosition(FuturesPositionRequest request) {
+        log.info(" get futures position request={}", JSON.toJSONString(request));
+        FuturesPositionResponse response = new FuturesPositionResponse();
         try {
             ParamCheckHandle.checkFuturesPositionPnlRequest(request);
             FuturesPositionInBean inBean = BizBeanUtils.buildFuturesPositionQryInBean(request);
-            FuturesPositionOutBean outBean = futuresPositionBiz.getHistoryPnl(inBean);
+            FuturesPositionOutBean outBean = futuresPositionBiz.findFuturesPosition(inBean);
             response = BizResponseUtils.buildFuturesPositionQryResponse(outBean);
             ResponseUtils.success(response);
         } catch (Exception e) {
-            log.error("[get futures Pnl fail]", e);
+            log.error(" get futures position fail ", e);
             ResponseUtils.sysError(response, e);
         }
         log.info("[get stk futures response] response ={}", JSON.toJSONString(response));

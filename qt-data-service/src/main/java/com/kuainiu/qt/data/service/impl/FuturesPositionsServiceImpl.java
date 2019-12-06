@@ -68,7 +68,7 @@ public class FuturesPositionsServiceImpl implements FuturesPositionsService {
     }
 
     @Override
-    public FuturesPositionSerBean findLastYesterday(FuturesPositionReqSerBean reqSerBean) throws ServiceException {
+    public FuturesPositionSerBean findFuturesPosition(FuturesPositionReqSerBean reqSerBean) throws ServiceException {
         FuturesPositionSerBean futuresPositionSerBean = new FuturesPositionSerBean();
         SnapshotFuturesPosition futuresPosition = new SnapshotFuturesPosition();
         log.info("[Service][FUTURES] qry last position snapshot,assetNo={},strategyCode={}", reqSerBean.getAssetNo(), reqSerBean.getStrategyCode());
@@ -81,8 +81,8 @@ public class FuturesPositionsServiceImpl implements FuturesPositionsService {
             }
             BeanMapUtils.map(futuresPosition, futuresPositionSerBean);
         } catch (Exception e) {
-            log.error("findLastYesterday fail", e);
-            log.error("findLastYesterday fail, snapshotStkPosition ={}", futuresPosition);
+            log.error("findFuturesPosition fail", e);
+            log.error("findFuturesPosition fail, snapshotStkPosition ={}", futuresPosition);
             throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_FUTURES_POSITION_QRY);
         }
         log.info("[Service][FUTURES] qry last position snapshot,res={}", JSON.toJSONString(futuresPositionSerBean));
