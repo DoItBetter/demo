@@ -72,7 +72,7 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
         Date belongTime = QtDateUtils.getZeroSecondTime(QtDateUtils.getCurrDate());
         log.info("[Biz][Portfolio] InformationRatioProcessor recordPortfolio,belongTime={}", belongTime);
         try {
-            if (!snapshotPortfolioService.needRun() || !jobParam.isForce()) {
+            if (!snapshotPortfolioService.needRun() && !jobParam.isForce()) {
                 log.warn("today is not trans day or curr time is not in open market!");
                 return;
             }
