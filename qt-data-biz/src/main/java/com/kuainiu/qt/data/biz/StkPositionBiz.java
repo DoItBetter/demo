@@ -5,5 +5,5 @@ import com.kuainiu.qt.data.biz.bean.StkPositionOutBean;
 import com.kuainiu.qt.data.exception.ServiceException;
 
 public interface StkPositionBiz {
-    StkPositionOutBean getHistoryPnl(StkPositionInBean inBean) throws ServiceException;
+    StkPositionOutBean findStkPosition(StkPositionInBean inBean) throws ServiceException;
 }

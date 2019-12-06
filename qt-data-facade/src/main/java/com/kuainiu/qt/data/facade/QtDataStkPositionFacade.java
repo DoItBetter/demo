@@ -1,9 +1,9 @@
 package com.kuainiu.qt.data.facade;
 
-import com.kuainiu.qt.data.facade.request.StkPositionPnlRequest;
-import com.kuainiu.qt.data.facade.response.StkPositionPnlResponse;
+import com.kuainiu.qt.data.facade.request.StkPositionRequest;
+import com.kuainiu.qt.data.facade.response.StkPositionResponse;
 
 public interface QtDataStkPositionFacade {
 
-    StkPositionPnlResponse getPnl(StkPositionPnlRequest request);
+    StkPositionResponse findStkPosition(StkPositionRequest request);
 }

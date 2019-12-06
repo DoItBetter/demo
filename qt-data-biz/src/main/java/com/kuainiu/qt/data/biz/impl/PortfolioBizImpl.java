@@ -153,13 +153,13 @@ public class PortfolioBizImpl implements PortfolioBiz {
         if (positionList == null) {
             return ssPositionList;
         }
-        for (StkPositionOutBean position : positionList) {
+        positionList.forEach(position -> {
             SnapshotStkPositionSerBean ssPosition = new SnapshotStkPositionSerBean();
             BeanMapUtils.map(position, ssPosition);
             ssPosition.setSnapshotCode(snapshotCode);
             ssPosition.setBelongTime(belongTime);
             ssPositionList.add(ssPosition);
-        }
+        });
         return ssPositionList;
     }
 
@@ -168,13 +168,13 @@ public class PortfolioBizImpl implements PortfolioBiz {
         if (positionList == null) {
             return ssPositionList;
         }
-        for (FuturesPositionOutBean position : positionList) {
+        positionList.forEach(position -> {
             FuturesPositionSerBean ssPosition = new FuturesPositionSerBean();
             BeanMapUtils.map(position, ssPosition);
             ssPosition.setSnapshotCode(snapshotCode);
             ssPosition.setBelongTime(belongTime);
             ssPositionList.add(ssPosition);
-        }
+        });
         return ssPositionList;
     }
 
@@ -183,13 +183,13 @@ public class PortfolioBizImpl implements PortfolioBiz {
         if (accountList == null) {
             return ssAccountList;
         }
-        for (FuturesAccountOutBean account : accountList) {
+        accountList.forEach(account -> {
             SnapshotFuturesAccountSerBean ssAccount = new SnapshotFuturesAccountSerBean();
             BeanMapUtils.map(account, ssAccount);
             ssAccount.setSnapshotCode(snapshotCode);
             ssAccount.setBelongTime(belongTime);
             ssAccountList.add(ssAccount);
-        }
+        });
         return ssAccountList;
     }
 
@@ -198,7 +198,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
         if (accountList == null) {
             return ssAccountList;
         }
-        for (StkAccountOutBean account : accountList) {
+        accountList.forEach(account -> {
             SnapshotStkAccountSerBean ssAccount = new SnapshotStkAccountSerBean();
             ssAccount.setSnapshotCode(snapshotCode);
             ssAccount.setBelongTime(belongTime);
@@ -235,7 +235,7 @@ public class PortfolioBizImpl implements PortfolioBiz {
             ssAccount.setStkFeeList(stkFeeList);
             BeanMapUtils.map(account, ssAccount);
             ssAccountList.add(ssAccount);
-        }
+        });
         return ssAccountList;
     }
 }

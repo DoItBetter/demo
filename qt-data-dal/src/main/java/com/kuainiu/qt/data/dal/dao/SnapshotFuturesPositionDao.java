@@ -37,8 +37,10 @@ public interface SnapshotFuturesPositionDao {
 
     @ResultMap("BaseResultMap")
     @Select("select * from t_snapshot_futures_position" +
-            " where " +
-            "strategy_code =  #{strategyCode} and asset_no = #{assetNo} and belong_time < #{endBelongTime} " +
-            "order by belong_time desc limit 1")
+            " where portfolio_code = #{portfolioCode} " +
+            " and strategy_code =  #{strategyCode} " +
+            " and asset_no = #{assetNo} " +
+            " and belong_time < #{endBelongTime} " +
+            " order by belong_time desc limit 1")
     SnapshotFuturesPosition findOne(SnapshotFuturesPosition record);
 }

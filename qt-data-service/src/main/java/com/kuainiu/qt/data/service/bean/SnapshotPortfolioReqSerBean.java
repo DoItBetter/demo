@@ -66,10 +66,6 @@ public class SnapshotPortfolioReqSerBean extends BaseQryReqSerBean {
 
     private Date endBelongTime;
 
-    private Integer offset;
-
-    private Integer limit;
-
     private String order;
 
     private BigDecimal std;

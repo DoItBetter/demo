@@ -65,7 +65,7 @@ public class StkPositionServiceImpl implements StkPositionService {
     }
 
     @Override
-    public StkPositionSerBean findLastYesterday(StkPositionReqSerBean stkPositionReqSerBean) throws ServiceException {
+    public StkPositionSerBean findStkPosition(StkPositionReqSerBean stkPositionReqSerBean) throws ServiceException {
         StkPositionSerBean stkPositionSerBean = new StkPositionSerBean();
         SnapshotStkPosition snapshotStkPosition = new SnapshotStkPosition();
         log.info("[Service][STK] qry last position snapshot,assetNo={},strategyCode={}", stkPositionReqSerBean.getAssetNo(), stkPositionReqSerBean.getStrategyCode());
@@ -77,8 +77,8 @@ public class StkPositionServiceImpl implements StkPositionService {
             }
             BeanMapUtils.map(snapshotStkPosition, stkPositionSerBean);
         } catch (Exception e) {
-            log.error("findLastYesterday fail", e);
-            log.error("findLastYesterday fail, snapshotStkPosition ={}", snapshotStkPosition);
+            log.error("findStkPosition fail", e);
+            log.error("findStkPosition fail, snapshotStkPosition ={}", snapshotStkPosition);
             throw new ServiceException(QtDataRspCode.ERR_DB_SNAPSHOT_STK_POSITION_QRY);
         }
         log.info("[Service][STK] qry last position snapshot,res={}", JSON.toJSONString(stkPositionSerBean));

@@ -19,16 +19,16 @@ public class StkPositionBizImpl implements StkPositionBiz {
     StkPositionService stkPositionService;
 
     @Override
-    public StkPositionOutBean getHistoryPnl(StkPositionInBean inBean) {
-        log.info("[Biz][Stk] getHistoryPnl start, inBean = {}", inBean);
+    public StkPositionOutBean findStkPosition(StkPositionInBean inBean) {
+        log.info("[Biz][Stk] findFuturesPosition start, inBean = {}", inBean);
         StkPositionReqSerBean reqSerBean = BizBeanUtils.buildStkPositionReqSerBean(inBean);
         StkPositionSerBean serBean = new StkPositionSerBean();
         try {
-            serBean = stkPositionService.findLastYesterday(reqSerBean);
+            serBean = stkPositionService.findStkPosition(reqSerBean);
         } catch (ServiceException e) {
-            log.error("[Biz][Stk] getHistoryPnl fail , e={}", e);
+            log.error("[Biz][Stk] findFuturesPosition fail , e={}", e);
         }
-        log.info("[Biz][Stk] getHistoryPnl end ", serBean);
+        log.info("[Biz][Stk] findFuturesPosition end ", serBean);
         return BizBeanUtils.buildStkPositionOutBean(serBean);
     }
 }

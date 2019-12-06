@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.kuainiu.qt.data.biz.PortfolioQryBiz;
 import com.kuainiu.qt.data.biz.bean.*;
 import com.kuainiu.qt.data.biz.calc.FuturesAccountCalc;
+import com.kuainiu.qt.data.common.util.CalcUtils;
+import com.kuainiu.qt.data.common.util.QtDateUtils;
 import com.kuainiu.qt.data.exception.BizException;
 import com.kuainiu.qt.data.exception.ServiceException;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -70,7 +73,7 @@ public class PortfolioQryBizImpl implements PortfolioQryBiz {
     public SnapshotPortfolioOutBean qryInfoRatio(SnapshotPortfolioInBean inBean) throws BizException {
         SnapshotPortfolioOutBean  outBean = new SnapshotPortfolioOutBean();
         try {
-            SnapshotPortfolioSerBean reqSerBean = snapshotPortfolioService.getInfoRatioByPFCode(inBean.getPortfolioCode());
+            SnapshotPortfolioSerBean reqSerBean = snapshotPortfolioService.getByPFCodeAndErrorFlag(inBean.getPortfolioCode());
             outBean.setInformationRatio(reqSerBean.getInformationRatio());
         } catch (ServiceException e) {
             throw new BizException(QtDataRspCode.ERR_PORTFOLIOSNAPSHOT_INFO_QRY_FAIL, e.getMsg());
@@ -185,9 +188,71 @@ public class PortfolioQryBizImpl implements PortfolioQryBiz {
             List<CashflowOutBean> cashflowOutBeanList = BeanMapUtils.mapAsList(snapshotPortfolioCashflowSerBeanList, CashflowOutBean.class);
             outBean.setCashflowList(cashflowOutBeanList);
 
+            //alpha
+            outBean.setAlpha(calcAlpha(portfolioSerBean.getRealtimeReturns(), portfolioSerBean.getBaseRealtimeReturns()));
+            //beta
+            outBean.setBeta(calcBeta(portfolioSerBean));
+            //std
+            BigDecimal std = snapshotPortfolioService.getStdByPFCode(portfolioSerBean.getPortfolioCode()).getStd();
+            //交易日t
+            BigDecimal t = calcT(portfolioSerBean.getPortfolioCode(), portfolioSerBean.getStartDate());
+            //sharp ratio
+            outBean.setSharpeRatio(calcSR(std, t, portfolioSerBean.getTotalReturns(), portfolioSerBean.getRealtimeReturns()));
         } catch (IllegalAccessException | InstantiationException e) {
             throw new BizException(QtDataRspCode.SYS_ERROR, "copy list fail");
         }
         return outBean;
+    }
+
+    private BigDecimal calcAlpha(BigDecimal realtimeReturns, BigDecimal data) {
+        BigDecimal res = CalcUtils.calcSubtract(realtimeReturns, data);
+        if(CalcUtils.isZeroOrNull(res)){
+            log.error(" alpha : rp ："+realtimeReturns+" , rm ："+data);
+            return null;
+        }
+        return res;
+    }
+
+    private BigDecimal calcBeta(SnapshotPortfolioSerBean serBean) throws ServiceException {
+        SnapshotPortfolioReqSerBean reqSerBean = new SnapshotPortfolioReqSerBean();
+        BeanMapUtils.map(serBean, reqSerBean);
+        reqSerBean.setStartBelongTime(QtDateUtils.getStartBelongTimePortfolio());
+        reqSerBean.setEndBelongTime(QtDateUtils.getEndBelongTimeYield());
+        reqSerBean.setOffset(0);
+        reqSerBean.setLimit(300);
+        List<SnapshotPortfolioSerBean> serBeanList = snapshotPortfolioService.findSnapshotPortfolioList(reqSerBean);
+        BigDecimal rp = BigDecimal.ZERO;
+        BigDecimal rm = BigDecimal.ZERO;
+        for (SnapshotPortfolioSerBean item : serBeanList) {
+            rp = CalcUtils.calcAdd(rp, item.getRealtimeReturns());
+            rm = CalcUtils.calcAdd(rm, item.getBaseRealtimeReturns());
+            if(CalcUtils.isNull(rp, rm)) {
+                log.error(" beta  belongTime ："+item.getBelongTime()+" , realtimeReturns ："+item.getRealtimeReturns()+" , rm ："+item.getBaseRealtimeReturns());
+            }
+        }
+        BigDecimal res = CalcUtils.calcDivide(rp, rm);
+        if(CalcUtils.isZeroOrNull(res)){
+            log.error("rm and rp list error, list={}", JSON.toJSONString(serBeanList));
+            return null;
+        }
+        return res;
+    }
+
+    public BigDecimal calcT(String portfolioCode, Date startDate) throws ServiceException {
+        return BigDecimal.valueOf(aidcQryService.getPortfolioRundays(portfolioCode, startDate));
+    }
+
+    //计算Sharp Ratio std-sp  data-t
+    // Sharp Ratio=(ATP-Rf)/p  Rf取固定值 1.2%
+    // ATP = TR/T*252  TR = totalReturns+realtimeReturns
+    // p =  SP/根号t * 根号252
+    private BigDecimal calcSR(BigDecimal std, BigDecimal t, BigDecimal totalReturns, BigDecimal realtimeReturns) {
+        BigDecimal p = CalcUtils.calcDivide(std, CalcUtils.calcMultiply(CalcUtils.calcSqrt(new BigDecimal(252)), CalcUtils.calcSqrt(t)));
+        BigDecimal ATP = CalcUtils.calcDivide(CalcUtils.calcAdd(totalReturns, realtimeReturns), CalcUtils.calcMultiply(t, new BigDecimal(252)));
+        BigDecimal res = CalcUtils.calcDivide(CalcUtils.calcSubtract(ATP, new BigDecimal(0.012)), p);
+        if(CalcUtils.isZeroOrNull(res)){
+            log.error(" Sharp Ratio : sp ："+std+"，t ："+t+" , totalReturns ："+totalReturns+"，rp ："+realtimeReturns);
+        }
+        return res;
     }
 }

@@ -18,5 +18,5 @@ public interface FuturesPositionsService {
 
     List<FuturesPositionSerBean> getListBySnapshotCode(String snapshotCode) throws ServiceException;
 
-    FuturesPositionSerBean findLastYesterday(FuturesPositionReqSerBean reqSerBean) throws ServiceException;
+    FuturesPositionSerBean findFuturesPosition(FuturesPositionReqSerBean reqSerBean) throws ServiceException;
 }

@@ -1,8 +1,8 @@
 package com.kuainiu.qt.data.web.controller;
 
 import com.kuainiu.qt.data.facade.QtDataStkPositionFacade;
-import com.kuainiu.qt.data.facade.request.StkPositionPnlRequest;
-import com.kuainiu.qt.data.facade.response.StkPositionPnlResponse;
+import com.kuainiu.qt.data.facade.request.StkPositionRequest;
+import com.kuainiu.qt.data.facade.response.StkPositionResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -19,9 +19,9 @@ public class StkPositionController {
     QtDataStkPositionFacade qtDataStkPositionFacade;
 
     @ApiOperation(httpMethod = "POST",value = "查询股票仓位")
-    @RequestMapping(value="/qryPnl",produces = "application/json;charset=UTF-8")
+    @RequestMapping(value="/findStkPosition",produces = "application/json;charset=UTF-8")
     @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "StkPositionRequest", paramType = "StkPositionRequest")
-    public StkPositionPnlResponse qryPnl(@RequestBody StkPositionPnlRequest request) {
-        return qtDataStkPositionFacade.getPnl(request);
+    public StkPositionResponse findStkPosition(@RequestBody StkPositionRequest request) {
+        return qtDataStkPositionFacade.findStkPosition(request);
     }
 }

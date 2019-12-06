@@ -55,11 +55,11 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     AidcQryService aidcQryService;
 
     @Override
-    public SnapshotPortfolioOutBean findByBelongTimeAndErrorFlag(SnapshotPortfolioInBean inBean) throws BizException {
+    public SnapshotPortfolioOutBean findByPFCodeBelongTimeAndErrorFlag(SnapshotPortfolioInBean inBean) throws BizException {
         SnapshotPortfolioOutBean  outBean;
         try {
             SnapshotPortfolioReqSerBean reqSerBean = BizReqSerBeanUtils.buildSnapshotPortfolioReqSerBean(inBean);
-            SnapshotPortfolioSerBean serBean = snapshotPortfolioService.findByBelongTimeAndErrorFlag(reqSerBean);
+            SnapshotPortfolioSerBean serBean = snapshotPortfolioService.findByPFCodeBelongTimeAndErrorFlag(reqSerBean);
             outBean = BizBeanUtils.buildSnapshotPortfolioOutBean(serBean);
         } catch (ServiceException e) {
             throw new BizException(QtDataRspCode.ERR_PORTFOLIOSNAPSHOT_INFO_QRY_FAIL, e.getMsg());
@@ -74,6 +74,7 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
         try {
             if (!snapshotPortfolioService.needRun() || !jobParam.isForce()) {
                 log.warn("today is not trans day or curr time is not in open market!");
+                return;
             }
             PortfolioReqSerBean reqSerBean = new PortfolioReqSerBean();
             reqSerBean.setStatus(PortfolioStatusCode.VALID.getCode());
@@ -95,7 +96,7 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
             snapshotPortfolio = snapshotPortfolioService.getPortfolioByBelongTime(portfolioCode, belongTime, SnapshotPortfolioCode.UNFINISHED.getCode());
             BigDecimal tr = snapshotPortfolio.getTotalReturns();
             Integer T = aidcQryService.getPortfolioRundays(snapshotPortfolio.getPortfolioCode(), snapshotPortfolio.getStartDate());
-            BigDecimal rm = qryRm(belongTime);
+            BigDecimal rm = getRm(belongTime);
             BigDecimal baseReturns = calcBaseReturns(snapshotPortfolio, rm);
             BigDecimal balanceReturns = calcBalanceReturns(tr, baseReturns);
             SnapshotPortfolioReqSerBean reqSerBean = new SnapshotPortfolioReqSerBean();
@@ -114,13 +115,22 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
         }
     }
 
-    private BigDecimal qryRm(Date belongTime) throws ServiceException {
+    @Override
+    public BigDecimal getRm(Date time) throws ServiceException {
         BigDecimal rm = CommonConstant.BIG_DECIMAL_ZERO;
-        RmReqSerBean rmReqSerBean = new RmReqSerBean();
-        rmReqSerBean.setDatetime(QtDateUtils.converToYMDHms(belongTime));
-        RmSerBean rmSerBean = aidcQryService.qryRm(rmReqSerBean);
-        log.info("[AIDC] qryRm serBean ={}", rmSerBean);
-        rm = rmSerBean.getData();
+        if (QtDateUtils.isBeforeOpenMarket(time)) {
+            SnapshotPortfolioReqSerBean reqSerBean = new SnapshotPortfolioReqSerBean();
+            reqSerBean.setEndBelongTime(QtDateUtils.getCloseMarket());
+            reqSerBean.setErrorFlag(SnapshotPortfolioCode.SUCCESS.getCode());
+            rm = snapshotPortfolioService.findByBelongTimeAndErrorFlag(reqSerBean).getBaseRealtimeReturns();
+            log.info("[Biz] getRm from db, rm = {}", rm);
+        } else {
+            RmReqSerBean rmReqSerBean = new RmReqSerBean();
+            rmReqSerBean.setDatetime(QtDateUtils.converToYMDHms(time));
+            RmSerBean rmSerBean = aidcQryService.qryRm(rmReqSerBean);
+            log.info("[AIDC] getRm serBean ={}", rmSerBean);
+            rm = rmSerBean.getData();
+        }
         return rm;
     }
 
@@ -149,9 +159,9 @@ public class  SnapshotPortfolioBizImpl implements SnapshotPortfolioBiz {
     private BigDecimal qryHistoryBaseReturns(SnapshotPortfolioSerBean snapshotPortfolio) throws ServiceException {
         SnapshotPortfolioReqSerBean reqSerBean = new SnapshotPortfolioReqSerBean();
         reqSerBean = BizReqSerBeanUtils.buildHistoryBaseReturnsReqSerBean(snapshotPortfolio);
-        log.info("[Service] findByBelongTimeAndErrorFlag request={}",snapshotPortfolio);
-        SnapshotPortfolioSerBean item = snapshotPortfolioService.getByBelongTimeAndErrorFlag(reqSerBean);
-        log.info("[Service] findByBelongTimeAndErrorFlag response={}", item);
+        log.info("[Service] findByPFCodeBelongTimeAndErrorFlag request={}",snapshotPortfolio);
+        SnapshotPortfolioSerBean item = snapshotPortfolioService.findByPFCodeBelongTimeAndErrorFlag(reqSerBean);
+        log.info("[Service] findByPFCodeBelongTimeAndErrorFlag response={}", item);
         return item.getBaseReturns();
     }
 }

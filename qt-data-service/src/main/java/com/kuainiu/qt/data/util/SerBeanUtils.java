@@ -10,8 +10,6 @@ import com.kuainiu.qt.data.service.bean.aidc.RmSerBean;
 import com.kuainiu.qt.data.service.bean.trans.PortfolioQrySerBean;
 import com.kuainiu.qt.data.service.bean.trans.PortfolioReqSerBean;
 import com.kuainiu.qt.data.service.bean.trans.PortfolioSerBean;
-import com.kuainiu.qt.data.service.http.AidcCDHttp;
-import com.kuainiu.qt.data.service.http.impl.AidcCDHttpImpl;
 import com.kuainiu.qt.data.service.http.request.StockEarningRate300Request;
 import com.kuainiu.qt.data.service.http.response.StockEarningRate300Response;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
@@ -114,12 +112,6 @@ public class SerBeanUtils {
             throw new ServiceException(QtDataRspCode.ERR_SYS_ERROR);
         }
         return serBean;
-    }
-
-    public static String qryInstrument(String transBoard, String assetNo) throws ServiceException {
-        AidcCDHttp aidcCDHttp = new AidcCDHttpImpl();
-        String newAssetNo = transBoard + assetNo;
-        return aidcCDHttp.qryInstrument(newAssetNo).getData().getInstrument();
     }
 
     public static PortfolioFindAllRequest buildFindAllRequest(PortfolioReqSerBean reqSerBean) {

@@ -10,10 +10,10 @@ import com.kuainiu.qt.data.facade.bean.SnapshotPortfolioFacadeBean;
 import com.kuainiu.qt.data.facade.bean.StkAssetDetailFeeFacadeBean;
 import com.kuainiu.qt.data.facade.bean.StkPositionFacadeBean;
 import com.kuainiu.qt.data.facade.code.QtDataRspCode;
-import com.kuainiu.qt.data.facade.response.FuturesPositionPnlResponse;
+import com.kuainiu.qt.data.facade.response.FuturesPositionResponse;
 import com.kuainiu.qt.data.facade.response.SnapshotPortfolioListResponse;
 import com.kuainiu.qt.data.facade.response.SnapshotPortfolioResponse;
-import com.kuainiu.qt.data.facade.response.StkPositionPnlResponse;
+import com.kuainiu.qt.data.facade.response.StkPositionResponse;
 import com.kuainiu.qt.framework.common.util.BeanMapUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,11 +37,12 @@ public class BizResponseUtils {
         return response;
     }
 
-    public static StkPositionPnlResponse buildStkPositionQryResponse(StkPositionOutBean outBean) {
-        StkPositionPnlResponse response = new StkPositionPnlResponse();
+    public static StkPositionResponse buildStkPositionQryResponse(StkPositionOutBean outBean) {
+        StkPositionResponse response = new StkPositionResponse();
         StkPositionFacadeBean facadeBean = new StkPositionFacadeBean();
-        BeanMapUtils.map(outBean, response);
+        BeanMapUtils.map(outBean, facadeBean);
         if (outBean.getStkFee() == null) {
+            response.setData(facadeBean);
             return response;
         }
         StkAssetDetailFeeFacadeBean fee = new StkAssetDetailFeeFacadeBean();
@@ -51,8 +52,8 @@ public class BizResponseUtils {
         return response;
     }
 
-    public static FuturesPositionPnlResponse buildFuturesPositionQryResponse(FuturesPositionOutBean outBean) {
-        FuturesPositionPnlResponse response = new FuturesPositionPnlResponse();
+    public static FuturesPositionResponse buildFuturesPositionQryResponse(FuturesPositionOutBean outBean) {
+        FuturesPositionResponse response = new FuturesPositionResponse();
         FuturesPositionFacadeBean facadeBean = new FuturesPositionFacadeBean();
         BeanMapUtils.map(outBean, facadeBean);
         response.setData(facadeBean);

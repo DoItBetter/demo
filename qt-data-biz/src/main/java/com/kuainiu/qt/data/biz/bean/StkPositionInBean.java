@@ -9,6 +9,8 @@ public class StkPositionInBean extends BaseDataInBean {
 
     private String strategyCode;
 
+    private String portfolioCode;
+
     private String assetNo;
 
     private Date endBelongTime;
