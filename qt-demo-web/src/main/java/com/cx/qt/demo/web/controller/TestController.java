@@ -1,10 +1,10 @@
-package com.cx.qt.data.web.controller;
+package com.cx.qt.demo.web.controller;
 
-import com.cx.qt.data.biz.PortfolioBiz;
-import com.cx.qt.data.biz.SnapshotPortfolioBiz;
-import com.cx.qt.data.biz.bean.processor.PortfolioInformationRatioProcessorInBean;
-import com.cx.qt.data.biz.bean.processor.PortfolioProcessorInBean;
-import com.cx.qt.data.exception.BizException;
+import com.cx.qt.demo.biz.PortfolioBiz;
+import com.cx.qt.demo.biz.SnapshotPortfolioBiz;
+import com.cx.qt.demo.biz.bean.processor.PortfolioInformationRatioProcessorInBean;
+import com.cx.qt.demo.biz.bean.processor.PortfolioProcessorInBean;
+import com.cx.qt.demo.exception.BizException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -26,17 +26,5 @@ public class TestController {
         PortfolioProcessorInBean inBean = new PortfolioProcessorInBean();
         inBean.setForce(true);
         portfolioBiz.recordSnapshot(inBean);
-    }
-
-    @Autowired
-    SnapshotPortfolioBiz snapshotPortfolioBiz;
-
-    @ApiOperation(httpMethod = "POST",value = "测试Info脚本")
-    @RequestMapping(value="/portfolioInformationRatioProcessor",produces = "application/json;charset=UTF-8")
-    @ApiImplicitParam(name = "request", value = "request", required = false, dataType = "", paramType = "")
-    public void portfolioInformationRatioProcessor() throws BizException {
-        PortfolioInformationRatioProcessorInBean inBean = new PortfolioInformationRatioProcessorInBean();
-        inBean.setForce(true);
-        snapshotPortfolioBiz.recordPortfolio(inBean);
     }
 }

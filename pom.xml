@@ -4,20 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.kuainiu.qt.data</groupId>
-    <artifactId>qt-data-parent</artifactId>
+    <groupId>com.cx.qt.demo</groupId>
+    <artifactId>qt-demo-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>qt-data-web</module>
-        <module>qt-data-service</module>
-        <module>qt-data-dal</module>
-        <module>qt-data-facade</module>
-        <module>qt-data-common</module>
-        <module>qt-data-biz</module>
+        <module>qt-demo-web</module>
+        <module>qt-demo-service</module>
+        <module>qt-demo-dal</module>
+        <module>qt-demo-facade</module>
+        <module>qt-demo-common</module>
+        <module>qt-demo-biz</module>
     </modules>
     <parent>
-        <groupId>com.kuainiu.qt.framework</groupId>
+        <groupId>com.cx.qt.framework</groupId>
         <artifactId>qt-framework-parent</artifactId>
         <version>1.0.2-SNAPSHOT</version>
         <relativePath/>
@@ -26,17 +26,18 @@
     <properties>
         <java.version>1.8</java.version>
 
-        <qt.data.web.version>0.0.1-SNAPSHOT</qt.data.web.version>
-        <qt.data.service.version>0.0.1-SNAPSHOT</qt.data.service.version>
-        <qt.data.dal.version>0.0.1-SNAPSHOT</qt.data.dal.version>
-        <qt.data.facade.version>0.0.4-SNAPSHOT</qt.data.facade.version>
-        <qt.data.common.version>0.0.1-SNAPSHOT</qt.data.common.version>
-        <qt.data.biz.version>0.0.1-SNAPSHOT</qt.data.biz.version>
+        <qt.demo.web.version>0.0.1-SNAPSHOT</qt.demo.web.version>
+        <qt.demo.service.version>0.0.1-SNAPSHOT</qt.demo.service.version>
+        <qt.demo.dal.version>0.0.1-SNAPSHOT</qt.demo.dal.version>
+        <qt.demo.facade.version>0.0.4-SNAPSHOT</qt.demo.facade.version>
+        <qt.demo.common.version>0.0.1-SNAPSHOT</qt.demo.common.version>
+        <qt.demo.biz.version>0.0.1-SNAPSHOT</qt.demo.biz.version>
         <framework.version>1.0.2-SNAPSHOT</framework.version>
         <qt.trans.facade.version>0.1.09-SNAPSHOT</qt.trans.facade.version>
         <dubbo.version>2.7.0</dubbo.version>
         <edas.dubbo.extension.version>2.0.3</edas.dubbo.extension.version>
         <swagger.version>2.7.0</swagger.version>
+        <io.swagger.version>1.5.21</io.swagger.version>
         <config.client.version>2.0.4-open-sock5</config.client.version>
         <alibaba.schedulerX.client>2.1.5</alibaba.schedulerX.client>
         <schedulerx2.version>1.0.6</schedulerx2.version>
@@ -82,34 +83,34 @@
 
             <!-- 子模块 begin -->
             <dependency>
-                <groupId>com.kuainiu.qt.data</groupId>
-                <artifactId>qt-data-web</artifactId>
-                <version>${qt.data.web.version}</version>
+                <groupId>com.cx.qt.demo</groupId>
+                <artifactId>qt-demo-web</artifactId>
+                <version>${qt.demo.web.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kuainiu.qt.data</groupId>
-                <artifactId>qt-data-service</artifactId>
-                <version>${qt.data.service.version}</version>
+                <groupId>com.cx.qt.demo</groupId>
+                <artifactId>qt-demo-service</artifactId>
+                <version>${qt.demo.service.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kuainiu.qt.data</groupId>
-                <artifactId>qt-data-dal</artifactId>
-                <version>${qt.data.dal.version}</version>
+                <groupId>com.cx.qt.demo</groupId>
+                <artifactId>qt-demo-dal</artifactId>
+                <version>${qt.demo.dal.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kuainiu.qt.data</groupId>
-                <artifactId>qt-data-facade</artifactId>
-                <version>${qt.data.facade.version}</version>
+                <groupId>com.cx.qt.demo</groupId>
+                <artifactId>qt-demo-facade</artifactId>
+                <version>${qt.demo.facade.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kuainiu.qt.data</groupId>
-                <artifactId>qt-data-common</artifactId>
-                <version>${qt.data.common.version}</version>
+                <groupId>com.cx.qt.demo</groupId>
+                <artifactId>qt-demo-common</artifactId>
+                <version>${qt.demo.common.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kuainiu.qt.data</groupId>
-                <artifactId>qt-data-biz</artifactId>
-                <version>${qt.data.biz.version}</version>
+                <groupId>com.cx.qt.demo</groupId>
+                <artifactId>qt-demo-biz</artifactId>
+                <version>${qt.demo.biz.version}</version>
             </dependency>
 
 
@@ -117,22 +118,22 @@
 
             <!-- framework begin -->
             <dependency>
-                <groupId>com.kuainiu.qt.framework</groupId>
+                <groupId>com.cx.qt.framework</groupId>
                 <artifactId>qt-framework-json</artifactId>
                 <version>${framework.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kuainiu.qt.framework</groupId>
+                <groupId>com.cx.qt.framework</groupId>
                 <artifactId>qt-framework-http</artifactId>
                 <version>${framework.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kuainiu.qt.framework</groupId>
+                <groupId>com.cx.qt.framework</groupId>
                 <artifactId>qt-framework-dal</artifactId>
                 <version>${framework.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kuainiu.qt.framework</groupId>
+                <groupId>com.cx.qt.framework</groupId>
                 <artifactId>qt-framework-common</artifactId>
                 <version>${framework.version}</version>
             </dependency>
@@ -145,7 +146,7 @@
             </dependency>
 
             <dependency>
-                <groupId>com.kuainiu.qt.trans</groupId>
+                <groupId>com.cx.qt.trans</groupId>
                 <artifactId>qt-trans-facade</artifactId>
                 <version>${qt.trans.facade.version}</version>
             </dependency>
@@ -183,7 +184,7 @@
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
-                <version>1.5.21</version>
+                <version>${io.swaager.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
@@ -208,15 +209,15 @@
             </snapshots>
         </repository>
         <repository>
-            <id>kuainiu-release</id>
-            <url>http://jcenter-out.kuainiujinke.com/artifactory/libs-release</url>
+            <id>cx-release</id>
+            <url>http://jcenter-out.cx.com/artifactory/libs-release</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
-            <id>kuainiu-snapshots</id>
-            <url>http://jcenter-out.kuainiujinke.com/artifactory/libs-snapshot</url>
+            <id>cx-snapshots</id>
+            <url>http://jcenter-out.cx.com/artifactory/libs-snapshot</url>
             <releases>
                 <enabled>false</enabled>
             </releases>

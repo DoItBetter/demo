@@ -1,4 +1,4 @@
-package com.cx.qt.data.web.config;
+package com.cx.qt.demo.web.config;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

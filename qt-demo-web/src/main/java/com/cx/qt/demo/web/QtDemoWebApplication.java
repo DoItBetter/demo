@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication(scanBasePackages = "com.cx.qt.demo")
 @MapperScan("com.cx.qt.demo.dal.dao")
 @EnableAsync
-public class QtDataWebApplication {
+public class QtDemoWebApplication {
     public static void main(String[] args) {
-        SpringApplication.run(QtDataWebApplication.class, args);
+        SpringApplication.run(QtDemoWebApplication.class, args);
     }
 }
