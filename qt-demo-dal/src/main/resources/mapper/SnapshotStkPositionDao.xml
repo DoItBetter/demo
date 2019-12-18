@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cx.qt.data.dal.dao.SnapshotStkPositionDao">
+  <resultMap id="BaseResultMap" type="com.cx.qt.data.dal.entity.SnapshotStkPosition">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="snapshot_code" jdbcType="VARCHAR" property="snapshotCode" />
+    <result column="portfolio_code" jdbcType="VARCHAR" property="portfolioCode" />
+    <result column="strategy_code" jdbcType="VARCHAR" property="strategyCode" />
+    <result column="account_code" jdbcType="VARCHAR" property="accountCode" />
+    <result column="asset_no" jdbcType="VARCHAR" property="assetNo" />
+    <result column="trans_board" jdbcType="VARCHAR" property="transBoard" />
+    <result column="qty" jdbcType="INTEGER" property="qty" />
+    <result column="sellable_qty" jdbcType="INTEGER" property="sellableQty" />
+    <result column="pnl" jdbcType="DECIMAL" property="pnl" />
+    <result column="daily_pnl" jdbcType="DECIMAL" property="dailyPnl" />
+    <result column="holding_pnl" jdbcType="DECIMAL" property="holdingPnl" />
+    <result column="relized_pnl" jdbcType="DECIMAL" property="relizedPnl" />
+    <result column="market_value" jdbcType="DECIMAL" property="marketValue" />
+    <result column="value_percent" jdbcType="DECIMAL" property="valuePercent" />
+    <result column="avg_price" jdbcType="DECIMAL" property="avgPrice" />
+    <result column="belong_time" jdbcType="TIMESTAMP" property="belongTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, snapshot_code, portfolio_code, strategy_code, account_code, asset_no, trans_board, 
+    qty, sellable_qty, pnl, daily_pnl, holding_pnl, relized_pnl, market_value, value_percent, 
+    avg_price, belong_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_snapshot_stk_position
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_snapshot_stk_position
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cx.qt.data.dal.entity.SnapshotStkPosition">
+    insert into t_snapshot_stk_position (id, snapshot_code, portfolio_code, 
+      strategy_code, account_code, asset_no, 
+      trans_board, qty, sellable_qty, 
+      pnl, daily_pnl, holding_pnl, 
+      relized_pnl, market_value, value_percent, 
+      avg_price, belong_time, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{snapshotCode,jdbcType=VARCHAR}, #{portfolioCode,jdbcType=VARCHAR}, 
+      #{strategyCode,jdbcType=VARCHAR}, #{accountCode,jdbcType=VARCHAR}, #{assetNo,jdbcType=VARCHAR}, 
+      #{transBoard,jdbcType=VARCHAR}, #{qty,jdbcType=INTEGER}, #{sellableQty,jdbcType=INTEGER}, 
+      #{pnl,jdbcType=DECIMAL}, #{dailyPnl,jdbcType=DECIMAL}, #{holdingPnl,jdbcType=DECIMAL}, 
+      #{relizedPnl,jdbcType=DECIMAL}, #{marketValue,jdbcType=DECIMAL}, #{valuePercent,jdbcType=DECIMAL}, 
+      #{avgPrice,jdbcType=DECIMAL}, #{belongTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cx.qt.data.dal.entity.SnapshotStkPosition">
+    insert into t_snapshot_stk_position
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="snapshotCode != null">
+        snapshot_code,
+      </if>
+      <if test="portfolioCode != null">
+        portfolio_code,
+      </if>
+      <if test="strategyCode != null">
+        strategy_code,
+      </if>
+      <if test="accountCode != null">
+        account_code,
+      </if>
+      <if test="assetNo != null">
+        asset_no,
+      </if>
+      <if test="transBoard != null">
+        trans_board,
+      </if>
+      <if test="qty != null">
+        qty,
+      </if>
+      <if test="sellableQty != null">
+        sellable_qty,
+      </if>
+      <if test="pnl != null">
+        pnl,
+      </if>
+      <if test="dailyPnl != null">
+        daily_pnl,
+      </if>
+      <if test="holdingPnl != null">
+        holding_pnl,
+      </if>
+      <if test="relizedPnl != null">
+        relized_pnl,
+      </if>
+      <if test="marketValue != null">
+        market_value,
+      </if>
+      <if test="valuePercent != null">
+        value_percent,
+      </if>
+      <if test="avgPrice != null">
+        avg_price,
+      </if>
+      <if test="belongTime != null">
+        belong_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="snapshotCode != null">
+        #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="portfolioCode != null">
+        #{portfolioCode,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyCode != null">
+        #{strategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCode != null">
+        #{accountCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assetNo != null">
+        #{assetNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transBoard != null">
+        #{transBoard,jdbcType=VARCHAR},
+      </if>
+      <if test="qty != null">
+        #{qty,jdbcType=INTEGER},
+      </if>
+      <if test="sellableQty != null">
+        #{sellableQty,jdbcType=INTEGER},
+      </if>
+      <if test="pnl != null">
+        #{pnl,jdbcType=DECIMAL},
+      </if>
+      <if test="dailyPnl != null">
+        #{dailyPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="holdingPnl != null">
+        #{holdingPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="relizedPnl != null">
+        #{relizedPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="marketValue != null">
+        #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="valuePercent != null">
+        #{valuePercent,jdbcType=DECIMAL},
+      </if>
+      <if test="avgPrice != null">
+        #{avgPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="belongTime != null">
+        #{belongTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cx.qt.data.dal.entity.SnapshotStkPosition">
+    update t_snapshot_stk_position
+    <set>
+      <if test="snapshotCode != null">
+        snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="portfolioCode != null">
+        portfolio_code = #{portfolioCode,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyCode != null">
+        strategy_code = #{strategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCode != null">
+        account_code = #{accountCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assetNo != null">
+        asset_no = #{assetNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transBoard != null">
+        trans_board = #{transBoard,jdbcType=VARCHAR},
+      </if>
+      <if test="qty != null">
+        qty = #{qty,jdbcType=INTEGER},
+      </if>
+      <if test="sellableQty != null">
+        sellable_qty = #{sellableQty,jdbcType=INTEGER},
+      </if>
+      <if test="pnl != null">
+        pnl = #{pnl,jdbcType=DECIMAL},
+      </if>
+      <if test="dailyPnl != null">
+        daily_pnl = #{dailyPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="holdingPnl != null">
+        holding_pnl = #{holdingPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="relizedPnl != null">
+        relized_pnl = #{relizedPnl,jdbcType=DECIMAL},
+      </if>
+      <if test="marketValue != null">
+        market_value = #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="valuePercent != null">
+        value_percent = #{valuePercent,jdbcType=DECIMAL},
+      </if>
+      <if test="avgPrice != null">
+        avg_price = #{avgPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="belongTime != null">
+        belong_time = #{belongTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cx.qt.data.dal.entity.SnapshotStkPosition">
+    update t_snapshot_stk_position
+    set snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      portfolio_code = #{portfolioCode,jdbcType=VARCHAR},
+      strategy_code = #{strategyCode,jdbcType=VARCHAR},
+      account_code = #{accountCode,jdbcType=VARCHAR},
+      asset_no = #{assetNo,jdbcType=VARCHAR},
+      trans_board = #{transBoard,jdbcType=VARCHAR},
+      qty = #{qty,jdbcType=INTEGER},
+      sellable_qty = #{sellableQty,jdbcType=INTEGER},
+      pnl = #{pnl,jdbcType=DECIMAL},
+      daily_pnl = #{dailyPnl,jdbcType=DECIMAL},
+      holding_pnl = #{holdingPnl,jdbcType=DECIMAL},
+      relized_pnl = #{relizedPnl,jdbcType=DECIMAL},
+      market_value = #{marketValue,jdbcType=DECIMAL},
+      value_percent = #{valuePercent,jdbcType=DECIMAL},
+      avg_price = #{avgPrice,jdbcType=DECIMAL},
+      belong_time = #{belongTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="false">
+    insert into t_snapshot_stk_position
+    ( snapshot_code, portfolio_code, strategy_code, account_code, asset_no, trans_board,
+    qty, sellable_qty, pnl, daily_pnl, holding_pnl, relized_pnl, market_value,
+    value_percent, avg_price, belong_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      #{item.snapshotCode},
+      #{item.portfolioCode},
+      #{item.strategyCode},
+      #{item.accountCode},
+      #{item.assetNo},
+      #{item.transBoard},
+      #{item.qty},
+      #{item.sellableQty},
+      #{item.pnl},
+      #{item.dailyPnl},
+      #{item.holdingPnl},
+      #{item.relizedPnl},
+      #{item.marketValue},
+      #{item.valuePercent},
+      #{item.avgPrice},
+      #{item.belongTime}
+      )
+    </foreach>
+  </insert>
+</mapper>

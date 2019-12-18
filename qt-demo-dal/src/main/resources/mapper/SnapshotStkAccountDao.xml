@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cx.qt.data.dal.dao.SnapshotStkAccountDao">
+  <resultMap id="BaseResultMap" type="com.cx.qt.data.dal.entity.SnapshotStkAccount">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="snapshot_code" jdbcType="VARCHAR" property="snapshotCode" />
+    <result column="portfolio_code" jdbcType="VARCHAR" property="portfolioCode" />
+    <result column="strategy_code" jdbcType="VARCHAR" property="strategyCode" />
+    <result column="account_code" jdbcType="VARCHAR" property="accountCode" />
+    <result column="total_value" jdbcType="DECIMAL" property="totalValue" />
+    <result column="cash" jdbcType="DECIMAL" property="cash" />
+    <result column="frz_cash" jdbcType="DECIMAL" property="frzCash" />
+    <result column="market_value" jdbcType="DECIMAL" property="marketValue" />
+    <result column="belong_time" jdbcType="TIMESTAMP" property="belongTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, snapshot_code, portfolio_code, strategy_code, account_code, total_value, cash, 
+    frz_cash, market_value, belong_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_snapshot_stk_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_snapshot_stk_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cx.qt.data.dal.entity.SnapshotStkAccount">
+    insert into t_snapshot_stk_account (id, snapshot_code, portfolio_code, 
+      strategy_code, account_code, total_value, 
+      cash, frz_cash, market_value, 
+      belong_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{snapshotCode,jdbcType=VARCHAR}, #{portfolioCode,jdbcType=VARCHAR}, 
+      #{strategyCode,jdbcType=VARCHAR}, #{accountCode,jdbcType=VARCHAR}, #{totalValue,jdbcType=DECIMAL}, 
+      #{cash,jdbcType=DECIMAL}, #{frzCash,jdbcType=DECIMAL}, #{marketValue,jdbcType=DECIMAL}, 
+      #{belongTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cx.qt.data.dal.entity.SnapshotStkAccount">
+    insert into t_snapshot_stk_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="snapshotCode != null">
+        snapshot_code,
+      </if>
+      <if test="portfolioCode != null">
+        portfolio_code,
+      </if>
+      <if test="strategyCode != null">
+        strategy_code,
+      </if>
+      <if test="accountCode != null">
+        account_code,
+      </if>
+      <if test="totalValue != null">
+        total_value,
+      </if>
+      <if test="cash != null">
+        cash,
+      </if>
+      <if test="frzCash != null">
+        frz_cash,
+      </if>
+      <if test="marketValue != null">
+        market_value,
+      </if>
+      <if test="belongTime != null">
+        belong_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="snapshotCode != null">
+        #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="portfolioCode != null">
+        #{portfolioCode,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyCode != null">
+        #{strategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCode != null">
+        #{accountCode,jdbcType=VARCHAR},
+      </if>
+      <if test="totalValue != null">
+        #{totalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="cash != null">
+        #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="frzCash != null">
+        #{frzCash,jdbcType=DECIMAL},
+      </if>
+      <if test="marketValue != null">
+        #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="belongTime != null">
+        #{belongTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cx.qt.data.dal.entity.SnapshotStkAccount">
+    update t_snapshot_stk_account
+    <set>
+      <if test="snapshotCode != null">
+        snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="portfolioCode != null">
+        portfolio_code = #{portfolioCode,jdbcType=VARCHAR},
+      </if>
+      <if test="strategyCode != null">
+        strategy_code = #{strategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCode != null">
+        account_code = #{accountCode,jdbcType=VARCHAR},
+      </if>
+      <if test="totalValue != null">
+        total_value = #{totalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="cash != null">
+        cash = #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="frzCash != null">
+        frz_cash = #{frzCash,jdbcType=DECIMAL},
+      </if>
+      <if test="marketValue != null">
+        market_value = #{marketValue,jdbcType=DECIMAL},
+      </if>
+      <if test="belongTime != null">
+        belong_time = #{belongTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cx.qt.data.dal.entity.SnapshotStkAccount">
+    update t_snapshot_stk_account
+    set snapshot_code = #{snapshotCode,jdbcType=VARCHAR},
+      portfolio_code = #{portfolioCode,jdbcType=VARCHAR},
+      strategy_code = #{strategyCode,jdbcType=VARCHAR},
+      account_code = #{accountCode,jdbcType=VARCHAR},
+      total_value = #{totalValue,jdbcType=DECIMAL},
+      cash = #{cash,jdbcType=DECIMAL},
+      frz_cash = #{frzCash,jdbcType=DECIMAL},
+      market_value = #{marketValue,jdbcType=DECIMAL},
+      belong_time = #{belongTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="false">
+    insert into t_snapshot_stk_account (snapshot_code, portfolio_code, strategy_code, account_code, total_value, cash,
+    frz_cash, market_value, belong_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      #{item.snapshotCode},
+      #{item.portfolioCode},
+      #{item.strategyCode},
+      #{item.accountCode},
+      #{item.totalValue},
+      #{item.cash},
+      #{item.frzCash},
+      #{item.marketValue},
+      #{item.belongTime}
+      )
+    </foreach>
+  </insert>
+
+  <insert id="createAndGetId" useGeneratedKeys="true" keyProperty="id" parameterType="com.cx.qt.data.dal.entity.SnapshotStkAccount">
+    insert into t_snapshot_stk_account (id, snapshot_code, portfolio_code,
+      strategy_code, account_code, total_value,
+      cash, frz_cash, market_value,
+      belong_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{snapshotCode,jdbcType=VARCHAR}, #{portfolioCode,jdbcType=VARCHAR},
+      #{strategyCode,jdbcType=VARCHAR}, #{accountCode,jdbcType=VARCHAR}, #{totalValue,jdbcType=DECIMAL},
+      #{cash,jdbcType=DECIMAL}, #{frzCash,jdbcType=DECIMAL}, #{marketValue,jdbcType=DECIMAL},
+      #{belongTime,jdbcType=TIMESTAMP}
+      )
+</insert>
+</mapper>
