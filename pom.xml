@@ -34,7 +34,7 @@
         <qt.demo.biz.version>0.0.1-SNAPSHOT</qt.demo.biz.version>
         <framework.version>1.0.2-SNAPSHOT</framework.version>
         <qt.trans.facade.version>0.1.09-SNAPSHOT</qt.trans.facade.version>
-        <dubbo.version>2.7.0</dubbo.version>
+        <dubbo.version>2.7.13</dubbo.version>
         <edas.dubbo.extension.version>2.0.3</edas.dubbo.extension.version>
         <swagger.version>2.7.0</swagger.version>
         <io.swagger.version>1.5.21</io.swagger.version>
